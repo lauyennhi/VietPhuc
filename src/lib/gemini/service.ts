@@ -19,6 +19,7 @@ import {
 } from '../dal';
 import { STYLE_CHOICES } from '../styles';
 import type {
+  GeminiAdaptiveResponse,
   GeminiCaptionResponse,
   GeminiExplainResponse,
   GeminiParseResponse,
@@ -28,6 +29,8 @@ import type {
 } from '../../types/gemini';
 import type { FunctionalNeedCode } from '../../types/domain';
 import type { DeterministicRecommendation } from '../recommendation/engine';
+import { CLOSURE_LABELS, presetFor, type AdaptiveAdjustments, type ClosureType } from '../adaptive/presets';
+import { checkAdaptiveCulture } from '../adaptive/cultureGuard';
 import type { GeminiProviderClient, ThinkingSetting } from './provider';
 
 export interface GeminiServiceConfig {
@@ -795,4 +798,111 @@ export async function renderOutfitImage(
     usedFallback: false,
     prompt,
   };
+}
+
+/* ------------------------------------------------------------------ */
+/* Adaptive tailoring advice                                           */
+/* ------------------------------------------------------------------ */
+
+const clampNumber = (value: unknown, min: number, max: number): number => {
+  const n = typeof value === 'number' && Number.isFinite(value) ? value : 0;
+  return Math.min(max, Math.max(min, Math.round(n)));
+};
+
+export function sanitizeAdjustments(raw: any): AdaptiveAdjustments {
+  const closures: ClosureType[] = ['MAGNETIC', 'VELCRO', 'ZIPPER', 'BUTTON'];
+  return {
+    frontHemReduction: clampNumber(raw?.frontHemReduction, 0, 30),
+    slitPosition: clampNumber(raw?.slitPosition, 0, 25),
+    sleeveLength: clampNumber(raw?.sleeveLength, -15, 10),
+    sleeveWidth: clampNumber(raw?.sleeveWidth, 0, 15),
+    openingWidth: clampNumber(raw?.openingWidth, 0, 15),
+    closureType: pick(raw?.closureType, closures) ?? 'BUTTON',
+  };
+}
+
+/**
+ * Warm, practical explanation of an adaptive outfit. The adjustments and the culture
+ * guardrail result are computed on the server and passed to Gemini as immutable facts.
+ */
+export async function adaptiveAdvice(
+  request: { garmentId: string; needCodes: string[]; adjustments: unknown; eventId?: string },
+  config: GeminiServiceConfig
+): Promise<GeminiAdaptiveResponse> {
+  const garment = getGarmentById(request.garmentId) ?? getApprovedGarments()[0];
+  const needs = getAdaptiveNeeds().filter((n) => request.needCodes.includes(n.code));
+  const adj = sanitizeAdjustments(request.adjustments);
+  const guard = checkAdaptiveCulture(garment, adj, needs.length > 0);
+  const event = request.eventId ? getEventById(request.eventId) : undefined;
+
+  const changes = [
+    adj.frontHemReduction ? `rút vạt trước ${adj.frontHemReduction} cm` : '',
+    adj.slitPosition ? `nâng xẻ sườn ${adj.slitPosition} cm` : '',
+    adj.sleeveWidth ? `nới ống tay ${adj.sleeveWidth} cm` : '',
+    adj.sleeveLength ? `${adj.sleeveLength < 0 ? 'rút' : 'nối dài'} tay áo ${Math.abs(adj.sleeveLength)} cm` : '',
+    adj.openingWidth ? `nới độ mở cổ/vạt ${adj.openingWidth} cm` : '',
+    `đóng mở bằng ${CLOSURE_LABELS[adj.closureType].toLowerCase()}`,
+  ].filter(Boolean);
+  const kept = guard.items.filter((i) => i.level === 'KEEP').map((i) => i.title);
+  const flagged = guard.items.filter((i) => i.level !== 'KEEP').map((i) => `${i.title}: ${i.detail}`);
+
+  const fallback: GeminiAdaptiveResponse = {
+    headline: !needs.length
+      ? `${garment.name} phom chuẩn nguyên bản`
+      : flagged.length
+        ? `${garment.name} may theo cơ thể bạn — còn ${flagged.length} điểm nên chỉnh để giữ bản sắc`
+        : `${garment.name} may theo cơ thể bạn — vẫn trọn bản sắc`,
+    explanation: needs.length
+      ? `Với nhu cầu ${needs.map((n) => n.name.toLowerCase()).join(', ')}, bản rập ${changes.join(', ')}. ${kept.length ? `Những điểm bản sắc được giữ: ${kept.join('; ')}.` : ''}${flagged.length ? ` Cần cân nhắc: ${flagged.length} điểm (xem thẻ Bản sắc).` : ''}`
+      : 'Chưa chọn nhu cầu thích ứng nào — áo giữ đúng tỷ lệ truyền thống.',
+    confidenceTips: needs.flatMap((n) => presetFor(n.code)?.dressingSteps.slice(0, 1) ?? []).slice(0, 3),
+    tailorQuestions: [
+      'Có thể đặt nẹp nam châm/khóa giấu dưới vạt phải mà vẫn giữ cúc trang trí không?',
+      'Vải lót nào mềm nhất cho vùng tiếp xúc nhiều (lưng, đùi, nách)?',
+      'Có cần một buổi thử áo ở tư thế ngồi/thực tế sử dụng trước khi hoàn thiện?',
+    ],
+    usedFallback: true,
+  };
+
+  if (!config.provider) return fallback;
+
+  try {
+    const parsed = await generateJson(
+      config,
+      [{
+        text: `Viết lời giải thích cho bản may đo Việt phục thích ứng (adaptive fashion). Giọng ấm áp, tôn trọng, trao quyền; không thương hại, không dùng từ ngữ y khoa nặng nề, không chẩn đoán.
+Y phục: ${garment.name}
+Dịp: ${event?.name ?? 'không nêu'}
+Nhu cầu người dùng TỰ CHỌN: ${needs.map((n) => `${n.name} — ${n.description}`).join(' | ') || 'không có'}
+Điều chỉnh rập (sự thật bất biến): ${changes.join('; ')}
+Đặc trưng văn hóa được giữ (bất biến): ${kept.join('; ') || 'không có'}
+Điểm cần cân nhắc (bất biến): ${flagged.join(' | ') || 'không có'}
+Quy tắc không được sai của y phục: ${garment.nonNegotiables.join('; ')}
+
+Trả về: headline (dưới 14 từ); explanation 3–4 câu nói rõ mỗi điều chỉnh giúp gì cho trải nghiệm mặc và vì sao bản sắc vẫn được giữ; confidenceTips 2–3 mẹo để tự tin, tự chủ khi mặc dự sự kiện; tailorQuestions 2–3 câu hỏi nên hỏi thợ may.`,
+      }],
+      {
+        type: 'object',
+        properties: {
+          headline: { type: 'string' },
+          explanation: { type: 'string' },
+          confidenceTips: { type: 'array', items: { type: 'string' } },
+          tailorQuestions: { type: 'array', items: { type: 'string' } },
+        },
+        required: ['headline', 'explanation', 'confidenceTips', 'tailorQuestions'],
+      }
+    );
+    const tips = strings(parsed.confidenceTips, 3, 240);
+    const questions = strings(parsed.tailorQuestions, 3, 240);
+    return {
+      headline: text(parsed.headline, 140) ?? fallback.headline,
+      explanation: text(parsed.explanation, 1200) ?? fallback.explanation,
+      confidenceTips: tips.length ? tips : fallback.confidenceTips,
+      tailorQuestions: questions.length ? questions : fallback.tailorQuestions,
+      usedFallback: false,
+    };
+  } catch (error) {
+    console.warn('Gemini adaptive advice failed, using fallback.', (error as Error).message);
+    return fallback;
+  }
 }

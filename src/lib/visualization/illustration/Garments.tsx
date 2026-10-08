@@ -47,9 +47,16 @@ export const Garments: React.FC<GarmentsProps> = ({
   const isRemixModerate = effectiveRemix >= 35 && effectiveRemix < 65;
 
   // Adaptive adjustments in px
-  const hemReductionPx = isWheelchair ? 28 : (adaptiveAdjustments.frontHemReduction ?? 0) * 1.6;
-  const slitRaisePx = isWheelchair ? 16 : (adaptiveAdjustments.slitPosition ?? 0) * 1.5;
+  // Seated figures default to the validated wheelchair tailoring unless explicit values are given,
+  // so the adaptive sliders (and a "before" view with 0 cm) are reflected in the drawing.
+  const hemReductionPx = isWheelchair
+    ? (adaptiveAdjustments.frontHemReduction ?? 15) * 1.9
+    : (adaptiveAdjustments.frontHemReduction ?? 0) * 1.6;
+  const slitRaisePx = isWheelchair
+    ? (adaptiveAdjustments.slitPosition ?? 13) * 1.25
+    : (adaptiveAdjustments.slitPosition ?? 0) * 1.5;
   const sleeveDelta = (adaptiveAdjustments.sleeveLength ?? 0) * 1.2;
+  const sleeveWidthPx = (adaptiveAdjustments.sleeveWidth ?? 0) * 1.1;
 
   // Hem length ratio:
   // If quickAdjustments.hemLengthRatio is provided (0.3 to 1.0), use it;
@@ -84,11 +91,11 @@ export const Garments: React.FC<GarmentsProps> = ({
   // Dynamic side slit Y (apex of slit):
   // At low slit: apex at y=260. At high slit: apex rises to y=205.
   const dynamicSlitY = isWheelchair
-    ? 250
+    ? Math.round(266 - slitRaisePx)
     : Math.round(265 - 65 * Math.max(0.1, Math.min(0.85, slitRatio)) - slitRaisePx);
 
   // Dynamic sleeve width delta
-  const sleeveFlare = Math.round((sleeveWidthRatio - 0.7) * 28);
+  const sleeveFlare = Math.round((sleeveWidthRatio - 0.7) * 28 + sleeveWidthPx);
 
   const template = garment.svgTemplate || 'NGU_THAN_TAY_CHEN';
 

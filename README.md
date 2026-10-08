@@ -21,10 +21,26 @@ Bài dự thi vòng Audition **AI Arena: Viet Nam 2026** — đề *"Việt ph�
 | *Bổ sung:* so sánh phương án | So sánh 2 bản phối bất kỳ (hiện tại, gợi ý, lookbook) theo Chuẩn · Chất · Màu |
 | *Bổ sung:* tạo & chia sẻ lookbook | Lưu Lookbook, link chia sẻ mở lại đúng bản phối, caption do Gemini viết, tải ảnh PNG |
 | *Bổ sung:* **Virtual Tour · 3D · VR/AR** | **Phòng 3D & Tham quan ảo**: mô hình 3D bản phối (xoay 360°, vải gấm, dáng ngồi xe lăn) dựng từ dữ liệu y phục; tham quan 4 không gian (phòng trưng bày, Văn Miếu, Ngọ Môn Huế, làng quê Bắc Bộ) có điểm thông tin; vào **VR** bằng kính WebXR (Meta Quest…), **AR** trên Android, **AR Quick Look** trên iPhone (.usdz); tải **mô hình 3D .glb** |
+| *Bổ sung:* **May đo thích ứng** | Xem mục "Điểm khác biệt" bên dưới: nhu cầu tự chọn, chỉnh rập Trước/Sau, kiểm tra Thích ứng × Bản sắc, phiếu may đo in PDF |
 | *Bổ sung:* cảnh báo sai lệch văn hóa | Rule engine có nguồn: vạt hữu nhậm, kết cấu ngũ thân, yếm với áo tứ thân, màu kiêng dịp hỷ… → KEEP / CONSIDER / WARNING |
 | Bảo đảm thông tin văn hóa phù hợp | Xem mục 4 — Gemini **không bao giờ** tạo luật hay sử liệu; chỉ diễn giải kết quả đã kiểm chứng |
 
-Điểm khác biệt: **may đo thích ứng** (xe lăn, hạn chế vận động tay, da nhạy cảm…) với thông số đã xác thực — "vừa với mọi cơ thể".
+### Điểm khác biệt: Adaptive Fashion — *vừa với mọi cơ thể, không đánh đổi bản sắc*
+
+Người trẻ khuyết tật hoặc có nhu cầu đặc thù cũng muốn mặc Việt phục đi kỷ yếu, lễ hội, đám cưới — nhưng sửa áo tùy tiện dễ làm sai đặc trưng (cắt tay áo tấc, khoét cổ đứng, bỏ vạt hữu nhậm). Phòng **May đo thích ứng** giải quyết đúng mâu thuẫn đó:
+
+| Bước | Trải nghiệm |
+|---|---|
+| 1. Nhu cầu | 5 nhóm nhu cầu do **người dùng tự chọn** (ngồi xe lăn, khó cài cúc, hạn chế cử động vai, khó đứng lâu, da nhạy cảm), **chọn nhiều cùng lúc** — hệ thống gộp thông số theo mức hỗ trợ cao nhất |
+| 2. Y phục | Cả 8 loại Việt phục đã duyệt; hiện ngay "đặc trưng không được sai" của áo đang chọn |
+| 3. Tinh chỉnh | Kéo chỉnh vạt trước, xẻ sườn, dài/rộng tay, độ mở cổ, cơ chế đóng mở; xem **Trước / Sau** cạnh nhau trên mockup |
+| Thích ứng × Bản sắc | **Rule engine tất định** đối chiếu từng điều chỉnh với kết cấu áo: cảnh báo khi cắt ống tay thụng, khoét cổ đứng, tà lễ phục quá ngắn, khóa kéo phá hai vạt song song… và đưa **phương án thay thế giữ bản sắc** (khuy vén tay ẩn, khuy vai ẩn, nam châm dưới 5 cúc áo tấc, chỉ rút vạt trước) — áp dụng bằng 1 chạm, có điểm "Bản sắc" /100 |
+| Giải thích | Lời giải thích tất định cho từng thay đổi + nút **"Nhờ Gemini viết lời khuyên riêng"** (Gemini nhận thông số và kết quả văn hóa như sự thật bất biến; giao diện ghi rõ khi đang dùng lời khuyên mẫu) |
+| Hướng dẫn tự mặc | Các bước mặc độc lập cho từng nhu cầu (mặc khi ngồi, cài một tay…) |
+| 4. Mang đi may | Số đo cá nhân (lưu trên trình duyệt) + **Phiếu may đo** in/lưu PDF: thông số rập, số đo, quy tắc bản sắc, thông số đã kiểm định có nguồn, hướng dẫn tự mặc |
+| Xem 3D | Mở mô hình 3D dáng ngồi xe lăn trong Phòng 3D, xem bằng VR/AR |
+
+Ứng dụng cũng **dễ tiếp cận cho chính người dùng đó**: menu *Hỗ trợ tiếp cận* (cỡ chữ A / A+ / A++, tương phản cao, giảm chuyển động — áp dụng toàn app), **nhập bằng giọng nói** tiếng Việt cho AI Stylist (hữu ích khi khó gõ phím), nút bấm ≥ 44 px, nhãn cho trình đọc màn hình.
 
 ## 2. Chạy thử trong 3 phút
 
@@ -55,6 +71,7 @@ Express server (server.ts) — giữ GEMINI_API_KEY, giới hạn tần suất, 
   ├─ /api/gemini/recommend  Bộ gợi ý tất định ▸ ứng viên đã qua rule engine → Gemini xếp hạng
   ├─ /api/gemini/explain    Gemini ▸ lời bình dựa trên kết quả văn hóa bất biến
   ├─ /api/gemini/caption    Gemini ▸ caption mạng xã hội
+  ├─ /api/gemini/adaptive   Gemini ▸ lời khuyên may đo thích ứng dựa trên thông số + kết quả văn hóa do server tính lại
   ├─ /api/gemini/vision     Gemini ▸ đọc ảnh → bảng màu → khớp màu Việt phục đã duyệt (ΔE Lab)
   └─ /api/gemini/render     Gemini (Nano Banana) ▸ ảnh minh họa từ prompt dựng bằng dữ liệu đã xác thực
   ▼
@@ -103,6 +120,7 @@ src/components/            UI (HomeHero, StylingWorkspace, Studio, VirtualShowro
 src/lib/three/             Mô hình 3D y phục (figure.ts) + khung cảnh tham quan ảo (tours.ts)
 src/lib/gemini/            provider (model + dự phòng), service (prompt + JSON schema + allow-list), routes (giới hạn tần suất), client
 src/lib/culture/           Rule engine văn hóa tất định
+src/lib/adaptive/          Preset nhu cầu thích ứng + rule engine Thích ứng × Bản sắc (cultureGuard.ts)
 src/lib/recommendation/    Bộ gợi ý tất định + bản đồ từ khóa dự phòng
 src/lib/color/             Toán màu (Lab ΔE, WCAG contrast) + kiểm tra hài hòa
 data/                      Cơ sở tri thức (JSON) — chỉ bản ghi APPROVED + có nguồn mới được dùng

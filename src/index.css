@@ -81,23 +81,25 @@ body {
   }
 
   .animate-rise {
-    animation: vstyle-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: vstyle-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
   }
   .animate-fade-in,
   .animate-fadeIn {
-    animation: vstyle-fade-in 300ms ease-out both;
+    animation: vstyle-fade-in 300ms ease-out backwards;
   }
   .animate-slide-left {
-    animation: vstyle-slide-left 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: vstyle-slide-left 360ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
   }
   .animate-stamp {
-    animation: vstyle-stamp 520ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation: vstyle-stamp 520ms cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
   }
 }
 
+/* Keyframes end on `transform: none` so finished animations do not create a containing block
+   that would trap position:fixed descendants (dialogs, toasts) inside the animated element. */
 @keyframes vstyle-rise {
   from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: none; }
 }
 @keyframes vstyle-fade-in {
   from { opacity: 0; }
@@ -105,12 +107,12 @@ body {
 }
 @keyframes vstyle-slide-left {
   from { opacity: 0; transform: translateX(24px); }
-  to { opacity: 1; transform: translateX(0); }
+  to { opacity: 1; transform: none; }
 }
 @keyframes vstyle-stamp {
   0% { opacity: 0; transform: scale(1.6) rotate(-8deg); }
   60% { opacity: 1; transform: scale(0.94) rotate(-2deg); }
-  100% { opacity: 1; transform: scale(1) rotate(0); }
+  100% { opacity: 1; transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -119,4 +121,69 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 1ms !important;
   }
+}
+
+/* Printing the adaptive tailoring sheet (TechPackSheet clones it into #print-root). */
+#print-root {
+  display: none;
+}
+@media print {
+  html.printing body > *:not(#print-root) {
+    display: none !important;
+  }
+  html.printing #print-root {
+    display: block;
+  }
+  html.printing,
+  html.printing body {
+    background: #ffffff !important;
+  }
+  @page {
+    margin: 14mm;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Accessibility preferences (AccessibilityMenu sets these on <html>)   */
+/* ------------------------------------------------------------------ */
+
+/* Larger text: rem-based sizes and spacing scale with the root size; fixed pixel sizes are remapped. */
+html[data-text="lg"] { font-size: 112.5%; }
+html[data-text="xl"] { font-size: 125%; }
+html[data-text] .text-\[8px\] { font-size: 0.625rem; }
+html[data-text] .text-\[9px\] { font-size: 0.6875rem; }
+html[data-text] .text-\[10px\] { font-size: 0.75rem; }
+html[data-text] .text-\[11px\] { font-size: 0.8125rem; }
+html[data-text] .text-\[13px\] { font-size: 0.875rem; }
+
+/* High contrast: darken muted text, strengthen hairline borders and focus rings. */
+html[data-contrast-high] [class*="text-[#736960]"],
+html[data-contrast-high] [class*="text-[#6B6158]"],
+html[data-contrast-high] [class*="text-[#5C5248]"],
+html[data-contrast-high] [class*="text-[#8A8075]"],
+html[data-contrast-high] [class*="text-[#A39889]"],
+html[data-contrast-high] [class*="text-[#4A423B]"] {
+  color: #1f1b18 !important;
+}
+html[data-contrast-high] [class*="border-[#E6DCCD]"],
+html[data-contrast-high] [class*="border-[#EAE3D6]"],
+html[data-contrast-high] [class*="border-[#EAE2D5]"] {
+  border-color: #6b5f52 !important;
+}
+html[data-contrast-high] ::placeholder {
+  color: #4a423b !important;
+}
+html[data-contrast-high] *:focus-visible {
+  outline: 3px solid #1f1b18 !important;
+  outline-offset: 2px;
+}
+
+/* Reduced motion on request (in addition to the OS-level media query above). */
+html[data-reduce-motion] *,
+html[data-reduce-motion] *::before,
+html[data-reduce-motion] *::after {
+  animation-duration: 1ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 1ms !important;
+  scroll-behavior: auto !important;
 }

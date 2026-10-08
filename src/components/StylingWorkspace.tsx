@@ -118,6 +118,7 @@ interface StylingWorkspaceProps {
   onShareOutfit: () => void;
   onOpenCompare: () => void;
   onOpenStudio?: () => void;
+  onOpenAdaptiveStudio?: (needCodes: FunctionalNeedCode[]) => void;
 }
 
 export const StylingWorkspace: React.FC<StylingWorkspaceProps> = ({
@@ -192,6 +193,7 @@ export const StylingWorkspace: React.FC<StylingWorkspaceProps> = ({
   onShareOutfit,
   onOpenCompare,
   onOpenStudio,
+  onOpenAdaptiveStudio,
 }) => {
   // 3 Visual Groups of 9 steps
   const STEP_GROUPS = [
@@ -492,6 +494,7 @@ export const StylingWorkspace: React.FC<StylingWorkspaceProps> = ({
                   selectedNeedCodes={selectedAdaptiveNeedCodes}
                   onChange={(codes) => onAdaptiveCodesChange(codes as FunctionalNeedCode[])}
                   onOpenTailoringSheet={onOpenTailoringSheet}
+                  onOpenAdaptiveStudio={onOpenAdaptiveStudio ? () => onOpenAdaptiveStudio(selectedAdaptiveNeedCodes) : undefined}
                 />
               </div>
             )}

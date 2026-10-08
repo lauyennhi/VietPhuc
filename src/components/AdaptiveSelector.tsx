@@ -144,10 +144,10 @@ export const AdaptiveSelector: React.FC<AdaptiveSelectorProps> = ({
           <button
             type="button"
             onClick={() => {
-              if (onOpenTailoringSheet && selectedNeedCodes[0]) {
-                onOpenTailoringSheet(selectedNeedCodes[0]);
-              } else if (onOpenAdaptiveStudio) {
+              if (onOpenAdaptiveStudio) {
                 onOpenAdaptiveStudio();
+              } else if (onOpenTailoringSheet && selectedNeedCodes[0]) {
+                onOpenTailoringSheet(selectedNeedCodes[0]);
               }
             }}
             className="press px-4 py-2.5 rounded-xl border border-[#E6DCCD] bg-[#FFFFFF] text-xs font-semibold text-[#1F1B18] hover:bg-[#F1EADF] transition flex items-center gap-1.5"

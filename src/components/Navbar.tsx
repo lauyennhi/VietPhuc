@@ -1,3 +1,4 @@
+import { AccessibilityMenu } from './AccessibilityMenu';
 import React, { useState } from 'react';
 
 export type MainNavTab = 'HOME' | 'DISCOVERY' | 'LOOKBOOK';
@@ -70,12 +71,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 <div className="flex items-center gap-1.5">
                   <span className={isActive ? 'font-serif text-base' : ''}>{item.label}</span>
-                  {item.id === 'LOOKBOOK' && (
+                  {item.id === 'LOOKBOOK' && lookbookCount > 0 && (
                     <span
                       className="grid min-w-4.5 h-4.5 place-items-center rounded-full bg-[#16222E] px-1 text-[10px] font-bold text-[#FFFFFF] tabular"
                       aria-label={`${lookbookCount} bản phối đã lưu`}
                     >
-                      {lookbookCount || 2}
+                      {lookbookCount}
                     </span>
                   )}
                 </div>
@@ -96,7 +97,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </nav>
 
         {/* Right side actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {/* Quick Search Circular Button */}
           {onOpenSearch && (
             <button
@@ -117,22 +118,22 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             type="button"
             onClick={() => onSelectTab('LOOKBOOK')}
-            className={`press min-h-[40px] flex items-center gap-2 rounded-full px-4 text-xs font-bold border transition ${
+            className={`press min-h-[40px] hidden sm:flex items-center gap-2 rounded-full px-4 text-xs font-bold border transition ${
               activeTab === 'LOOKBOOK'
                 ? 'bg-[#16222E] text-[#FFFFFF] border-[#16222E] shadow-sm'
                 : 'bg-[#FFFFFF] text-[#16222E] border-[#E6DCCD] hover:bg-[#F5EFE6]'
             }`}
           >
             <span>Lookbook</span>
-            <span className="size-4.5 rounded-full bg-[#16222E] text-[#FFFFFF] text-[10px] font-bold inline-flex items-center justify-center">
-              {lookbookCount || 2}
-            </span>
+            {lookbookCount > 0 && (
+              <span className="size-4.5 rounded-full bg-[#16222E] text-[#FFFFFF] text-[10px] font-bold inline-flex items-center justify-center">
+                {lookbookCount}
+              </span>
+            )}
           </button>
 
-          {/* Decorative Corner Brass Insignia */}
-          <span className="hidden sm:inline-block text-[#C5A265] text-lg select-none ml-1" title="Bản sắc Việt">
-            ⚜
-          </span>
+          {/* Accessibility preferences */}
+          <AccessibilityMenu />
 
           {/* Mobile Menu Hamburger */}
           <button

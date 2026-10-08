@@ -151,7 +151,10 @@ export const VirtualShowroom: React.FC<VirtualShowroomProps> = ({
   const runtimeRef = useRef<Runtime | null>(null);
   const [stopIndex, setStopIndex] = useState(0);
   const [activeHotspot, setActiveHotspot] = useState<TourHotspot | null>(null);
-  const [autoRotate, setAutoRotate] = useState(true);
+  const [autoRotate, setAutoRotate] = useState(() => !(
+    document.documentElement.hasAttribute('data-reduce-motion') ||
+    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+  ));
   const [touring, setTouring] = useState(false);
   const [brocade, setBrocade] = useState(true);
   const [xrSupport, setXrSupport] = useState<{ vr: boolean; ar: boolean }>({ vr: false, ar: false });
@@ -238,7 +241,7 @@ export const VirtualShowroom: React.FC<VirtualShowroomProps> = ({
     world.add(environment, figureSlot, hotspotLayer);
     scene.add(world);
 
-    const runtime: Runtime = { renderer, scene, camera, controls, world, environment, figureSlot, hotspotLayer, autoRotate: true };
+    const runtime: Runtime = { renderer, scene, camera, controls, world, environment, figureSlot, hotspotLayer, autoRotate: false };
     runtimeRef.current = runtime;
 
     /* Pointer picking of hotspots (ignores drags used for orbiting). */

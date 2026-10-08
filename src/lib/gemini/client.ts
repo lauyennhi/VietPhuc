@@ -3,6 +3,7 @@
  */
 
 import type {
+  GeminiAdaptiveResponse,
   GeminiCaptionResponse,
   GeminiExplainResponse,
   GeminiParseResponse,
@@ -208,4 +209,12 @@ export async function renderOutfitImage(payload: {
   consentToUseReference?: boolean;
 }): Promise<GeminiRenderResponse> {
   return await postJson<GeminiRenderResponse>('/api/gemini/render', payload);
+}
+export async function requestAdaptiveAdvice(payload: {
+  garmentId: string;
+  needCodes: string[];
+  adjustments: Record<string, unknown>;
+  eventId?: string;
+}): Promise<GeminiAdaptiveResponse> {
+  return await postJson<GeminiAdaptiveResponse>('/api/gemini/adaptive', payload);
 }

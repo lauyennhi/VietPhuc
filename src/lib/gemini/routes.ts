@@ -10,6 +10,7 @@ import {
   createGeminiCaption,
   analyzeOutfitPhoto,
   renderOutfitImage,
+  adaptiveAdvice,
   approvedSourceReferences,
   type GeminiServiceConfig,
 } from './service';
@@ -156,6 +157,21 @@ export function createGeminiRouter(config: GeminiServiceConfig, limits: { render
         config
       );
       res.json(result);
+    } catch (error) {
+      res.status(500).json({ error: (error as Error).message });
+    }
+  });
+
+  // POST /api/gemini/adaptive
+  router.post('/adaptive', textLimit, jsonLimit64k, async (req: Request, res: Response) => {
+    try {
+      const { garmentId, needCodes, adjustments, eventId } = req.body ?? {};
+      if (typeof garmentId !== 'string' || !getGarmentById(garmentId)) {
+        res.status(400).json({ error: 'Y phục không hợp lệ.' });
+        return;
+      }
+      const codes = Array.isArray(needCodes) ? needCodes.filter((c: unknown): c is string => typeof c === 'string').slice(0, 6) : [];
+      res.json(await adaptiveAdvice({ garmentId, needCodes: codes, adjustments, eventId: typeof eventId === 'string' ? eventId : undefined }, config));
     } catch (error) {
       res.status(500).json({ error: (error as Error).message });
     }

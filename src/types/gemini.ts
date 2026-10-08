@@ -76,3 +76,11 @@ export interface GeminiRenderResponse {
   usedFallback?: boolean;
   prompt?: string;
 }
+
+export interface GeminiAdaptiveResponse {
+  headline: string;
+  explanation: string;
+  confidenceTips: string[];
+  tailorQuestions: string[];
+  usedFallback?: boolean;
+}

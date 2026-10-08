@@ -9,8 +9,10 @@
  * - 4 horizontal discovery cards with artwork, icon badges, and colored circular arrow buttons
  */
 
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { OutfitMockupCanvas } from './OutfitMockupCanvas';
+import { NEED_PRESETS } from '../lib/adaptive/presets';
+import type { FunctionalNeedCode } from '../types/domain';
 import { getApprovedGarments, getApprovedAccessories, getCharacters } from '../lib/dal';
 import {
   backdropUrl,
@@ -30,8 +32,33 @@ interface HomeHeroProps {
   onSelect9Steps: () => void;
   onSelectDiscovery: () => void;
   onSelectAdaptive: () => void;
+  onSelectAdaptiveNeed?: (code: FunctionalNeedCode) => void;
   onSelectVirtual?: () => void;
 }
+
+/* Minimal typing for the Web Speech API (Chrome/Edge/Safari expose it with a webkit prefix). */
+interface SpeechRecognitionLike {
+  lang: string;
+  interimResults: boolean;
+  continuous: boolean;
+  onresult: ((event: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null;
+  onend: (() => void) | null;
+  onerror: ((event: { error: string }) => void) | null;
+  start: () => void;
+  stop: () => void;
+}
+
+function getSpeechRecognition(): (new () => SpeechRecognitionLike) | undefined {
+  if (typeof window === 'undefined') return undefined;
+  const w = window as unknown as { SpeechRecognition?: new () => SpeechRecognitionLike; webkitSpeechRecognition?: new () => SpeechRecognitionLike };
+  return w.SpeechRecognition ?? w.webkitSpeechRecognition;
+}
+
+const ADAPTIVE_PROMISES = [
+  { label: 'Nam châm ẩn dưới 5 cúc áo tấc', detail: 'Tự cài một tay — vẫn đủ quy thức 5 cúc' },
+  { label: 'Rút vạt trước, giữ vạt sau', detail: 'Ngồi xe lăn gọn gàng — phom áo không đổi' },
+  { label: 'Nới nách, giữ cổ tay chẽn', detail: 'Xỏ tay không cần giơ cao — giữ dáng tay chẽn' },
+];
 
 const QUICK_TAGS = [
   { label: 'Kỷ yếu', icon: '🎓' },
@@ -51,9 +78,41 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
   onSelect9Steps,
   onSelectDiscovery,
   onSelectAdaptive,
+  onSelectAdaptiveNeed,
   onSelectVirtual,
 }) => {
   const [promptText, setPromptText] = useState('');
+  const [listening, setListening] = useState(false);
+  const [voiceSupported, setVoiceSupported] = useState(false);
+  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+
+  useEffect(() => {
+    setVoiceSupported(Boolean(getSpeechRecognition()));
+    return () => recognitionRef.current?.stop();
+  }, []);
+
+  const toggleVoice = () => {
+    if (listening) {
+      recognitionRef.current?.stop();
+      return;
+    }
+    const Recognition = getSpeechRecognition();
+    if (!Recognition) return;
+    const recognition = new Recognition();
+    recognition.lang = 'vi-VN';
+    recognition.interimResults = true;
+    recognition.continuous = false;
+    const base = promptText.trim();
+    recognition.onresult = (event) => {
+      const transcript = Array.from(event.results).map((result) => result[0]?.transcript ?? '').join(' ').trim();
+      setPromptText(base ? `${base} ${transcript}` : transcript);
+    };
+    recognition.onend = () => setListening(false);
+    recognition.onerror = () => setListening(false);
+    recognitionRef.current = recognition;
+    setListening(true);
+    recognition.start();
+  };
   const [showLiveVector, setShowLiveVector] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -146,8 +205,8 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
 
                 {/* Capsule Bottom Toolbar */}
                 <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#EAE3D6] px-1">
-                  {/* Left: Add Photo button */}
-                  <div>
+                  {/* Left: Add Photo + voice input */}
+                  <div className="flex flex-wrap items-center gap-1">
                     <input
                       type="file"
                       ref={fileInputRef}
@@ -167,6 +226,23 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
                       </svg>
                       <span>Thêm ảnh</span>
                     </button>
+                    {voiceSupported && (
+                      <button
+                        type="button"
+                        onClick={toggleVoice}
+                        aria-pressed={listening}
+                        title="Nói thay vì gõ (tiếng Việt)"
+                        className={`press inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
+                          listening ? 'bg-[#8E3329] text-[#FFFFFF] border-[#8E3329]' : 'text-[#6B6158] hover:text-[#16222E] hover:bg-[#FFFFFF] border-transparent hover:border-[#E6DCCD]'
+                        }`}
+                      >
+                        <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" aria-hidden="true">
+                          <rect x="9" y="3" width="6" height="11" rx="3" />
+                          <path d="M5 11a7 7 0 0 0 14 0M12 18v3" />
+                        </svg>
+                        <span>{listening ? 'Đang nghe… bấm để dừng' : 'Nói'}</span>
+                      </button>
+                    )}
                   </div>
 
                   {/* Right: Primary Action Button */}
@@ -441,6 +517,54 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
             </div>
           </div>
         </div>
+
+        {onSelectAdaptiveNeed && (
+          <section aria-labelledby="adaptive-spotlight" className="relative overflow-hidden rounded-[32px] border border-[#CDE0C9] bg-[linear-gradient(135deg,#EEF4EC_0%,#FFFFFF_60%,#FBF4E8_100%)] p-5 sm:p-7">
+            <span aria-hidden="true" className="pointer-events-none absolute -left-20 -bottom-24 size-72 rounded-full border border-[#4F7350]/15" />
+            <div className="relative grid gap-6 lg:grid-cols-12 lg:items-center">
+              <div className="space-y-4 lg:col-span-7">
+                <span className="inline-flex items-center gap-2 rounded-full border border-[#CDE0C9] bg-[#FFFFFF] px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-[#3D6B35]">
+                  ♿ Adaptive Fashion · điểm khác biệt của Vstyle
+                </span>
+                <h2 id="adaptive-spotlight" className="font-serif text-2xl font-bold leading-tight text-[#16222E] sm:text-3xl">
+                  Vừa với mọi cơ thể — <span className="italic text-[#3D6B35]">không đánh đổi bản sắc.</span>
+                </h2>
+                <p className="max-w-xl text-sm leading-relaxed text-[#5C5248]">
+                  Người ngồi xe lăn, khó cài cúc, hạn chế cử động vai hay da nhạy cảm đều có thể diện Việt phục đúng điển chế. Chọn nhu cầu của bạn để bắt đầu:
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {NEED_PRESETS.map((need) => (
+                    <button
+                      key={need.code}
+                      type="button"
+                      onClick={() => onSelectAdaptiveNeed(need.code)}
+                      className="press inline-flex min-h-11 items-center gap-2 rounded-2xl border border-[#E6DCCD] bg-[#FFFFFF] px-3.5 text-xs font-bold text-[#16222E] shadow-2xs transition hover:border-[#4F7350] hover:bg-[#F1F6EF]"
+                    >
+                      <span aria-hidden="true" className="text-base">{need.icon}</span>
+                      {need.shortName}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <ul className="space-y-2.5 lg:col-span-5">
+                {ADAPTIVE_PROMISES.map((item) => (
+                  <li key={item.label} className="flex items-start gap-3 rounded-2xl border border-[#E6DCCD] bg-[#FFFFFF]/90 p-3.5 shadow-2xs">
+                    <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[#4F7350] text-xs font-bold text-[#FFFFFF]" aria-hidden="true">✓</span>
+                    <span>
+                      <span className="block text-sm font-bold text-[#16222E]">{item.label}</span>
+                      <span className="block text-[11px] text-[#736960]">{item.detail}</span>
+                    </span>
+                  </li>
+                ))}
+                <li>
+                  <button type="button" onClick={onSelectAdaptive} className="press w-full rounded-2xl bg-[#16222E] px-4 py-3 text-sm font-bold text-[#FFFFFF] transition hover:bg-[#253D52]">
+                    Mở phòng may đo thích ứng →
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </section>
+        )}
 
         {onSelectVirtual && (
           <button

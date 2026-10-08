@@ -195,6 +195,14 @@ export default function App() {
     scrollToId('workspace-root');
   }, [showToast]);
 
+  const [adaptiveEntry, setAdaptiveEntry] = useState<{ needs?: FunctionalNeedCode[]; garmentId?: string; nonce: number }>({ nonce: 0 });
+  const openAdaptive = (needs?: FunctionalNeedCode[]) => {
+    setAdaptiveEntry((entry) => ({ needs, garmentId: selectedGarment.id, nonce: entry.nonce + 1 }));
+    setMainNavTab('HOME');
+    setHomeExperience('ADAPTIVE');
+    scrollToId('main');
+  };
+
   const isSeated = displayCharacter.heightCategory === 'SEATED' ||
     selectedAdaptiveNeedCodes.includes('WHEELCHAIR_SEATED' as FunctionalNeedCode);
 
@@ -739,7 +747,8 @@ export default function App() {
                   scrollToId('workspace-root');
                 }}
                 onSelectDiscovery={() => setMainNavTab('DISCOVERY')}
-                onSelectAdaptive={() => setHomeExperience('ADAPTIVE')}
+                onSelectAdaptive={() => openAdaptive()}
+                onSelectAdaptiveNeed={(code) => openAdaptive([code])}
                 onSelectVirtual={() => setHomeExperience('VIRTUAL')}
               />
             )}
@@ -824,6 +833,7 @@ export default function App() {
                 onShareOutfit={() => setShareTarget(buildCurrentOutfit('current'))}
                 onOpenCompare={() => setIsCompareOpen(true)}
                 onOpenStudio={() => setHomeExperience('STUDIO')}
+                onOpenAdaptiveStudio={(codes) => openAdaptive(codes)}
               />
             )}
 
@@ -874,12 +884,24 @@ export default function App() {
             {/* 4. ADAPTIVE FASHION */}
             {homeExperience === 'ADAPTIVE' && (
               <AdaptiveStudio
-                onApplyAdaptiveOutfit={(g, needs) => {
+                key={adaptiveEntry.nonce}
+                initialNeedCodes={adaptiveEntry.needs}
+                initialGarmentId={adaptiveEntry.garmentId}
+                eventId={selectedEventId}
+                onApplyAdaptiveOutfit={(g, needs, colorHex) => {
                   setSelectedGarment(g);
+                  setPrimaryColorHex(colorHex);
                   setSelectedAdaptiveNeedCodes(needs);
                   setHomeExperience('WORKSPACE');
                   setJourneyStep('RESULT');
                   showToast('Đã áp dụng y phục may đo thích ứng.');
+                }}
+                onOpen3D={(g, colorHex, needs) => {
+                  setSelectedGarment(g);
+                  setPrimaryColorHex(colorHex);
+                  setSelectedAdaptiveNeedCodes(needs);
+                  setHomeExperience('VIRTUAL');
+                  scrollToId('main');
                 }}
                 showToast={showToast}
               />
@@ -914,7 +936,7 @@ export default function App() {
               <button type="button" onClick={() => setMainNavTab('DISCOVERY')} className="hover:underline">
                 Bách khoa y phục
               </button>
-              <button type="button" onClick={() => { setHomeExperience('ADAPTIVE'); setMainNavTab('HOME'); }} className="hover:underline">
+              <button type="button" onClick={() => openAdaptive()} className="hover:underline">
                 May đo thích ứng
               </button>
               <button type="button" onClick={() => setIsCompareOpen(true)} className="hover:underline">
