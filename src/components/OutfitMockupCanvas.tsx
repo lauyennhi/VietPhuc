@@ -149,25 +149,25 @@ export const OutfitMockupCanvas: React.FC<OutfitMockupCanvasProps> = ({
     <div className={`relative flex flex-col items-center w-full ${compact ? '' : 'p-2'}`}>
       {/* Top action toolbar (hidden in compact card mode) */}
       {!compact && (
-        <div className="w-full flex items-center justify-between mb-2 px-1">
-          <div className="flex items-center gap-2">
+        <div className="w-full flex flex-wrap items-center justify-between gap-2 mb-2 px-1">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
             <span className="text-[11px] font-bold text-[#8A5E17] uppercase tracking-wider font-mono flex items-center gap-1.5">
-              <span className="size-2 rounded-full bg-[#1F1B18]" />
+              <span className="size-2 shrink-0 rounded-full bg-[#1F1B18]" />
               {garment.name}
             </span>
             {hasAdaptive && (
-              <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#4F7350] bg-[#E5EDE2] border border-[#CDE0C9] px-2 py-0.5 rounded-full">
+              <span className="inline-flex items-center gap-1 whitespace-nowrap text-[10px] font-semibold text-[#4F7350] bg-[#E5EDE2] border border-[#CDE0C9] px-2 py-0.5 rounded-full">
                 <span className="text-xs">✓</span> Đã điều chỉnh
               </span>
             )}
           </div>
 
-          <div className="flex items-center gap-1.5">
+          <div className="ml-auto flex shrink-0 items-center gap-1.5">
             {/* Hotspots toggle */}
             <button
               type="button"
               onClick={() => setInternalHotspotsVisible((v) => !v)}
-              className={`press text-[11px] font-medium px-2.5 py-1 rounded-xl border transition ${
+              className={`press whitespace-nowrap text-[11px] font-medium px-2.5 py-1 rounded-xl border transition ${
                 internalHotspotsVisible
                   ? 'bg-[#1F1B18] text-[#FFFFFF] border-[#1F1B18]'
                   : 'bg-[#FFFFFF] text-[#736960] border-[#E6DCCD] hover:bg-[#F1EADF]'
@@ -180,7 +180,7 @@ export const OutfitMockupCanvas: React.FC<OutfitMockupCanvasProps> = ({
             <button
               type="button"
               onClick={handleDownload}
-              className="press inline-flex items-center gap-1 text-[11px] font-semibold text-[#1F1B18] bg-[#FFFFFF] border border-[#E6DCCD] hover:bg-[#F1EADF] px-2.5 py-1 rounded-xl transition shadow-2xs"
+              className="press inline-flex items-center gap-1 whitespace-nowrap text-[11px] font-semibold text-[#1F1B18] bg-[#FFFFFF] border border-[#E6DCCD] hover:bg-[#F1EADF] px-2.5 py-1 rounded-xl transition shadow-2xs"
               title="Tải ảnh minh họa PNG chất lượng cao"
             >
               <svg aria-hidden="true" className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -272,7 +272,7 @@ export const OutfitMockupCanvas: React.FC<OutfitMockupCanvasProps> = ({
           {/* LAYER 10: WATERMARK BADGE */}
           <g id="vstyle-editorial-seal" opacity="0.45" transform="translate(18, 478)">
             <text
-              fontFamily="serif"
+              fontFamily="Fraunces Variable, Fraunces, Georgia, serif"
               fontSize="9"
               fontWeight="bold"
               fill="#736960"

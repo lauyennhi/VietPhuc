@@ -71,8 +71,8 @@ export async function getServerHealth(): Promise<ServerHealth> {
     status: 'ok',
     product: 'Vstyle',
     hasGeminiKey: false,
-    textModel: 'gemini-2.5-flash',
-    imageModel: 'imagen-3.0-generate-002',
+    textModel: 'gemini-3.5-flash',
+    imageModel: 'gemini-3.1-flash-image',
     features: {
       aiStylist: true,
       explanation: true,
@@ -207,13 +207,5 @@ export async function renderOutfitImage(payload: {
   referenceImage?: { mimeType: string; data: string };
   consentToUseReference?: boolean;
 }): Promise<GeminiRenderResponse> {
-  try {
-    return await postJson<GeminiRenderResponse>('/api/gemini/render', payload);
-  } catch {
-    return {
-      imageDataUrl: '',
-      model: 'vstyle-vector-engine',
-      usedFallback: true,
-    };
-  }
+  return await postJson<GeminiRenderResponse>('/api/gemini/render', payload);
 }

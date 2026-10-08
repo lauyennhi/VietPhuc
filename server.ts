@@ -1,7 +1,7 @@
 /**
  * Vstyle full-stack server (Express + Vite middleware in dev, static dist in production).
- * Runs with `tsx server.ts` in development and with plain `node server.ts` (Node >= 22.18 type stripping)
- * in production, so every import below uses explicit `.ts` extensions and `import type`.
+ * Runs with `tsx server.ts` in both development (`npm run dev`) and production (`npm start`),
+ * because the data layer imports JSON modules that plain Node cannot load without import attributes.
  */
 import express from 'express';
 import type { NextFunction, Request, Response } from 'express';
@@ -29,7 +29,7 @@ const geminiConfig: GeminiServiceConfig = {
 };
 
 app.disable('x-powered-by');
-app.set('trust proxy', true);
+app.set('trust proxy', 1);
 app.use((_req: Request, res: Response, next: NextFunction) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
@@ -43,6 +43,7 @@ app.get('/api/health', (_req: Request, res: Response) => {
     hasGeminiKey: Boolean(providers.text),
     textModel: settings.textModel,
     imageModel: settings.imageModel,
+    fallbackModels: { text: settings.textFallbackModel, image: settings.imageFallbackModel },
     features: {
       aiStylist: true,
       explanation: true,
@@ -57,7 +58,7 @@ app.get('/api/health', (_req: Request, res: Response) => {
 });
 
 // The Gemini router parses its own JSON bodies (64 KB for text, 7 MB for photo endpoints).
-app.use('/api/gemini', createGeminiRouter(geminiConfig));
+app.use('/api/gemini', createGeminiRouter(geminiConfig, { renderHourlyCap: settings.renderHourlyCap }));
 app.use('/api', express.json({ limit: '64kb' }));
 app.use('/api', (_req: Request, res: Response) => {
   res.status(404).json({ error: 'Không tìm thấy API.' });

@@ -122,9 +122,9 @@ export const GarmentDiscovery: React.FC<GarmentDiscoveryProps> = ({
             >
               <div className="space-y-3">
                 {/* Status & Era */}
-                <div className="flex items-center justify-between text-xs">
+                <div className="flex items-start justify-between gap-3 text-xs">
                   <span
-                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                    className={`shrink-0 whitespace-nowrap px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
                       isApproved
                         ? 'bg-[#E5EDE2] text-[#4F7350] border border-[#CDE0C9]'
                         : 'bg-[#F6ECDA] text-[#8A5E17] border border-[#E4D1B5]'
@@ -132,7 +132,7 @@ export const GarmentDiscovery: React.FC<GarmentDiscoveryProps> = ({
                   >
                     {isApproved ? '✓ Đã thẩm định' : '⏳ Đang thẩm định'}
                   </span>
-                  <span className="font-mono text-[11px] text-[#736960]">
+                  <span className="min-w-0 text-right font-mono text-[11px] leading-snug text-[#736960]">
                     {garment.era || 'Cổ phong'}
                   </span>
                 </div>

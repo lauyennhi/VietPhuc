@@ -100,7 +100,7 @@ export const Hotspots: React.FC<HotspotsProps> = ({ garmentId, isWheelchair = fa
               textAnchor="middle"
               fill="#FFFFFF"
               fontSize="7.5"
-              fontFamily="sans-serif"
+              fontFamily="Be Vietnam Pro, Arial, sans-serif"
               fontWeight="bold"
             >
               {hs.number}

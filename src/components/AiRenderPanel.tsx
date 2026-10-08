@@ -30,7 +30,8 @@ export const AiRenderPanel: React.FC<AiRenderPanelProps> = ({
     if (!state.result) return;
     const link = document.createElement('a');
     link.href = state.result.imageDataUrl;
-    const extension = state.result.imageDataUrl.startsWith('data:image/png') ? 'png' : 'jpg';
+    const mime = state.result.imageDataUrl.slice(5, state.result.imageDataUrl.indexOf(';'));
+    const extension = mime === 'image/png' ? 'png' : mime === 'image/svg+xml' ? 'svg' : mime === 'image/webp' ? 'webp' : 'jpg';
     link.download = `Vstyle_AI_${garmentName.replace(/\s+/g, '_')}.${extension}`;
     link.click();
   };
@@ -96,6 +97,12 @@ export const AiRenderPanel: React.FC<AiRenderPanelProps> = ({
             </button>
           )}
         </div>
+
+        {state.status === 'ready' && state.result?.usedFallback && (
+          <p className="rounded-xl border border-[#E4D1B5] bg-[#F6ECDA] p-2.5 text-[11px] text-[#8A5E17]">
+            Gemini chưa được cấu hình nên đây là bản vẽ vector thay thế. Thêm GEMINI_API_KEY trên máy chủ để tạo ảnh AI thật.
+          </p>
+        )}
 
         {state.status === 'ready' && state.result && (
           <details className="rounded-2xl border border-[#E6DCCD] bg-[#FBF8F3] p-3.5 text-xs text-[#1F1B18]" open>

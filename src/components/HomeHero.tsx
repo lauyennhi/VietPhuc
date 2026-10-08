@@ -82,7 +82,7 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
     <section className="space-y-12 relative">
       {/* ATMOSPHERIC BACKGROUND MURAL: Lotus flowers on left, Pagoda & Blossoms on right */}
       <div
-        className="absolute -top-10 -left-6 -right-6 h-[720px] pointer-events-none opacity-45 sm:opacity-60 bg-contain bg-no-repeat bg-top -z-10 transition-opacity"
+        className="absolute -top-10 inset-x-0 lg:-left-6 lg:-right-6 h-[720px] pointer-events-none opacity-45 sm:opacity-60 bg-contain bg-no-repeat bg-top -z-10 transition-opacity"
         style={{ backgroundImage: `url(${backdropUrl})` }}
         aria-hidden="true"
       />
@@ -211,6 +211,10 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
                   <img
                     src={heroPortraitUrl}
                     alt="Áo dài ngũ thân truyền thống"
+                    width={896}
+                    height={1200}
+                    fetchPriority="high"
+                    decoding="async"
                     className="w-full h-full object-cover select-none transition-transform duration-500 group-hover:scale-[1.02]"
                   />
                 ) : (
@@ -231,7 +235,7 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
                   onClick={() => setShowLiveVector(!showLiveVector)}
                   className="press absolute top-2.5 right-2.5 px-2.5 py-1 rounded-full bg-[#FFFFFF]/90 backdrop-blur-md text-[10px] font-bold text-[#16222E] border border-[#E6DCCD] shadow-xs"
                 >
-                  {showLiveVector ? 'Ảnh họa' : 'Vector 3D'}
+                  {showLiveVector ? 'Xem ảnh họa' : 'Xem mockup vector'}
                 </button>
               </div>
 
@@ -240,13 +244,13 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
                 <span className="font-serif font-bold text-[#16222E] block text-[13px]">
                   Áo dài ngũ thân · Thanh lịch
                 </span>
-                <div className="flex items-center justify-between text-[11px] text-[#736960] font-mono pt-0.5">
-                  <span>Chuẩn: 88</span>
-                  <span>·</span>
-                  <span>Chất: 86</span>
-                  <span>·</span>
-                  <span>Màu: 92</span>
-                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#3D6B35] bg-[#EAF3E7] border border-[#CDE0C9] px-2 py-0.5 rounded-full ml-1">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[11px] text-[#736960] font-mono pt-0.5 whitespace-nowrap">
+                  <span>Chuẩn <b className="text-[#16222E]">88</b></span>
+                  <span aria-hidden="true">·</span>
+                  <span>Chất <b className="text-[#16222E]">86</b></span>
+                  <span aria-hidden="true">·</span>
+                  <span>Màu <b className="text-[#16222E]">92</b></span>
+                  <span className="inline-flex items-center gap-1 text-[10px] font-sans font-bold text-[#3D6B35] bg-[#EAF3E7] border border-[#CDE0C9] px-2 py-0.5 rounded-full ml-auto">
                     ✓ Chuẩn điển chế
                   </span>
                 </div>
@@ -292,6 +296,8 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
             <div className="w-24 h-28 rounded-2xl overflow-hidden bg-[#FAF7F2] border border-[#EAE3D6] shrink-0">
               <img
                 src={cardAiStylistUrl}
+                loading="lazy"
+                decoding="async"
                 alt="Phối đồ AI"
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
@@ -328,6 +334,8 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
             <div className="w-24 h-28 rounded-2xl overflow-hidden bg-[#FAF7F2] border border-[#EAE3D6] shrink-0">
               <img
                 src={cardStudioRedUrl}
+                loading="lazy"
+                decoding="async"
                 alt="Studio thời trang"
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
@@ -364,6 +372,8 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
             <div className="w-24 h-28 rounded-2xl overflow-hidden bg-[#FAF7F2] border border-[#EAE3D6] shrink-0">
               <img
                 src={cardAdaptiveUrl}
+                loading="lazy"
+                decoding="async"
                 alt="Adaptive Fashion"
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
@@ -400,6 +410,8 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
             <div className="w-24 h-28 rounded-2xl overflow-hidden bg-[#FAF7F2] border border-[#EAE3D6] shrink-0">
               <img
                 src={cardKnowledgeUrl}
+                loading="lazy"
+                decoding="async"
                 alt="Kiến thức Việt phục"
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />

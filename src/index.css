@@ -1,1 +1,122 @@
 @import "tailwindcss";
+
+/* Self-hosted fonts (bundled by Vite) — full Vietnamese glyph coverage, no CDN dependency. */
+@import "@fontsource/be-vietnam-pro/300.css";
+@import "@fontsource/be-vietnam-pro/400.css";
+@import "@fontsource/be-vietnam-pro/400-italic.css";
+@import "@fontsource/be-vietnam-pro/500.css";
+@import "@fontsource/be-vietnam-pro/600.css";
+@import "@fontsource/be-vietnam-pro/700.css";
+@import "@fontsource/be-vietnam-pro/800.css";
+@import "@fontsource-variable/fraunces/opsz.css";
+@import "@fontsource-variable/fraunces/opsz-italic.css";
+@import "@fontsource-variable/jetbrains-mono/wght.css";
+
+@theme {
+  --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
+  --font-serif: "Fraunces Variable", "Fraunces", "Noto Serif", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+/* ------------------------------------------------------------------ */
+/* Shared component classes used across the app                        */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.625rem 1.25rem;
+    border-radius: 1rem;
+    background-color: #1f1b18;
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: 0 1px 2px rgb(31 27 24 / 0.12);
+    transition: background-color 150ms ease, transform 120ms ease, opacity 150ms ease;
+    cursor: pointer;
+  }
+  .btn-primary:hover {
+    background-color: #38322d;
+  }
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .btn-primary:focus-visible {
+    outline: 2px solid #8a5e17;
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .press {
+    transition-property: transform, background-color, border-color, color, box-shadow, opacity;
+    transition-duration: 150ms;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .press:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .animate-rise {
+    animation: vstyle-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .animate-fade-in,
+  .animate-fadeIn {
+    animation: vstyle-fade-in 300ms ease-out both;
+  }
+  .animate-slide-left {
+    animation: vstyle-slide-left 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .animate-stamp {
+    animation: vstyle-stamp 520ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+}
+
+@keyframes vstyle-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes vstyle-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes vstyle-slide-left {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes vstyle-stamp {
+  0% { opacity: 0; transform: scale(1.6) rotate(-8deg); }
+  60% { opacity: 1; transform: scale(0.94) rotate(-2deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}

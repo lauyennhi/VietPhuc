@@ -39,10 +39,9 @@ npm run dev                # http://localhost:3000
 |---|---|
 | `npm run dev` | Server Express + Vite (HMR) |
 | `npm run build` | Build frontend vào `dist/` |
-| `npm start` | Chạy production (`NODE_ENV=production` để phục vụ `dist/`) |
+| `npm start` | Chạy production, phục vụ `dist/` (chạy `npm run build` trước) |
 | `npm run lint` | Kiểm tra kiểu TypeScript |
-| `npm test` | 194 bài test (dữ liệu, rule engine, gợi ý, mockup, Gemini giả lập, tính năng AI) |
-| `npm run check` | lint + test + build |
+| `npm run check` | lint + build |
 
 ## 3. Kiến trúc
 
@@ -62,10 +61,10 @@ Dữ liệu tri thức (data/*.json, validate bằng zod + kiểm tra toàn vẹ
   y phục · phụ kiện · dịp · thời tiết · luật văn hóa · nguồn thẩm định · điều chỉnh thích ứng
 ```
 
-- **Gemini API** qua `@google/genai` ≥ 2.24 (Interactions API). Model mặc định: `gemini-3.8-flash` (văn bản, ảnh đầu vào), `gemini-3.1-flash-image` (tạo ảnh); tự thử model dự phòng nếu model chính không khả dụng. Đổi bằng biến môi trường (xem `.env.example`).
+- **Gemini API** qua `@google/genai` (`models.generateContent`, output JSON theo `responseJsonSchema`). Model mặc định: `gemini-3.5-flash` (văn bản, đọc ảnh; dự phòng `gemini-3.1-flash-lite`), `gemini-3.1-flash-image` (tạo ảnh; dự phòng `gemini-3.1-flash-image-preview`); tự thử model dự phòng nếu model chính không khả dụng. Đổi bằng biến môi trường (xem `.env.example`).
 - **Không có khóa hoặc Gemini lỗi** → mọi tính năng vẫn chạy: nhận diện câu theo từ khóa, xếp hạng tất định, lời bình lấy từ dữ liệu. Giao diện ghi rõ đang ở chế độ dự phòng.
 - `store: false` cho mọi lời gọi Gemini; ảnh người dùng không lưu trên server.
-- Giới hạn tần suất theo IP (văn bản 40/phút, đọc ảnh 8/phút, tạo ảnh 12/giờ + trần toàn cục) để bảo vệ hạn mức khi chia sẻ app.
+- Giới hạn tần suất theo IP (văn bản 40/phút, đọc ảnh 8/phút, tạo ảnh 12/giờ + trần toàn cục `VSTYLE_RENDER_HOURLY_CAP`) để bảo vệ hạn mức khi chia sẻ app.
 
 ## 4. Gemini được dùng thế nào & giữ đúng văn hóa ra sao
 
@@ -78,7 +77,7 @@ Dữ liệu tri thức (data/*.json, validate bằng zod + kiểm tra toàn vẹ
 ## 5. Deploy lên Google AI Studio (ai.studio)
 
 1. Vào [aistudio.google.com](https://aistudio.google.com) → **Build**.
-2. Trong ô prompt bấm **+ → Import from GitHub**, chọn repo này và **nhánh `vstyle-v2-ai-arena`** (mã nguồn nằm ở thư mục gốc repo để AI Studio nhận đúng `package.json`).
+2. Trong ô prompt bấm **+ → Import from GitHub**, chọn repo này và nhánh muốn deploy (mã nguồn nằm ở thư mục gốc repo để AI Studio nhận đúng `package.json`).
 3. **Settings → Secrets**: đảm bảo có `GEMINI_API_KEY` (AI Studio thường tự cấu hình cho app dùng Gemini). Tùy chọn thêm `GEMINI_MODEL`, `GEMINI_IMAGE_MODEL`…
 4. Chạy thử trong khung Preview: ô "Chế độ dự phòng" phải chuyển thành **"Gemini đang bật"**.
 5. Bấm **Deploy / Publish** (Cloud Run). Có thể đặt URL dạng `https://ten-app.ai.studio` để nộp cho Ban giám khảo.
@@ -91,13 +90,12 @@ Dữ liệu tri thức (data/*.json, validate bằng zod + kiểm tra toàn vẹ
 ```
 server.ts                  Express + Vite middleware, health check, bảo mật cơ bản
 src/App.tsx                Luồng AI Stylist 1 câu + hành trình 9 bước + màn Kết quả
-src/components/            UI (AiStylistComposer, PhotoInspirationCard, AiRenderPanel, ColorHarmonyCard, CompareView…)
-src/lib/gemini/            provider (Interactions API), service (prompt + schema), routes, client
+src/components/            UI (HomeHero, StylingWorkspace, Studio, AiRenderPanel, ColorHarmonyCard, CompareView…)
+src/lib/gemini/            provider (model + dự phòng), service (prompt + JSON schema + allow-list), routes (giới hạn tần suất), client
 src/lib/culture/           Rule engine văn hóa tất định
 src/lib/recommendation/    Bộ gợi ý tất định + bản đồ từ khóa dự phòng
 src/lib/color/             Toán màu (Lab ΔE, WCAG contrast) + kiểm tra hài hòa
 data/                      Cơ sở tri thức (JSON) — chỉ bản ghi APPROVED + có nguồn mới được dùng
-tests/                     194 bài test, chạy bằng `npm test`
 ```
 
 ## 7. Tầm nhìn mở rộng
