@@ -32,8 +32,8 @@ export interface GeminiProviders {
 }
 
 /** Stable defaults (Gemini 2.5 and Imagen 3 are retired on the Gemini API). */
-export const DEFAULT_TEXT_MODEL = 'gemini-3.5-flash';
-export const DEFAULT_TEXT_FALLBACK_MODEL = 'gemini-3.1-flash-lite';
+export const DEFAULT_TEXT_MODEL = 'gemini-3.8-flash';
+export const DEFAULT_TEXT_FALLBACK_MODEL = 'gemini-3.5-flash';
 export const DEFAULT_IMAGE_MODEL = 'gemini-3.1-flash-image';
 export const DEFAULT_IMAGE_FALLBACK_MODEL = 'gemini-3.1-flash-image-preview';
 

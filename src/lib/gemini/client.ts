@@ -71,7 +71,7 @@ export async function getServerHealth(): Promise<ServerHealth> {
     status: 'ok',
     product: 'Vstyle',
     hasGeminiKey: false,
-    textModel: 'gemini-3.5-flash',
+    textModel: 'gemini-3.8-flash',
     imageModel: 'gemini-3.1-flash-image',
     features: {
       aiStylist: true,

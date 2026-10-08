@@ -20,6 +20,7 @@ Bài dự thi vòng Audition **AI Arena: Viet Nam 2026** — đề *"Việt ph�
 | *Bổ sung:* kiểm tra hài hòa màu | Thẻ **Hài hòa màu sắc**: quan hệ màu (đơn sắc, tương đồng, bổ túc…), độ tương phản, số điểm nhấn, đối chiếu gợi ý màu của dịp |
 | *Bổ sung:* so sánh phương án | So sánh 2 bản phối bất kỳ (hiện tại, gợi ý, lookbook) theo Chuẩn · Chất · Màu |
 | *Bổ sung:* tạo & chia sẻ lookbook | Lưu Lookbook, link chia sẻ mở lại đúng bản phối, caption do Gemini viết, tải ảnh PNG |
+| *Bổ sung:* **Virtual Tour · 3D · VR/AR** | **Phòng 3D & Tham quan ảo**: mô hình 3D bản phối (xoay 360°, vải gấm, dáng ngồi xe lăn) dựng từ dữ liệu y phục; tham quan 4 không gian (phòng trưng bày, Văn Miếu, Ngọ Môn Huế, làng quê Bắc Bộ) có điểm thông tin; vào **VR** bằng kính WebXR (Meta Quest…), **AR** trên Android, **AR Quick Look** trên iPhone (.usdz); tải **mô hình 3D .glb** |
 | *Bổ sung:* cảnh báo sai lệch văn hóa | Rule engine có nguồn: vạt hữu nhậm, kết cấu ngũ thân, yếm với áo tứ thân, màu kiêng dịp hỷ… → KEEP / CONSIDER / WARNING |
 | Bảo đảm thông tin văn hóa phù hợp | Xem mục 4 — Gemini **không bao giờ** tạo luật hay sử liệu; chỉ diễn giải kết quả đã kiểm chứng |
 
@@ -61,10 +62,18 @@ Dữ liệu tri thức (data/*.json, validate bằng zod + kiểm tra toàn vẹ
   y phục · phụ kiện · dịp · thời tiết · luật văn hóa · nguồn thẩm định · điều chỉnh thích ứng
 ```
 
-- **Gemini API** qua `@google/genai` (`models.generateContent`, output JSON theo `responseJsonSchema`). Model mặc định: `gemini-3.5-flash` (văn bản, đọc ảnh; dự phòng `gemini-3.1-flash-lite`), `gemini-3.1-flash-image` (tạo ảnh; dự phòng `gemini-3.1-flash-image-preview`); tự thử model dự phòng nếu model chính không khả dụng. Đổi bằng biến môi trường (xem `.env.example`).
+- **Gemini API** qua `@google/genai` (`models.generateContent`, output JSON theo `responseJsonSchema`). Model mặc định: `gemini-3.8-flash` (văn bản, đọc ảnh; dự phòng `gemini-3.5-flash`), `gemini-3.1-flash-image` (tạo ảnh; dự phòng `gemini-3.1-flash-image-preview`); tự thử model dự phòng nếu model chính không khả dụng. Đổi bằng biến môi trường (xem `.env.example`).
 - **Không có khóa hoặc Gemini lỗi** → mọi tính năng vẫn chạy: nhận diện câu theo từ khóa, xếp hạng tất định, lời bình lấy từ dữ liệu. Giao diện ghi rõ đang ở chế độ dự phòng.
 - `store: false` cho mọi lời gọi Gemini; ảnh người dùng không lưu trên server.
 - Giới hạn tần suất theo IP (văn bản 40/phút, đọc ảnh 8/phút, tạo ảnh 12/giờ + trần toàn cục `VSTYLE_RENDER_HOURLY_CAP`) để bảo vệ hạn mức khi chia sẻ app.
+
+### Phòng 3D & Tham quan ảo
+
+- Dựng bằng **three.js** (tải lười — chỉ tải khi mở phòng 3D), không cần file 3D bên ngoài: mannequin, y phục và khung cảnh đều sinh tự động từ `data/garments.json` (template kết cấu, màu, phụ kiện, vạt hữu nhậm).
+- **VR**: nút "Vào VR" (WebXR `immersive-vr`) trên kính Meta Quest / Pico; trigger để đọc điểm thông tin, grip để sang điểm tham quan tiếp theo.
+- **AR**: "Xem AR" (WebXR `immersive-ar`) trên Android Chrome có ARCore; iPhone/iPad dùng nút **.USDZ** để mở AR Quick Look.
+- **3D Object**: "Tải .GLB" xuất mô hình glTF nhị phân (Blender, Windows 3D Viewer, Unity/Unreal, Sketchfab).
+- VR/AR yêu cầu trang chạy qua **HTTPS** (bản deploy trên AI Studio / Cloud Run đáp ứng).
 
 ## 4. Gemini được dùng thế nào & giữ đúng văn hóa ra sao
 
@@ -90,7 +99,8 @@ Dữ liệu tri thức (data/*.json, validate bằng zod + kiểm tra toàn vẹ
 ```
 server.ts                  Express + Vite middleware, health check, bảo mật cơ bản
 src/App.tsx                Luồng AI Stylist 1 câu + hành trình 9 bước + màn Kết quả
-src/components/            UI (HomeHero, StylingWorkspace, Studio, AiRenderPanel, ColorHarmonyCard, CompareView…)
+src/components/            UI (HomeHero, StylingWorkspace, Studio, VirtualShowroom, AiRenderPanel, ColorHarmonyCard, CompareView…)
+src/lib/three/             Mô hình 3D y phục (figure.ts) + khung cảnh tham quan ảo (tours.ts)
 src/lib/gemini/            provider (model + dự phòng), service (prompt + JSON schema + allow-list), routes (giới hạn tần suất), client
 src/lib/culture/           Rule engine văn hóa tất định
 src/lib/recommendation/    Bộ gợi ý tất định + bản đồ từ khóa dự phòng

@@ -30,6 +30,7 @@ interface HomeHeroProps {
   onSelect9Steps: () => void;
   onSelectDiscovery: () => void;
   onSelectAdaptive: () => void;
+  onSelectVirtual?: () => void;
 }
 
 const QUICK_TAGS = [
@@ -50,6 +51,7 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
   onSelect9Steps,
   onSelectDiscovery,
   onSelectAdaptive,
+  onSelectVirtual,
 }) => {
   const [promptText, setPromptText] = useState('');
   const [showLiveVector, setShowLiveVector] = useState(false);
@@ -439,6 +441,31 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
             </div>
           </div>
         </div>
+
+        {onSelectVirtual && (
+          <button
+            type="button"
+            onClick={onSelectVirtual}
+            className="group press relative w-full overflow-hidden rounded-[28px] border border-[#2A2420] bg-[#1F1B18] p-5 text-left text-[#FFFFFF] shadow-md transition hover:bg-[#2A2420] sm:p-6"
+          >
+            <span aria-hidden="true" className="pointer-events-none absolute -right-10 -top-16 size-56 rounded-full border border-[#C9A24A]/30" />
+            <span aria-hidden="true" className="pointer-events-none absolute -right-2 -top-6 size-36 rounded-full border border-[#C9A24A]/20" />
+            <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="space-y-1.5">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#C9A24A]/20 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-[#E9D7B0]">
+                  Mới · Virtual Tour · 3D · VR/AR
+                </span>
+                <h3 className="font-serif text-xl font-bold sm:text-2xl">Phòng 3D & Tham quan ảo</h3>
+                <p className="max-w-xl text-xs leading-relaxed text-[#D9D0C4] sm:text-sm">
+                  Xoay 360° bản phối dạng mô hình 3D, dạo Văn Miếu, Ngọ Môn Huế, làng quê Bắc Bộ; mở bằng kính VR, đặt vào phòng bằng AR hoặc tải file .glb.
+                </p>
+              </div>
+              <span className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 self-start rounded-2xl bg-[#C9A24A] px-5 text-sm font-bold text-[#1F1B18] transition group-hover:translate-x-0.5 sm:self-auto">
+                Vào phòng 3D →
+              </span>
+            </div>
+          </button>
+        )}
       </div>
     </section>
   );

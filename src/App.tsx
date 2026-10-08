@@ -61,9 +61,10 @@ const CompareView = lazy(() => import('./components/CompareView').then((module) 
 const LookbookDrawer = lazy(() => import('./components/LookbookDrawer').then((module) => ({ default: module.LookbookDrawer })));
 const ShareModal = lazy(() => import('./components/ShareModal').then((module) => ({ default: module.ShareModal })));
 const AdaptiveTailoringSheet = lazy(() => import('./components/AdaptiveTailoringSheet').then((module) => ({ default: module.AdaptiveTailoringSheet })));
+const VirtualShowroom = lazy(() => import('./components/VirtualShowroom').then((module) => ({ default: module.VirtualShowroom })));
 const AdminKnowledgeModal = lazy(() => import('./components/AdminKnowledgeModal').then((module) => ({ default: module.AdminKnowledgeModal })));
 
-type HomeExperience = 'HERO_PROMPT' | 'WORKSPACE' | 'STUDIO' | 'ADAPTIVE';
+type HomeExperience = 'HERO_PROMPT' | 'WORKSPACE' | 'STUDIO' | 'ADAPTIVE' | 'VIRTUAL';
 
 const garments = getApprovedGarments();
 const characters = getCharacters();
@@ -193,6 +194,9 @@ export default function App() {
     showToast(`Đã mở bản phối được chia sẻ: ${garment.name}`);
     scrollToId('workspace-root');
   }, [showToast]);
+
+  const isSeated = displayCharacter.heightCategory === 'SEATED' ||
+    selectedAdaptiveNeedCodes.includes('WHEELCHAIR_SEATED' as FunctionalNeedCode);
 
   const activeAccessories = useMemo(
     () => accessories.filter((accessory) => selectedAccessoryIds.includes(accessory.id)),
@@ -677,7 +681,7 @@ export default function App() {
             {/* Experience Switcher Bar (Only shown when inside Workspace, Studio, or Adaptive) */}
             {homeExperience !== 'HERO_PROMPT' && (
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E6DCCD] pb-4">
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <button
                     type="button"
                     onClick={() => setHomeExperience('HERO_PROMPT')}
@@ -686,11 +690,12 @@ export default function App() {
                     <span>← Trang chủ</span>
                   </button>
 
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex flex-wrap items-center gap-1.5">
                     {[
                       { id: 'WORKSPACE', label: 'Phối 9 bước', icon: '📐' },
                       { id: 'STUDIO', label: 'Studio thời trang', icon: '🎮' },
                       { id: 'ADAPTIVE', label: 'May đo thích ứng', icon: '♿' },
+                      { id: 'VIRTUAL', label: 'Phòng 3D · VR', icon: '🥽' },
                     ].map((tab) => (
                       <button
                         key={tab.id}
@@ -735,6 +740,7 @@ export default function App() {
                 }}
                 onSelectDiscovery={() => setMainNavTab('DISCOVERY')}
                 onSelectAdaptive={() => setHomeExperience('ADAPTIVE')}
+                onSelectVirtual={() => setHomeExperience('VIRTUAL')}
               />
             )}
 
@@ -832,6 +838,37 @@ export default function App() {
                 }}
                 showToast={showToast}
               />
+            )}
+
+            {/* 5. VIRTUAL TOUR · 3D · VR */}
+            {homeExperience === 'VIRTUAL' && (
+              <Suspense fallback={<div role="status" className="py-24 text-center text-sm text-[#736960]">Đang tải phòng 3D…</div>}>
+                <VirtualShowroom
+                  garments={garments}
+                  garment={selectedGarment}
+                  primaryColor={primaryColorHex}
+                  pantColor={pantColorHex}
+                  skinTone={displayCharacter.skinTone}
+                  feminine={displayCharacter.gender === 'FEMALE'}
+                  seated={isSeated}
+                  accessories={accessories}
+                  selectedAccessoryIds={selectedAccessoryIds}
+                  isAccessoryAllowed={(id) => isAccessoryAllowed(id, selectedGarment, selectedEventId)}
+                  onSelectGarment={handleSelectGarment}
+                  onColorChange={setPrimaryColorHex}
+                  onPantColorChange={setPantColorHex}
+                  onToggleAccessory={handleToggleAccessory}
+                  onSeatedChange={(value) => {
+                    setSelectedAdaptiveNeedCodes((codes) => value
+                      ? [...new Set([...codes, 'WHEELCHAIR_SEATED' as FunctionalNeedCode])]
+                      : codes.filter((code) => code !== 'WHEELCHAIR_SEATED'));
+                    if (!value && selectedCharacter.heightCategory === 'SEATED') {
+                      setSelectedCharacter(characters.find((c) => c.heightCategory !== 'SEATED') ?? selectedCharacter);
+                    }
+                  }}
+                  showToast={showToast}
+                />
+              </Suspense>
             )}
 
             {/* 4. ADAPTIVE FASHION */}
