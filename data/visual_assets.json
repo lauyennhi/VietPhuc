@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "assetRoots": {
+    "character": "/assets/characters",
+    "garment": "/assets/garments",
+    "accessory": "/assets/accessories",
+    "background": "/assets/backgrounds"
+  },
+  "availableAssets": [],
+  "supportedGarmentTemplates": [
+    "NGU_THAN_TAY_CHEN",
+    "AO_TAC",
+    "AO_NHAT_BINH",
+    "AO_GIAO_LINH",
+    "AO_DOI_KHAM",
+    "NGU_THAN_REMIX",
+    "AO_TU_THAN",
+    "AO_DAI"
+  ],
+  "backgrounds": {
+    "MINIMAL_STUDIO": { "fallbackKey": "BACKGROUND_MINIMAL", "accent": "#D6A75B" },
+    "HERITAGE_PALACE": { "fallbackKey": "BACKGROUND_HERITAGE", "accent": "#D6A75B" },
+    "GARDEN_SPRING": { "fallbackKey": "BACKGROUND_GARDEN", "accent": "#88A77C" }
+  },
+  "characterVariants": {
+    "char_female_standing": "CHARACTER_FEMININE",
+    "char_male_standing": "CHARACTER_MASCULINE",
+    "char_wheelchair": "CHARACTER_SEATED",
+    "char_unisex": "CHARACTER_UNISEX",
+    "char_female_curvy": "CHARACTER_CURVY"
+  },
+  "accessoryVariants": {
+    "acc_khan_dong": "HEADWEAR_WRAP",
+    "acc_man_nu": "HEADWEAR_MANTLE",
+    "acc_khan_mo_qua": "HEADWEAR_SCARF",
+    "acc_non_quai_thao": "HEADWEAR_HAT",
+    "acc_tram_cai_toc": "HAIR_PIN",
+    "acc_kieng_bac": "NECKLACE",
+    "acc_chuoi_ngoc": "NECKLACE",
+    "acc_the_bai": "PENDANT",
+    "acc_that_lung_lua": "SASH",
+    "acc_yem_co_truyen": "INNER_BODICE",
+    "acc_quat_tram_huong": "FAN",
+    "acc_quat_xep_giay_do": "FAN",
+    "acc_hai_sen": "SHOES_CEREMONIAL",
+    "acc_guoc_moc": "SHOES_WOODEN",
+    "acc_sneaker_retro": "SHOES_SNEAKER",
+    "acc_tui_coi": "BAG"
+  },
+  "styleAccents": {
+    "TOI_GIAN": "#C9B48B",
+    "TRUYEN_THONG_HOANG_GIA": "#D6A75B",
+    "TRUYEN_THONG": "#D6A75B",
+    "SANG_TRONG": "#CDAA61",
+    "REMIX_GEN_Z": "#72AFA1",
+    "CONTEMPORARY": "#72AFA1",
+    "NANG_DONG": "#E29B5E",
+    "THANH_LICH": "#B99C9A"
+  }
+}

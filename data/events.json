@@ -1,0 +1,82 @@
+[
+  {
+    "id": "EVENT_TET",
+    "name": "Tết Nguyên Đán & Du Xuân",
+    "description": "Chúc Tết gia đình, lễ chùa cầu an, trẩy hội du xuân ngắm hoa đầu năm.",
+    "formality": "SEMI_FORMAL",
+    "weatherSensitivity": "MEDIUM",
+    "recommendedStyleTags": ["TRUYEN_THONG", "THANH_LICH", "REMIX_GEN_Z"],
+    "recommendedGarments": ["garment-ngu-than-tay-chen", "garment-ao-tac", "garment-ao-dai-truyen-thong", "garment-ao-dai-ngu-than-remix"],
+    "culturalAdvice": "Ưu tiên gam màu mang lại sinh khí tốt lành như đỏ, vàng, cam đất, xanh cốm hoặc hồng phấn."
+  },
+  {
+    "id": "EVENT_GRADUATION",
+    "name": "Lễ Tốt Nghiệp",
+    "description": "Lễ trao bằng cử nhân, ghi nhận dấu mốc trưởng thành học vấn của tuổi trẻ.",
+    "formality": "SEMI_FORMAL",
+    "weatherSensitivity": "HIGH",
+    "recommendedStyleTags": ["LE_NGHI", "TOI_GIAN", "THANH_LICH"],
+    "recommendedGarments": ["garment-ngu-than-tay-chen", "garment-ao-tac", "garment-ao-dai-truyen-thong", "garment-ao-dai-ngu-than-remix"],
+    "culturalAdvice": "Sắc xanh thiên thanh, vàng mỡ gà, trắng ngà mang phong thái nho nhã, tri thức."
+  },
+  {
+    "id": "EVENT_YEARBOOK",
+    "name": "Chụp Ảnh Kỷ Yếu & Lưu Niệm Học Đường",
+    "description": "Chụp ảnh lưu bút thời học sinh, sinh viên cùng bạn bè tại các di tích lịch sử hoặc khuôn viên trường học.",
+    "formality": "SEMI_FORMAL",
+    "weatherSensitivity": "HIGH",
+    "recommendedStyleTags": ["THANH_LICH", "REMIX_GEN_Z", "TRUYEN_THONG", "NANG_DONG"],
+    "recommendedGarments": ["garment-ao-dai-truyen-thong", "garment-ngu-than-tay-chen", "garment-ao-tac", "garment-ao-dai-ngu-than-remix", "garment-ao-tu-than"],
+    "culturalAdvice": "Đồng điệu về bảng màu nhóm, tôn vinh nét hồn nhiên thanh xuân trong tà áo truyền thống."
+  },
+  {
+    "id": "EVENT_CULTURAL",
+    "name": "Sự Kiện Văn Hóa & Triển Lãm Di Sản",
+    "description": "Triển lãm di sản, dạ tiệc văn hóa quốc tế, ngày hội Việt phục toàn quốc.",
+    "formality": "FORMAL",
+    "weatherSensitivity": "LOW",
+    "recommendedStyleTags": ["CUNG_DINH", "LE_NGHI", "SANG_TRONG", "CO_DIEN"],
+    "recommendedGarments": ["garment-ao-tac", "garment-ao-nhat-binh", "garment-ao-giao-linh", "garment-ao-doi-kham"],
+    "culturalAdvice": "Tôn vinh tính nguyên bản và độ chuẩn xác về phom dáng, hoa văn và phụ kiện cổ truyền."
+  },
+  {
+    "id": "EVENT_FESTIVAL",
+    "name": "Lễ Hội Dân Gian & Hội Làng",
+    "description": "Tham gia trẩy hội làng, hội đền miếu, giao lưu câu hát quan họ, chèo cổ truyền.",
+    "formality": "SEMI_FORMAL",
+    "weatherSensitivity": "MEDIUM",
+    "recommendedStyleTags": ["DAN_GIAN", "TRUYEN_THONG", "CO_DIEN"],
+    "recommendedGarments": ["garment-ao-tu-than", "garment-ngu-than-tay-chen", "garment-ao-giao-linh"],
+    "culturalAdvice": "Áo tứ thân kết hợp nón quai thao và dải thắt lưng tơ màu tạo không khí lễ hội dân gian rộn ràng."
+  },
+  {
+    "id": "EVENT_CONCERT",
+    "name": "Hòa Nhạc & Đêm Nhạc Nghệ Thuật",
+    "description": "Thưởng thức âm nhạc thính phòng, hòa nhạc dân tộc đương đại, dạ hội biểu diễn.",
+    "formality": "FORMAL",
+    "weatherSensitivity": "LOW",
+    "recommendedStyleTags": ["SANG_TRONG", "THANH_LICH", "REMIX_GEN_Z", "CO_DIEN"],
+    "recommendedGarments": ["garment-ao-doi-kham", "garment-ao-giao-linh", "garment-ao-dai-ngu-than-remix", "garment-ao-dai-truyen-thong"],
+    "culturalAdvice": "Phong cách phối lớp (layering) giữa áo khoác đối khâm hoặc giao lĩnh mang lại vẻ ngoài đài các, nghệ thuật."
+  },
+  {
+    "id": "EVENT_WEDDING",
+    "name": "Đám Cưới & Lễ Hỷ Gia Đình",
+    "description": "Lễ đính hôn, rước dâu, lễ gia tiên hoặc tiệc cưới ngày hạnh phúc viên mãn.",
+    "formality": "HIGH_FORMAL",
+    "weatherSensitivity": "LOW",
+    "recommendedStyleTags": ["SANG_TRONG", "CUNG_DINH", "LE_NGHI"],
+    "recommendedGarments": ["garment-ao-nhat-binh", "garment-ao-tac", "garment-ao-dai-truyen-thong", "garment-ngu-than-tay-chen"],
+    "culturalAdvice": "Sắc đỏ chu sa, vàng hoàng thổ, hồng điều là các màu truyền thống biểu trưng cho may mắn, viên mãn."
+  },
+  {
+    "id": "EVENT_CASUAL",
+    "name": "Dạo Phố & Check-in Cuối Tuần",
+    "description": "Đi dạo phố cổ, cà phê nghệ thuật, gặp gỡ bạn bè tại các không gian sáng tạo.",
+    "formality": "CASUAL_SMART",
+    "weatherSensitivity": "HIGH",
+    "recommendedStyleTags": ["REMIX_GEN_Z", "TOI_GIAN", "NANG_DONG", "HOA_NHAP"],
+    "recommendedGarments": ["garment-ao-dai-ngu-than-remix", "garment-ao-giao-linh", "garment-ao-doi-kham", "garment-ngu-than-tay-chen"],
+    "culturalAdvice": "Tự do sáng tạo phối lớp cùng sneaker retro hoặc túi cói tạo nét chấm phá cá tính."
+  }
+]

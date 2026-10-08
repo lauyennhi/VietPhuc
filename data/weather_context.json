@@ -1,0 +1,30 @@
+[
+  {
+    "id": "WEATHER_HOT",
+    "name": "Nắng Nóng / Oi Bức (28°C - 38°C)",
+    "fabricAdvice": "Ưu tiên đũi tơ tằm dệt thưa, lanh hữu cơ hoặc lụa sa nhẹ nhàng thấm hút mồ hôi tốt. Tránh gấm dày nhiều lớp kim tuyến.",
+    "accessoryAdvice": "Mang theo quạt nan trầm hương hoặc quạt giấy dó, nón bài thơ hoặc mũ cói rộng vành.",
+    "suggestedGarments": ["garment-ngu-than-tay-chen", "garment-ao-dai-ngu-than-remix", "garment-ao-giao-linh"]
+  },
+  {
+    "id": "WEATHER_COOL",
+    "name": "Se Lạnh / Gió Đông (14°C - 22°C)",
+    "fabricAdvice": "Rất thích hợp diện gấm hoa, vải the kép 2 lớp hoặc lụa Vạn Phúc dày dặn. Có thể khoác thêm áo Đối Khâm phía ngoài vừa giữ ấm vừa tôn phom dáng.",
+    "accessoryAdvice": "Khăn quàng lụa nhung, mấn nhung đệm ấm hoặc quạt cầm tay tạo dáng.",
+    "suggestedGarments": ["garment-ao-tac", "garment-ao-nhat-binh", "garment-ao-doi-kham"]
+  },
+  {
+    "id": "WEATHER_PLEASANT",
+    "name": "Dịu Mát / Tiết Trời Thu Xuân (22°C - 27°C)",
+    "fabricAdvice": "Điều kiện thời tiết lý tưởng nhất để mặc mọi kiểu dáng Việt phục từ trang trọng đến dạo phố thường nhật.",
+    "accessoryAdvice": "Đầy đủ trâm cài, kiềng bạc, thẻ bài và hài sen truyền thống.",
+    "suggestedGarments": ["garment-ngu-than-tay-chen", "garment-ao-tac", "garment-ao-nhat-binh", "garment-ao-giao-linh", "garment-ao-doi-kham", "garment-ao-dai-ngu-than-remix"]
+  },
+  {
+    "id": "WEATHER_HUMID_RAIN",
+    "name": "Mưa Rào / Ẩm Ướt",
+    "fabricAdvice": "Chọn tà áo dáng lửng hoặc tay chẽn gọn gàng, hạn chế áo tay thụng dài dễ chạm nước. Vải đũi khô nhanh.",
+    "accessoryAdvice": "Giày đế cao su bám tốt, dù tre sơn dầu hoặc túi chống nước bảo vệ đồ gốm sứ phụ kiện.",
+    "suggestedGarments": ["garment-ngu-than-tay-chen", "garment-ao-dai-ngu-than-remix"]
+  }
+]

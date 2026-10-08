@@ -1,0 +1,495 @@
+[
+  {
+    "id": "garment-ngu-than-tay-chen",
+    "name": "Áo Ngũ Thân Tay Chẽn",
+    "vietnameseTitle": "Áo Ngũ Thân Lập Lĩnh Tay Chẽn",
+    "category": "AO_NGU_THAN",
+    "region": "TOAN_QUOC",
+    "period": "NGUYEN",
+    "era": "Thời Nguyễn (Thế kỷ XVIII - XX)",
+    "occasions": ["EVENT_GRADUATION", "EVENT_YEARBOOK", "EVENT_WEDDING", "EVENT_TET", "EVENT_CASUAL", "EVENT_CULTURAL"],
+    "description": "Áo ngũ thân thể hiện quan niệm đạo đức Nho giáo về ngũ luân và ngũ thường. Thân con bên trong tượng trưng cho sự bao bọc chở che của phụ mẫu đối với con cái.",
+    "characteristics": [
+      "Cổ lập lĩnh (cổ đứng) cao khoảng 2 - 3.5cm ôm sát cổ thanh lịch",
+      "Kết cấu 5 thân áo: 2 thân trước, 2 thân sau và 1 thân con (tiểu phẩm) lót kín bên trong",
+      "5 hạt cúc cài chéo từ cổ sang nách phải xuống sườn (tượng trưng cho Ngũ thường: Nhân, Lễ, Nghĩa, Trí, Tín)",
+      "Tay áo may kiểu chẽn gọn gàng từ khuỷu tay đến cổ tay, thuận tiện cho sinh hoạt và làm việc",
+      "Tà áo uốn lượn hình cánh cung duyên dáng, gấu áo may viền lộn tỉ mỉ"
+    ],
+    "styleTags": ["TRUYEN_THONG", "LE_NGHI", "TOI_GIAN", "THANH_LICH"],
+    "nonNegotiables": [
+      "Phải giữ vạt đè sang bên phải (hữu nhậm), không mặc vạt chéo sang trái (tả nhậm)",
+      "Không bỏ thân con bên trong vì làm mất ý nghĩa ngũ thân và tính kín đáo truyền thống",
+      "Độ cao cổ áo phải vừa vặn, không xẻ cổ trễ hở ngực"
+    ],
+    "baseColors": [
+      { "name": "Xanh Chàm Đậm", "hex": "#1E2A38" },
+      { "name": "Vàng Mỡ Gà", "hex": "#E3C27C" },
+      { "name": "Nâu Đất Cổ", "hex": "#6C4B35" },
+      { "name": "Xanh Cốm Trầm", "hex": "#4D6B53" },
+      { "name": "Đỏ Đô Hỷ Sự", "hex": "#8B1E2B" },
+      { "name": "Trắng Ngà Tự Nhiên", "hex": "#F4F0E8" },
+      { "name": "Đen Tuyển", "hex": "#1C1C1E" }
+    ],
+    "compatibleAccessoryIds": [
+      "acc-khan-dong",
+      "acc-man-nu",
+      "acc-the-bai",
+      "acc-quat-tram-huong",
+      "acc-hai-sen",
+      "acc-guoc-moc",
+      "acc-kieng-bac",
+      "acc-sneaker-retro",
+      "acc-tui-coi"
+    ],
+    "sourceIds": ["src-ngan-nam-ao-mu", "src-dai-viet-co-phong"],
+    "imageAsset": "garment_ngu_than_tay_chen",
+    "status": "APPROVED",
+    "verified": true,
+    "svgTemplate": "NGU_THAN_TAY_CHEN",
+    "culturalMeaning": "Áo ngũ thân thể hiện quan niệm đạo đức Nho giáo về ngũ luân (quân thần, phụ tử, phu phụ, huynh đệ, bằng hữu) và ngũ thường.",
+    "genderCompatibility": ["UNISEX", "MALE", "FEMALE"],
+    "formalityLevel": "SEMI_FORMAL",
+    "occasion": ["LE_TOT_NGHIEP", "DAM_CUOI", "TET", "DAO_PHO", "SU_KIEN_VAN_HOA", "CONG_SO"],
+    "compatibleAccessories": [
+      "acc-khan-dong",
+      "acc-man-nu",
+      "acc-the-bai",
+      "acc-quat-tram-huong",
+      "acc-hai-sen",
+      "acc-guoc-moc",
+      "acc-kieng-bac",
+      "acc-sneaker-retro",
+      "acc-tui-coi"
+    ]
+  },
+  {
+    "id": "garment-ao-tu-than",
+    "name": "Áo Tứ Thân Bắc Bộ",
+    "vietnameseTitle": "Áo Tứ Thân Dân Gian Bắc Bộ",
+    "category": "AO_TU_THAN",
+    "region": "BAC_BO",
+    "period": "LE",
+    "era": "Thời Hậu Lê - Dân Gian Bắc Bộ",
+    "occasions": ["EVENT_FESTIVAL", "EVENT_CULTURAL", "EVENT_CASUAL", "EVENT_YEARBOOK"],
+    "description": "Áo tứ thân gồm bốn vạt: hai vạt sau may liền giữa sống lưng, hai vạt trước buông rời để buộc lại phía trước bụng, bên trong mặc yếm cổ truyền và thắt khăn bao.",
+    "characteristics": [
+      "Kết cấu 4 vạt áo: 2 vạt sau khâu liền tạo đường sống áo, 2 vạt trước thả dài để thắt nút trước bụng",
+      "Không cài cúc phía trước, mặc kết hợp yếm cánh nhạn hoặc yếm hoa đào bên trong",
+      "Dải thắt lưng xanh hoặc hồng đào tạo điểm nhấn thắt đáy lưng ong duyên dáng",
+      "Thường khoác ngoài cùng nón quai thao và khăn mỏ quạ đen tuyền"
+    ],
+    "styleTags": ["DAN_GIAN", "TRUYEN_THONG", "THANH_LICH", "CO_DIEN"],
+    "nonNegotiables": [
+      "Hai vạt trước phải được thắt nút khéo léo hoặc thả song song có nếp, không buộc cẩu thả",
+      "Phải mặc kèm áo yếm kín đáo bên trong, không để hở ngực phản cảm",
+      "Đường sống áo phía sau tượng trưng cho sự gắn kết thủy chung"
+    ],
+    "baseColors": [
+      { "name": "Nâu Vỏ Gai", "hex": "#5A3825" },
+      { "name": "Đen Mực Nho", "hex": "#222326" },
+      { "name": "Hồng Hoa Đào", "hex": "#C95A72" },
+      { "name": "Vàng Mơ Dân Gian", "hex": "#D19B42" },
+      { "name": "Xanh Rêu Đầm Sen", "hex": "#3E5846" }
+    ],
+    "compatibleAccessoryIds": [
+      "acc-khan-mo-qua",
+      "acc-non-quai-thao",
+      "acc-yem-co-truyen",
+      "acc-that-lung-lua",
+      "acc-guoc-moc",
+      "acc-kieng-bac",
+      "acc-tui-coi"
+    ],
+    "sourceIds": ["src-ngan-nam-ao-mu", "src-vietnam-centre"],
+    "imageAsset": "garment_ao_tu_than",
+    "status": "APPROVED",
+    "verified": true,
+    "svgTemplate": "AO_TU_THAN",
+    "culturalMeaning": "Áo tứ thân biểu trưng cho vẻ đẹp cần cù, đôn hậu, đoan trang của người phụ nữ Kinh Bắc và văn hóa đồng bằng sông Hồng.",
+    "genderCompatibility": ["FEMALE"],
+    "formalityLevel": "SEMI_FORMAL",
+    "occasion": ["SU_KIEN_VAN_HOA", "DAO_PHO", "TET"],
+    "compatibleAccessories": [
+      "acc-khan-mo-qua",
+      "acc-non-quai-thao",
+      "acc-yem-co-truyen",
+      "acc-that-lung-lua",
+      "acc-guoc-moc",
+      "acc-kieng-bac",
+      "acc-tui-coi"
+    ]
+  },
+  {
+    "id": "garment-ao-dai-truyen-thong",
+    "name": "Áo Dài Truyền Thống",
+    "vietnameseTitle": "Áo Dài Cổ Truyền Việt Nam",
+    "category": "AO_DAI",
+    "region": "TOAN_QUOC",
+    "period": "DUONG_DAI",
+    "era": "Từ thế kỷ XX đến Đương đại",
+    "occasions": ["EVENT_GRADUATION", "EVENT_YEARBOOK", "EVENT_WEDDING", "EVENT_TET", "EVENT_CULTURAL"],
+    "description": "Biểu tượng quốc phục Việt Nam, kế thừa tinh hoa từ áo ngũ thân lập lĩnh, cách tân phom dáng ôm nhẹ thanh thoát, hai tà áo trước sau buông thướt tha mềm mại.",
+    "characteristics": [
+      "Cổ đứng cao truyền thống từ 2 đến 4cm tôn nét đài các",
+      "Hai tà áo trước và sau buông rủ thướt tha ngang bắp chân hoặc chạm mắt cá chân",
+      "Hàng cúc bấm hoặc khóa kéo bên sườn giữ phom áo phẳng phiu",
+      "Mặc cùng quần lụa ống rộng màu trắng hoặc đen"
+    ],
+    "styleTags": ["TRUYEN_THONG", "LE_NGHI", "THANH_LICH", "SANG_TRONG"],
+    "nonNegotiables": [
+      "Tà áo phải buông phẳng phiu, không xẻ tà cao quá eo gây hở bụng",
+      "Chất liệu vải lót cần kín đáo, tránh vải trong suốt thiếu nhã nhặn",
+      "Mặc cùng quần dài chấm mu bàn chân đúng quy thức"
+    ],
+    "baseColors": [
+      { "name": "Trắng Tinh Khôi Nữ Sinh", "hex": "#F8FAFC" },
+      { "name": "Đỏ Hỷ Sự", "hex": "#A91D22" },
+      { "name": "Vàng Hoàng Cúc", "hex": "#EAB308" },
+      { "name": "Xanh Thiên Thanh", "hex": "#1E3A8A" },
+      { "name": "Hồng Phấn Tao Nhã", "hex": "#DB2777" }
+    ],
+    "compatibleAccessoryIds": [
+      "acc-man-nu",
+      "acc-kieng-bac",
+      "acc-chuoi-ngoc",
+      "acc-quat-tram-huong",
+      "acc-hai-sen",
+      "acc-guoc-moc"
+    ],
+    "sourceIds": ["src-ngan-nam-ao-mu", "src-dai-viet-co-phong"],
+    "imageAsset": "garment_ao_dai_truyen_thong",
+    "status": "APPROVED",
+    "verified": true,
+    "svgTemplate": "AO_DAI",
+    "culturalMeaning": "Áo Dài là linh hồn y phục dân tộc, tôn vinh vẻ đẹp kín đáo, duyên dáng và kiêu hãnh của con người Việt Nam qua bao thăng trầm lịch sử.",
+    "genderCompatibility": ["FEMALE", "UNISEX"],
+    "formalityLevel": "FORMAL",
+    "occasion": ["LE_TOT_NGHIEP", "DAM_CUOI", "TET", "SU_KIEN_VAN_HOA"],
+    "compatibleAccessories": [
+      "acc-man-nu",
+      "acc-kieng-bac",
+      "acc-chuoi-ngoc",
+      "acc-quat-tram-huong",
+      "acc-hai-sen",
+      "acc-guoc-moc"
+    ]
+  },
+  {
+    "id": "garment-ao-tac",
+    "name": "Áo Tấc (Áo Thụng Ngũ Thân)",
+    "vietnameseTitle": "Áo Lễ Thụng Ngũ Thân (Áo Tấc)",
+    "category": "AO_TAC",
+    "region": "TRUNG_BO",
+    "period": "NGUYEN",
+    "era": "Thời Nguyễn (Thế kỷ XIX - XX)",
+    "occasions": ["EVENT_GRADUATION", "EVENT_WEDDING", "EVENT_TET", "EVENT_CULTURAL", "EVENT_YEARBOOK"],
+    "description": "Áo tấc là lễ phục mẫu mực tôn vinh nét đoan trang, tôn kính tổ tiên và lễ nghĩa người Việt. Tên gọi bắt nguồn từ viền tà áo rộng đúng một tấc cổ truyền.",
+    "characteristics": [
+      "Kết cấu ngũ thân lập lĩnh tương tự tay chẽn nhưng ống tay áo thụng rộng dài qua đầu ngón tay",
+      "Khi chắp tay trước ngực tạo tư thế cung kính nghiêm trang hình chữ nhất",
+      "Tà áo dài trang trọng tới bắp chân hoặc gót chân",
+      "Hệ 5 cúc cài bằng kim loại (đồng, bạc, vàng) hoặc cúc tơ bọc vải",
+      "Trang phục chuẩn mực cho các nghi lễ quan trọng của triều đình và dân gian"
+    ],
+    "styleTags": ["LE_NGHI", "CUNG_DINH", "SANG_TRONG", "TRUYEN_THONG"],
+    "nonNegotiables": [
+      "Bắt buộc phối cùng khăn vấn (khăn đóng) hoặc mấn",
+      "Phải cài đủ 5 cúc khi vào các nghi lễ trang nghiêm",
+      "Không cắt ngắn ống tay thụng làm mất dáng uy nghiêm của áo tấc"
+    ],
+    "baseColors": [
+      { "name": "Đỏ Chu Sa", "hex": "#A92228" },
+      { "name": "Vàng Hoàng Thổ", "hex": "#D4A338" },
+      { "name": "Xanh Thiên Thanh", "hex": "#2B5C8F" },
+      { "name": "Tím Cố Đô", "hex": "#53335A" },
+      { "name": "Xanh Rêu Cổ", "hex": "#3A5543" },
+      { "name": "Trắng Ngà Lễ Hội", "hex": "#EBE7DD" }
+    ],
+    "compatibleAccessoryIds": [
+      "acc-khan-dong",
+      "acc-man-nu",
+      "acc-the-bai",
+      "acc-quat-tram-huong",
+      "acc-hai-sen",
+      "acc-kieng-bac",
+      "acc-chuoi-ngoc"
+    ],
+    "sourceIds": ["src-ngan-nam-ao-mu", "src-kham-dinh-dai-nam", "src-dai-viet-co-phong"],
+    "imageAsset": "garment_ao_tac",
+    "status": "APPROVED",
+    "verified": true,
+    "svgTemplate": "AO_TAC",
+    "culturalMeaning": "Lễ phục mẫu mực tôn vinh nét đoan trang, tôn kính tổ tiên và lễ nghĩa người Việt.",
+    "genderCompatibility": ["UNISEX", "MALE", "FEMALE"],
+    "formalityLevel": "FORMAL",
+    "occasion": ["LE_TOT_NGHIEP", "DAM_CUOI", "TET", "SU_KIEN_VAN_HOA"],
+    "compatibleAccessories": [
+      "acc-khan-dong",
+      "acc-man-nu",
+      "acc-the-bai",
+      "acc-quat-tram-huong",
+      "acc-hai-sen",
+      "acc-kieng-bac",
+      "acc-chuoi-ngoc"
+    ]
+  },
+  {
+    "id": "garment-ao-nhat-binh",
+    "name": "Áo Nhật Bình",
+    "vietnameseTitle": "Áo Lễ Cung Đình Nhật Bình",
+    "category": "AO_NHAT_BINH",
+    "region": "TRUNG_BO",
+    "period": "NGUYEN",
+    "era": "Thời Nguyễn (Năm 1807 triều Gia Long ban định)",
+    "occasions": ["EVENT_WEDDING", "EVENT_CULTURAL", "EVENT_GRADUATION", "EVENT_TET", "EVENT_YEARBOOK"],
+    "description": "Áo Nhật Bình là biểu tượng đỉnh cao của mỹ thuật thêu tay cung đình triều Nguyễn dành cho Hoàng hậu, Phi tần và Công chúa; cổ áo hình chữ nhật đặc trưng.",
+    "characteristics": [
+      "Cổ áo vắt chéo phía trước tạo thành hình chữ nhật đặc trưng bản lớn",
+      "Cổ áo và vạt trước dệt thêu kỳ công đồ án Loan Phượng, hoa mai, mây ngũ sắc",
+      "Dưới cổ có hai dải thêu buông thõng gọi là dải kết hoặc phi phong",
+      "Cổ tay áo thêu dải ngũ sắc (xanh, vàng, trắng, đỏ, đen) tượng trưng cho ngũ hành",
+      "Cúc cài ngọc hoặc kim hoàn đính ở giữa cổ áo giữ hai thân áo khép lại"
+    ],
+    "styleTags": ["CUNG_DINH", "SANG_TRONG", "LE_NGHI", "TRUYEN_THONG"],
+    "nonNegotiables": [
+      "Không thay đổi hình khối chữ nhật của cổ áo Nhật Bình",
+      "Giữ nguyên tắc dải hoa văn ngũ sắc ở tay áo",
+      "Mặc cùng áo lót lụa trắng bên trong và quần thụng trắng hoặc đỏ"
+    ],
+    "baseColors": [
+      { "name": "Đỏ Hoàng Gia", "hex": "#9B111E" },
+      { "name": "Vàng Hoàng Cúc", "hex": "#E0A838" },
+      { "name": "Hồng Điều", "hex": "#B84762" },
+      { "name": "Xanh Ngọc Bích", "hex": "#276859" },
+      { "name": "Tím Cung Đình", "hex": "#4C2B4E" }
+    ],
+    "compatibleAccessoryIds": [
+      "acc-man-nu",
+      "acc-tram-cai-toc",
+      "acc-kieng-bac",
+      "acc-quat-tram-huong",
+      "acc-hai-sen",
+      "acc-chuoi-ngoc"
+    ],
+    "sourceIds": ["src-ngan-nam-ao-mu", "src-kham-dinh-dai-nam"],
+    "imageAsset": "garment_ao_nhat_binh",
+    "status": "APPROVED",
+    "verified": true,
+    "svgTemplate": "AO_NHAT_BINH",
+    "culturalMeaning": "Biểu tượng đỉnh cao của mỹ thuật thêu tay cung đình Việt Nam tôn vinh người phụ nữ quyền quý.",
+    "genderCompatibility": ["FEMALE"],
+    "formalityLevel": "HIGH_FORMAL",
+    "occasion": ["DAM_CUOI", "SU_KIEN_VAN_HOA", "LE_TOT_NGHIEP", "TET"],
+    "compatibleAccessories": [
+      "acc-man-nu",
+      "acc-tram-cai-toc",
+      "acc-kieng-bac",
+      "acc-quat-tram-huong",
+      "acc-hai-sen",
+      "acc-chuoi-ngoc"
+    ]
+  },
+  {
+    "id": "garment-ao-giao-linh",
+    "name": "Áo Giao Lĩnh",
+    "vietnameseTitle": "Áo Cổ Giao Lĩnh (Bì Lĩnh)",
+    "category": "AO_GIAO_LINH",
+    "region": "BAC_BO",
+    "period": "LE",
+    "era": "Thời Lý - Trần - Lê Sơ (Thế kỷ XI - XVIII)",
+    "occasions": ["EVENT_CULTURAL", "EVENT_CASUAL", "EVENT_TET", "EVENT_GRADUATION", "EVENT_CONCERT"],
+    "description": "Áo Giao Lĩnh là dạng trang phục cổ xưa nhất của nền văn minh sông Hồng, phản ánh triết lý sống hòa hợp với thiên nhiên của tổ tiên thời Lý - Trần - Lê.",
+    "characteristics": [
+      "Cổ áo giao nhau chéo hình chữ V, vạt trái đè lên vạt phải (hữu nhậm)",
+      "Thân áo rộng rãi buông rủ bay bổng tự nhiên",
+      "Dùng dải dây vải đồng chất thắt ngang eo hoặc để suông rộng phóng khoáng",
+      "Ống tay áo rộng thụng hoặc tay thường tuỳ mục đích dạ hội hay dạo chơi"
+    ],
+    "styleTags": ["CO_DIEN", "TRUYEN_THONG", "TOI_GIAN", "THANH_LICH"],
+    "nonNegotiables": [
+      "Vạt áo bắt buộc phải vắt sang phải (Hữu nhậm), không bao giờ vắt sang trái",
+      "Không cắt xẻ cổ quá sâu làm lệch tỷ lệ giao lĩnh truyền thống"
+    ],
+    "baseColors": [
+      { "name": "Trắng Mộc Sa", "hex": "#F2EFE9" },
+      { "name": "Xanh Lam Cổ Mực", "hex": "#203A4C" },
+      { "name": "Nâu Trầm Trà", "hex": "#5D4037" },
+      { "name": "Xanh Rêu Đại Việt", "hex": "#2E473B" },
+      { "name": "Đỏ Thẫm Cổ Phục", "hex": "#7A1C24" }
+    ],
+    "compatibleAccessoryIds": [
+      "acc-khan-dong",
+      "acc-tram-cai-toc",
+      "acc-quat-xep-giay-do",
+      "acc-guoc-moc",
+      "acc-tui-coi",
+      "acc-sneaker-retro"
+    ],
+    "sourceIds": ["src-ngan-nam-ao-mu", "src-vietnam-centre"],
+    "imageAsset": "garment_ao_giao_linh",
+    "status": "APPROVED",
+    "verified": true,
+    "svgTemplate": "AO_GIAO_LINH",
+    "culturalMeaning": "Phản ánh triết lý sống thanh nhã, tôn quý và giản dị của người Đại Việt xưa.",
+    "genderCompatibility": ["UNISEX", "MALE", "FEMALE"],
+    "formalityLevel": "SEMI_FORMAL",
+    "occasion": ["SU_KIEN_VAN_HOA", "DAO_PHO", "TET", "LE_TOT_NGHIEP"],
+    "compatibleAccessories": [
+      "acc-khan-dong",
+      "acc-tram-cai-toc",
+      "acc-quat-xep-giay-do",
+      "acc-guoc-moc",
+      "acc-tui-coi",
+      "acc-sneaker-retro"
+    ]
+  },
+  {
+    "id": "garment-ao-doi-kham",
+    "name": "Áo Đối Khâm",
+    "vietnameseTitle": "Áo Khoác Đối Khâm Thêu Nẹp Hoa Sen",
+    "category": "AO_DOI_KHAM",
+    "region": "BAC_BO",
+    "period": "TRAN",
+    "era": "Thời Lý - Trần - Lê (Thế kỷ XII - XVII)",
+    "occasions": ["EVENT_CASUAL", "EVENT_CULTURAL", "EVENT_TET", "EVENT_WEDDING", "EVENT_CONCERT"],
+    "description": "Áo Đối Khâm hai vạt mở song song buông thẳng đối xứng phía trước ngực, chuyên dùng làm áo khoác lễ phục hoặc dạo cảnh đài các.",
+    "characteristics": [
+      "Hai vạt áo mở song song buông thẳng đối xứng phía trước ngực",
+      "Nẹp cổ áo thường dệt thêu viền hoa sen, cúc dây hoặc mây cách điệu",
+      "Thường dùng khoác ngoài áo lót giao lĩnh hoặc yếm cổ truyền",
+      "Phom dáng suông rộng phóng khoáng, rất dễ phối lớp phong cách hiện đại"
+    ],
+    "styleTags": ["CO_DIEN", "REMIX_GEN_Z", "THANH_LICH", "NANG_DONG"],
+    "nonNegotiables": [
+      "Hai vạt đối xứng buông song song hoặc cài dây thắt ngang ngực, không cài vạt chéo lộn xộn",
+      "Luôn mặc kèm lớp áo lót bên trong kín đáo tôn trọng người đối diện"
+    ],
+    "baseColors": [
+      { "name": "Hồng Phấn Cổ", "hex": "#B56B75" },
+      { "name": "Xanh Thanh Lam", "hex": "#3E6B7A" },
+      { "name": "Vàng Nhạt Hoàng Cúc", "hex": "#D1B26F" },
+      { "name": "Trắng Trầm Sa Vân", "hex": "#EAE5D9" },
+      { "name": "Đen Huyền Khảm", "hex": "#25272A" }
+    ],
+    "compatibleAccessoryIds": [
+      "acc-tram-cai-toc",
+      "acc-kieng-bac",
+      "acc-quat-xep-giay-do",
+      "acc-hai-sen",
+      "acc-guoc-moc",
+      "acc-tui-coi",
+      "acc-sneaker-retro"
+    ],
+    "sourceIds": ["src-ngan-nam-ao-mu", "src-vietnam-centre"],
+    "imageAsset": "garment_ao_doi_kham",
+    "status": "APPROVED",
+    "verified": true,
+    "svgTemplate": "AO_DOI_KHAM",
+    "culturalMeaning": "Biểu trưng cho sự ngay thẳng, phóng khoáng và đài các của văn hóa phục sức Đại Việt.",
+    "genderCompatibility": ["UNISEX", "FEMALE", "MALE"],
+    "formalityLevel": "SEMI_FORMAL",
+    "occasion": ["DAO_PHO", "SU_KIEN_VAN_HOA", "TET", "DAM_CUOI"],
+    "compatibleAccessories": [
+      "acc-tram-cai-toc",
+      "acc-kieng-bac",
+      "acc-quat-xep-giay-do",
+      "acc-hai-sen",
+      "acc-guoc-moc",
+      "acc-tui-coi",
+      "acc-sneaker-retro"
+    ]
+  },
+  {
+    "id": "garment-ao-dai-ngu-than-remix",
+    "name": "Áo Ngũ Thân Tân Thời (Remix)",
+    "vietnameseTitle": "Áo Ngũ Thân Đương Đại Phối Gu Trẻ",
+    "category": "AO_DAI_REMIX",
+    "region": "TOAN_QUOC",
+    "period": "DUONG_DAI",
+    "era": "Đương đại (Việt phục Remix)",
+    "occasions": ["EVENT_GRADUATION", "EVENT_CASUAL", "EVENT_TET", "EVENT_CULTURAL", "EVENT_CONCERT", "EVENT_YEARBOOK"],
+    "description": "Dòng trang phục kết nối di sản ngàn năm với nhịp sống đô thị của Gen Z: đúng cốt cách bản sắc Việt nhưng thoải mái, phóng khoáng và hòa nhập với mọi đối tượng.",
+    "characteristics": [
+      "Kế thừa phom dáng ngũ thân truyền thống: cổ lập lĩnh, vạt đè bên phải",
+      "Chất liệu linh hoạt: đũi tơ tằm dệt tay mát mẻ, lanh hữu cơ hoặc denim mỏng",
+      "Chiều dài tà áo tinh chỉnh linh hoạt (ngang gối hoặc bắp chân) tiện di chuyển năng động",
+      "Có thể phối cùng quần ống rộng hiện đại, chân váy midi hoặc quần tây thanh lịch",
+      "Tối ưu các chi tiết thích ứng (nẹp cúc nam châm ẩn, đường may êm phẳng)"
+    ],
+    "styleTags": ["REMIX_GEN_Z", "TOI_GIAN", "NANG_DONG", "HOA_NHAP"],
+    "nonNegotiables": [
+      "Vẫn phải giữ vạt cài sang phải (hữu nhậm)",
+      "Không cắt ngắn cổ áo thành cổ khoét sâu phản cảm",
+      "Giữ được phom dáng suông buông tự nhiên đặc trưng ngũ thân"
+    ],
+    "baseColors": [
+      { "name": "Xanh Rêu Bụi", "hex": "#3D5A45" },
+      { "name": "Vàng Mù Tạt Cổ Điển", "hex": "#C8963E" },
+      { "name": "Xanh Denim Chàm", "hex": "#2C4058" },
+      { "name": "Trắng Kem Tối Giản", "hex": "#EBE5D8" },
+      { "name": "Đỏ Đất Nung", "hex": "#93382D" },
+      { "name": "Xám Khói Thanh Lịch", "hex": "#616870" }
+    ],
+    "compatibleAccessoryIds": [
+      "acc-sneaker-retro",
+      "acc-tui-coi",
+      "acc-the-bai",
+      "acc-quat-tram-huong",
+      "acc-kieng-bac",
+      "acc-guoc-moc"
+    ],
+    "sourceIds": ["src-dai-viet-co-phong", "src-adaptive-design-lab"],
+    "imageAsset": "garment_ngu_than_remix",
+    "status": "APPROVED",
+    "verified": true,
+    "svgTemplate": "NGU_THAN_REMIX",
+    "culturalMeaning": "Di sản sống trong nhịp thở đương đại, hòa nhập với mọi cơ thể.",
+    "genderCompatibility": ["UNISEX", "MALE", "FEMALE"],
+    "formalityLevel": "CASUAL_SMART",
+    "occasion": ["LE_TOT_NGHIEP", "DAO_PHO", "CONG_SO", "TET", "SU_KIEN_VAN_HOA"],
+    "compatibleAccessories": [
+      "acc-sneaker-retro",
+      "acc-tui-coi",
+      "acc-the-bai",
+      "acc-quat-tram-huong",
+      "acc-kieng-bac",
+      "acc-guoc-moc"
+    ]
+  },
+  {
+    "id": "garment-ao-canh-ba-ba-draft",
+    "name": "Áo Cánh Nam Bộ (Bản Thảo Điền Dã)",
+    "vietnameseTitle": "Áo Bà Ba Nam Bộ - Hồ sơ sơ thảo",
+    "category": "AO_TU_THAN",
+    "region": "NAM_BO",
+    "period": "DUONG_DAI",
+    "era": "Cuối thế kỷ XIX - Đầu thế kỷ XX",
+    "occasions": ["EVENT_CASUAL", "EVENT_FESTIVAL"],
+    "description": "Bản thảo nghiên cứu về áo cánh truyền thống Nam Bộ xẻ giữa, hai túi dưới tiện dụng; đang chờ bổ sung hiện vật phục dựng và thẩm định chuyên gia.",
+    "characteristics": [
+      "Thân áo may xẻ giữa cài hàng cúc bấm hoặc cúc nhựa tròn",
+      "Cổ tròn hoặc cổ thìa giản dị, hai bên sườn xẻ tà ngắn",
+      "Hai túi to phía dưới tà áo trước đặc trưng của trang phục phương Nam"
+    ],
+    "styleTags": ["DAN_GIAN", "TOI_GIAN", "NANG_DONG"],
+    "nonNegotiables": [
+      "Không trình bày như dữ liệu đã thẩm định chính thức khi chưa được Hội đồng phê duyệt"
+    ],
+    "baseColors": [
+      { "name": "Đen Úa Chàm", "hex": "#1E1E20" },
+      { "name": "Nâu Vỏ Cây Đước", "hex": "#4A3228" }
+    ],
+    "compatibleAccessoryIds": ["acc-khan-ran-nam-bo", "acc-guoc-moc"],
+    "sourceIds": ["src-dan-gian-bac-bo-draft"],
+    "imageAsset": "garment_ao_ba_ba_draft",
+    "status": "DRAFT",
+    "verified": false,
+    "svgTemplate": "AO_DOI_KHAM",
+    "culturalMeaning": "Bản thảo ghi nhận trang phục lao động và sinh hoạt phương Nam.",
+    "genderCompatibility": ["UNISEX"],
+    "formalityLevel": "CASUAL_SMART",
+    "occasion": ["DAO_PHO"],
+    "compatibleAccessories": ["acc-khan-ran-nam-bo", "acc-guoc-moc"]
+  }
+]

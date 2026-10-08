@@ -1,0 +1,92 @@
+[
+  {
+    "id": "AR-WHEELCHAIR-01",
+    "needCode": "WHEELCHAIR_SEATED",
+    "needName": "Ngồi Xe Lăn / Tư Thế Ngồi Lâu",
+    "garmentId": "ALL",
+    "adjustment": "Rút ngắn vạt trước 10-15cm, mở xẻ tà cao hơn 8cm và mở cúc nam châm ẩn cạnh sườn",
+    "reason": "Khi ngồi xe lăn, tà áo quá dài sẽ bị đùn gập ở phần đùi gây khó chịu hoặc quẹt vào bánh xe bám bẩn. Mở xẻ tà cao và rút ngắn tỷ lệ tà trước giúp người mặc ngồi phẳng phiu, tự tin và an toàn.",
+    "tailoringSpecs": {
+      "frontHemReduction": "12-15 cm so với tỷ lệ đứng chuẩn",
+      "slitRaise": "Nâng điểm xẻ tà lên 8 cm",
+      "closureType": "Thay cúc thắt tơ bằng khóa dán mỏng siêu mềm hoặc cúc nam châm bọc lụa giấu trong nẹp",
+      "seatReinforcement": "Thêm lớp lót lụa trơn ở mông quần và lưng dưới chống cọ xát tỳ đè"
+    },
+    "validated": true,
+    "sourceId": "src-adaptive-design-lab"
+  },
+  {
+    "id": "AR-HAND-MOBILITY-01",
+    "needCode": "LIMITED_HAND_MOBILITY",
+    "needName": "Khó Thao Tác Bàn Tay / Khó Cài Cúc",
+    "garmentId": "ALL",
+    "adjustment": "Khóa dán kỹ thuật số mềm hoặc nam châm từ tính ẩn dưới hàng cúc trang trí truyền thống",
+    "reason": "Các cúc vải ngũ thân truyền thống đòi hỏi lực vặn ngón tay linh hoạt. Thiết kế hàng cúc nổi ở ngoài để giữ vẻ đẹp nguyên bản, nhưng cài đóng mở thực tế bằng nam châm tự hút hoặc dải dán mềm bên trong.",
+    "tailoringSpecs": {
+      "closureType": "Hệ thống cúc nam châm Neodymium bọc màng silicon chống nước giấu bên trong nẹp tà kép",
+      "decorativeButtons": "Giữ nguyên 5 hạt cúc truyền thống đính cố định mặt ngoài",
+      "collarOpening": "Cổ áo may thun co giãn viền trong mở rộng thêm 2.5cm để chui đầu không bị cấn"
+    },
+    "validated": true,
+    "sourceId": "src-adaptive-design-lab"
+  },
+  {
+    "id": "AR-SENSITIVITY-01",
+    "needCode": "MATERIAL_SENSITIVITY",
+    "needName": "Da Nhạy Cảm / Dị Ứng Ma Sát",
+    "garmentId": "ALL",
+    "adjustment": "Toàn bộ lớp lót trong bằng lụa tơ tằm Bảo Lộc tự nhiên 100%, đường may cuộn lộn (French seam), không tem mác vải cứng",
+    "reason": "Người có hội chứng kích ứng da hoặc giác quan nhạy cảm dễ bị đỏ ngứa khi tiếp xúc gấm cứng hoặc đường may thô. Lớp lót tơ tằm mềm mát cùng chỉ may tơ êm dịu bảo vệ làn da tối đa.",
+    "tailoringSpecs": {
+      "innerFabric": "Lụa tơ tằm Bảo Lộc dệt tự nhiên, nhuộm thảo mộc an toàn",
+      "seamTechnique": "Đường may French seam giấu gân chỉ, phẳng tuyệt đối",
+      "tagging": "In chuyển nhiệt trực tiếp thông số kích thước, không dùng nhãn dệt cứng ở gáy cổ",
+      "thread": "Chỉ may cotton tơ hữu cơ 100%"
+    },
+    "validated": true,
+    "sourceId": "src-adaptive-design-lab"
+  },
+  {
+    "id": "AR-STANDING-01",
+    "needCode": "LIMITED_STANDING",
+    "needName": "Giảm Áp Lực Đứng / Dễ Đứng Lên Ngồi Xuống",
+    "garmentId": "ALL",
+    "adjustment": "Quần lưng chun bản rộng co giãn mềm kết hợp cạp trước phẳng lịch sự, tà áo cân đối không vướng chân",
+    "reason": "Người gặp khó khăn khi đứng lâu cần sự linh hoạt cao khi chuyển đổi tư thế giữa ngồi và đứng mà không lo vạt áo bị kẹp hoặc cạp quần thắt chặt vùng bụng.",
+    "tailoringSpecs": {
+      "waistband": "Cạp trước may phẳng truyền thống, nửa cạp sau luồn chun co giãn 6-8 cm",
+      "hemClearance": "Tà áo cách mặt đất 25 cm tránh nguy cơ dẫm gấu khi đứng dậy",
+      "trouserLeg": "Ống quần rộng vừa phải kèm khóa kéo giấu ở gấu quần hỗ trợ xỏ nẹp chân nếu có"
+    },
+    "validated": true,
+    "sourceId": "src-adaptive-design-lab"
+  },
+  {
+    "id": "AR-MOBILITY-01",
+    "needCode": "LIMITED_MOBILITY",
+    "needName": "Giới Hạn Vận Động Khớp Vai & Thân Trên",
+    "garmentId": "ALL",
+    "adjustment": "Nách áo may hạ rộng sâu hoặc dáng tay chẽn raglan kèm khóa sườn mở hoàn toàn",
+    "reason": "Khó khăn trong việc giơ cao tay hoặc vòng tay ra sau lưng khiến việc mặc áo truyền thống thông thường trở nên vất vả. Khóa sườn mở rộng giúp người mặc hoặc người trợ giúp đưa tay vào dễ dàng.",
+    "tailoringSpecs": {
+      "armhole": "Hạ nách thêm 3.5 cm và mở rộng vòng bắp tay 15%",
+      "sideOpening": "Khóa kéo giấu đường sườn áo mở từ nách xuống gấu tà",
+      "shoulderEase": "Bổ sung nếp gấp xếp ly co giãn nhẹ vùng xương bả vai"
+    },
+    "validated": true,
+    "sourceId": "src-adaptive-design-lab"
+  },
+  {
+    "id": "AR-EXPERIMENTAL-UNVERIFIED-01",
+    "needCode": "MATERIAL_SENSITIVITY",
+    "needName": "Sợi Dệt Dẫn Nhiệt Vi Khí Hậu (Đang Thử Nghiệm)",
+    "garmentId": "ALL",
+    "adjustment": "Thử nghiệm dệt kết hợp sợi graphene điều hòa thân nhiệt trong lót áo",
+    "reason": "Đề xuất kỹ thuật thử nghiệm; chưa có kiểm định lâm sàng về phản ứng da liễu với trang phục truyền thống.",
+    "tailoringSpecs": {
+      "innerFabric": "Vải dệt thử nghiệm (Chưa kiểm duyệt)"
+    },
+    "validated": false,
+    "sourceId": "src-dan-gian-bac-bo-draft"
+  }
+]

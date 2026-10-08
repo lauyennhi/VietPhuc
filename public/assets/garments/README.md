@@ -1,0 +1,1 @@
+Garment art is keyed by each garment record's `imageAsset` value. Keep garment outlines transparent so selected palette colors can remain user-controlled. Missing artwork uses the data-selected SVG template or generic vector fallback.

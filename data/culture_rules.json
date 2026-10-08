@@ -1,0 +1,175 @@
+[
+  {
+    "id": "CR-01-HUU-NHAM",
+    "name": "Quy thức Vạt Áo Hữu Nhậm (Vắt sang phải)",
+    "description": "Y phục truyền thống Việt Nam (Ngũ Thân, Giao Lĩnh, Áo Tấc, Tứ Thân) luôn bảo lưu vạt đè từ trái sang phải (Hữu nhậm). Mặc vạt chéo sang trái (Tả nhậm) là điều kỵ trong văn hóa cổ truyền.",
+    "condition": {
+      "type": "PRESERVED_STRUCTURE",
+      "requiresPreservedTrait": "HUU_NHAM",
+      "targetGarments": ["ALL"]
+    },
+    "severity": "KEEP",
+    "reason": "Bản phối bảo lưu chuẩn mực quy thức Vạt Hữu Nhậm (tà áo cài khép sang phải), kế thừa tinh hoa văn hóa y quan Đại Việt.",
+    "sourceIds": ["src-ngan-nam-ao-mu", "src-dai-viet-co-phong"],
+    "status": "APPROVED",
+    "weight": 35,
+    "applicableGarments": ["ALL"],
+    "checkType": "STRUCTURE",
+    "sourceId": "src-ngan-nam-ao-mu",
+    "verified": true
+  },
+  {
+    "id": "CR-02-KET-CAU-NGU-THAN",
+    "name": "Bảo Toàn Ý Nghĩa Ngũ Thân & Thân Con",
+    "description": "Áo ngũ thân duy trì 5 thân áo: 2 thân trước, 2 thân sau và 1 thân con (tiểu phẩm) bên trong che chở kín đáo, tượng trưng cho đạo lý ngũ thường và sự bao bọc chở che của phụ mẫu.",
+    "condition": {
+      "type": "PRESERVED_STRUCTURE",
+      "requiresPreservedTrait": "NGU_THAN_CONSTRUCTION",
+      "targetGarments": ["garment-ngu-than-tay-chen", "garment-ao-tac", "garment-ao-dai-ngu-than-remix"]
+    },
+    "severity": "KEEP",
+    "reason": "Bản phối gìn giữ trọn vẹn kết cấu năm thân áo và thân con bên trong, tượng trưng cho đạo lý ngũ thường và vẻ đẹp kín đáo tế nhị.",
+    "sourceIds": ["src-dai-viet-co-phong"],
+    "status": "APPROVED",
+    "weight": 25,
+    "applicableGarments": ["garment-ngu-than-tay-chen", "garment-ao-tac", "garment-ao-dai-ngu-than-remix"],
+    "checkType": "STRUCTURE",
+    "sourceId": "src-dai-viet-co-phong",
+    "verified": true
+  },
+  {
+    "id": "CR-03-LE_PHUC_AO_TAC_KHAN_DONG",
+    "name": "Phối Hợp Khăn Đóng/Mấn Cùng Áo Tấc Trong Đại Lễ",
+    "description": "Khi diện Áo Tấc (áo thụng) tham gia các nghi lễ trang nghiêm (Lễ tốt nghiệp, Lễ Hỷ, Lễ Gia Tiên), người mặc cần đội khăn đóng (nam) hoặc vấn mấn (nữ) để giữ trọn vẻ tôn nghiêm, cung kính của lễ phục triều đình.",
+    "condition": {
+      "type": "REQUIRE_ACCESSORY_ON_EVENT",
+      "targetGarments": ["garment-ao-tac"],
+      "targetEvents": ["EVENT_GRADUATION", "EVENT_WEDDING", "EVENT_CULTURAL", "LE_TOT_NGHIEP", "DAM_CUOI", "SU_KIEN_VAN_HOA"],
+      "requiredAccessoryTypes": ["HEADWEAR"],
+      "requiredAccessoryIds": ["acc-khan-dong", "acc-man-nu"]
+    },
+    "severity": "CONSIDER",
+    "reason": "Phối này có một điểm cần lưu ý về nghi lễ: Áo Tấc là đại lễ phục cung đình, trong các dịp trang trọng thường được kết hợp cùng khăn đóng hoặc mấn vấn để giữ trọn vẻ tôn nghiêm, tề chỉnh.",
+    "sourceIds": ["src-kham-dinh-dai-nam", "src-ngan-nam-ao-mu"],
+    "status": "APPROVED",
+    "weight": 15,
+    "applicableGarments": ["garment-ao-tac"],
+    "checkType": "ACCESSORY_HARMONY",
+    "sourceId": "src-kham-dinh-dai-nam",
+    "verified": true
+  },
+  {
+    "id": "CR-04-CO-AO-NHAT-BINH-CHU-NHAT",
+    "name": "Cổ Áo Nhật Bình Giữ Đúng Hình Khối Chữ Nhật",
+    "description": "Áo Nhật Bình có đặc trưng bất biến là dải cổ bản lớn khép lại trước ngực thành hình chữ nhật. Cổ tay áo thêu dải ngũ sắc ngũ hành.",
+    "condition": {
+      "type": "PRESERVED_STRUCTURE",
+      "requiresPreservedTrait": "NHAT_BINH_RECTANGULAR_COLLAR",
+      "targetGarments": ["garment-ao-nhat-binh"]
+    },
+    "severity": "KEEP",
+    "reason": "Bản phối bảo toàn kết cấu cổ áo hình chữ nhật quyền quý và dải hoa văn ngũ hành cung đình của Áo Nhật Bình.",
+    "sourceIds": ["src-kham-dinh-dai-nam"],
+    "status": "APPROVED",
+    "weight": 25,
+    "applicableGarments": ["garment-ao-nhat-binh"],
+    "checkType": "STRUCTURE",
+    "sourceId": "src-kham-dinh-dai-nam",
+    "verified": true
+  },
+  {
+    "id": "CR-05-MAU-SAC-BOI-CANH-LE-HOI",
+    "name": "Hài Hòa Màu Sắc Với Không Gian Sự Kiện",
+    "description": "Trong các sự kiện chúc tụng đầu xuân và ngày cưới gia đình, trang phục cổ truyền đề cao sinh khí ấm áp, tránh dùng toàn màu đen u tịch.",
+    "condition": {
+      "type": "FORBID_COLOR_ON_EVENT",
+      "targetEvents": ["EVENT_TET", "EVENT_WEDDING", "TET", "DAM_CUOI"],
+      "forbiddenColors": ["#1C1C1E", "#1E1E20", "#222326"],
+      "targetGarments": ["ALL"]
+    },
+    "severity": "CONSIDER",
+    "reason": "Phối này có một điểm cần lưu ý về sắc màu: Trong không khí hỷ sự và ngày Tết đoàn viên, y phục truyền thống cổ vũ các gam màu tươi sáng, ấm áp (đỏ, vàng, xanh thiên thanh, hồng phấn) thay vì đơn sắc đen tuyền.",
+    "sourceIds": ["src-ngan-nam-ao-mu"],
+    "status": "APPROVED",
+    "weight": 15,
+    "applicableGarments": ["ALL"],
+    "checkType": "COLOR_CONTEXT",
+    "sourceId": "src-ngan-nam-ao-mu",
+    "verified": true
+  },
+  {
+    "id": "CR-06-REMIX-GENZ-HARMONY",
+    "name": "Hòa Hợp Giữa Phụ Kiện Đương Đại Và Không Gian Lễ Nghi",
+    "description": "Phụ kiện hiện đại như sneaker retro rất năng động khi dạo phố nhưng cần cân nhắc khi diện cùng lễ phục cung đình trong đại lễ trang nghiêm.",
+    "condition": {
+      "type": "INCOMPATIBLE_ACCESSORY_ON_EVENT",
+      "targetEvents": ["EVENT_CULTURAL", "EVENT_WEDDING", "SU_KIEN_VAN_HOA", "DAM_CUOI"],
+      "incompatibleAccessories": ["acc-sneaker-retro"],
+      "targetGarments": ["garment-ao-tac", "garment-ao-nhat-binh"]
+    },
+    "severity": "CONSIDER",
+    "reason": "Phối này có một điểm cần lưu ý: Giày sneaker retro rất năng động khi dạo phố, nhưng trong không gian đại lễ hỷ sự hoặc triển lãm cung đình, hài sen thêu hoặc guốc mộc sẽ tôn nghiêm và ăn ý hơn.",
+    "sourceIds": ["src-dai-viet-co-phong", "src-adaptive-design-lab"],
+    "status": "APPROVED",
+    "weight": 10,
+    "applicableGarments": ["garment-ao-tac", "garment-ao-nhat-binh"],
+    "checkType": "REMIX_COMPATIBILITY",
+    "sourceId": "src-dai-viet-co-phong",
+    "verified": true
+  },
+  {
+    "id": "CR-07-TU-THAN-YEM-KIN-DAO",
+    "name": "Áo Tứ Thân Đi Kèm Yếm Cổ Truyền Đoan Trang",
+    "description": "Áo tứ thân buông hai vạt trước tự nhiên, quy thức chuẩn mực của phụ nữ Kinh Bắc là luôn có áo yếm bảo hộ kín đáo bên trong.",
+    "condition": {
+      "type": "REQUIRE_ACCESSORY_ALWAYS",
+      "targetGarments": ["garment-ao-tu-than"],
+      "requiredAccessoryIds": ["acc-yem-co-truyen"]
+    },
+    "severity": "WARNING",
+    "reason": "Phối này có một điểm cần lưu ý sâu sắc: Áo Tứ Thân truyền thống có kết cấu buông vạt trước, cần kết hợp áo yếm kín đáo bên trong để bảo lưu vẻ đẹp đoan trang, mực thước của người phụ nữ Bắc Bộ.",
+    "sourceIds": ["src-ngan-nam-ao-mu", "src-vietnam-centre"],
+    "status": "APPROVED",
+    "weight": 30,
+    "applicableGarments": ["garment-ao-tu-than"],
+    "checkType": "STRUCTURE_COMPLETENESS",
+    "sourceId": "src-ngan-nam-ao-mu",
+    "verified": true
+  },
+  {
+    "id": "CR-08-ADAPTIVE-PRESERVATION",
+    "name": "Kỹ Thuật May Đo Thích Ứng Bảo Toàn Cốt Cách Bản Sắc",
+    "description": "Khi áp dụng giải pháp thích ứng cho người ngồi xe lăn hoặc biên độ vận động giới hạn, các tỷ lệ nhận diện cốt lõi vẫn phải được bảo toàn nguyên vẹn.",
+    "condition": {
+      "type": "ADAPTIVE_PRESERVATION",
+      "targetGarments": ["ALL"]
+    },
+    "severity": "KEEP",
+    "reason": "Bản phối ứng dụng giải pháp may đo thích ứng khoa học nhưng vẫn bảo lưu trọn vẹn diện mạo và tinh thần y phục truyền thống.",
+    "sourceIds": ["src-adaptive-design-lab"],
+    "status": "APPROVED",
+    "weight": 20,
+    "applicableGarments": ["ALL"],
+    "checkType": "ADAPTIVE_INTEGRITY",
+    "sourceId": "src-adaptive-design-lab",
+    "verified": true
+  },
+  {
+    "id": "CR-09-DRAFT-EXPERIMENTAL-RULE",
+    "name": "Quy Chuẩn Thắt Khăn Bao Lụa Nhiều Vòng (Bản Thảo)",
+    "description": "Bản thảo nghiên cứu điền dã về số vòng thắt dải khăn bao quanh eo của trang phục dân gian.",
+    "condition": {
+      "type": "CUSTOM",
+      "targetGarments": ["garment-ao-tu-than"]
+    },
+    "severity": "CONSIDER",
+    "reason": "Đang trong quá trình khảo chứng hiện vật điền dã.",
+    "sourceIds": ["src-dan-gian-bac-bo-draft"],
+    "status": "DRAFT",
+    "weight": 10,
+    "applicableGarments": ["garment-ao-tu-than"],
+    "checkType": "EXPERIMENTAL",
+    "sourceId": "src-dan-gian-bac-bo-draft",
+    "verified": false
+  }
+]

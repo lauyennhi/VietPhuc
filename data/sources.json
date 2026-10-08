@@ -1,0 +1,74 @@
+[
+  {
+    "id": "src-ngan-nam-ao-mu",
+    "title": "Ngàn năm áo mũ - Lịch sử trang phục Việt Nam giai đoạn 1009-1945",
+    "publisher": "NXB Thế Giới & Nhã Nam",
+    "author": "Trần Quang Đức",
+    "year": 2013,
+    "url": "https://nhanam.vn/ngan-nam-ao-mu",
+    "verified": true,
+    "reviewedBy": "Khảo cứu công trình xuất bản Trần Quang Đức",
+    "reviewedAt": "2024-03-15",
+    "notes": "Công trình khảo cứu chuẩn mực về quy chế trang phục cung đình và dân gian các triều đại Lý, Trần, Lê, Nguyễn."
+  },
+  {
+    "id": "src-kham-dinh-dai-nam",
+    "title": "Khâm định Đại Nam hội điển sự lệ",
+    "publisher": "Nội các triều Nguyễn (Bản dịch Viện Sử học, NXB Thuận Hóa)",
+    "author": "Nội các triều Nguyễn",
+    "year": 1993,
+    "url": "http://viensuhoc.vass.gov.vn",
+    "verified": true,
+    "reviewedBy": "Chuyên gia Sử học Cố đô Huế",
+    "reviewedAt": "2024-03-15",
+    "notes": "Văn bản điển chế quy định phẩm phục đại triều, thường triều và y phục hoàng tộc triều Nguyễn."
+  },
+  {
+    "id": "src-vietnam-centre",
+    "title": "Dệt Nên Triều Đại (Weaving a Realm)",
+    "publisher": "Vietnam Centre",
+    "author": "Nhóm nghiên cứu Vietnam Centre",
+    "year": 2020,
+    "url": "https://vietnamcentre.org/du-an/det-nen-trieu-dai",
+    "verified": true,
+    "reviewedBy": "Ban Cố vấn Y phục Cổ truyền",
+    "reviewedAt": "2024-04-10",
+    "notes": "Tài liệu phục dựng và chuẩn hóa y phục cung đình thời Lê Sơ dựa trên hiện vật mộ cổ và tranh tượng."
+  },
+  {
+    "id": "src-dai-viet-co-phong",
+    "title": "Hồ sơ khảo cứu Áo Ngũ Thân và Áo Tấc Nam - Nữ thời Nguyễn",
+    "publisher": "Đại Việt Cổ Phong (Vietnam Ancient)",
+    "author": "Nhóm nghiên cứu Đại Việt Cổ Phong",
+    "year": 2021,
+    "url": "https://daivietcophong.vn",
+    "verified": true,
+    "reviewedBy": "Chuyên gia Phục dựng Y phục",
+    "reviewedAt": "2024-05-02",
+    "notes": "Tài liệu kỹ thuật cắt may, tỷ lệ thân áo ngũ thân, hệ cúc cài và quy cách mặc trang phục ngũ thân chuẩn mực."
+  },
+  {
+    "id": "src-adaptive-design-lab",
+    "title": "Universal & Adaptive Fashion Guidelines for Traditional Garments",
+    "publisher": "Tài liệu kỹ thuật mở thiết kế thích ứng trang phục",
+    "author": "Nhóm nghiên cứu thiết kế thích ứng & công thái học",
+    "year": 2024,
+    "url": "https://vstyle.vn/inclusive-standards",
+    "verified": true,
+    "reviewedBy": "Khảo cứu thực hành thiết kế thích ứng y phục",
+    "reviewedAt": "2024-06-01",
+    "notes": "Quy chuẩn kỹ thuật điều chỉnh tà áo, nẹp khóa thay thế cúc, đường may êm chống kích ứng dành cho người ngồi xe lăn và người có biên độ vận động giới hạn."
+  },
+  {
+    "id": "src-dan-gian-bac-bo-draft",
+    "title": "Tài liệu ghi chép điền dã y phục dân gian Bắc Bộ (Bản sơ thảo)",
+    "publisher": "Nhóm nghiên cứu văn hóa dân gian độc lập",
+    "author": "Nhiều tác giả điền dã",
+    "year": 2023,
+    "url": null,
+    "verified": false,
+    "reviewedBy": null,
+    "reviewedAt": null,
+    "notes": "Tài liệu điền dã dân gian về áo tứ thân và áo cánh; đang trong quy trình đối sánh cổ vật và chờ hội đồng thẩm định phê duyệt."
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "code": "WHEELCHAIR_SEATED",
+    "name": "Tư Thế Ngồi Xe Lăn Thường Xuyên",
+    "category": "POSTURE",
+    "description": "Người sử dụng xe lăn hoặc ngồi thường xuyên trong suốt quá trình tham gia sự kiện.",
+    "rationale": "Trọng tâm và nếp gấp y phục khi ngồi đòi hỏi tà áo trước ngắn hơn để không vướng bánh xe hoặc đùn gập ở đùi, đồng thời đường xẻ sườn cần nâng cao tránh căng rách chỉ."
+  },
+  {
+    "code": "LIMITED_HAND_MOBILITY",
+    "name": "Giới Hạn Vận Động Bàn Tay & Ngón Tay",
+    "category": "DEXTERITY",
+    "description": "Khó khăn trong việc dùng lực ngón tay để luồn, thắt nút hoặc cài cúc bấm nhỏ truyền thống.",
+    "rationale": "Cần cơ chế đóng mở tự hút bằng nam châm bọc lụa hoặc dải dán kỹ thuật số mềm giấu kín bên trong nẹp tà, giữ nguyên cúc trang trí phía ngoài."
+  },
+  {
+    "code": "MATERIAL_SENSITIVITY",
+    "name": "Da Nhạy Cảm & Dị Ứng Ma Sát",
+    "category": "SENSORY",
+    "description": "Làn da dễ bị ửng đỏ, ngứa ngáy khi cọ xát với đường may thô, sợi vải cứng hoặc tem mác dệt ráp.",
+    "rationale": "Yêu cầu lớp lót 100% lụa tơ tằm tự nhiên không hóa chất, đường may cuộn lộn (French seam) giấu hoàn toàn gân chỉ và in thông số kích thước nhiệt không dùng tem gáy."
+  },
+  {
+    "code": "LIMITED_STANDING",
+    "name": "Giảm Áp Lực Đứng & Dễ Chuyển Đổi Tư Thế",
+    "category": "MOBILITY",
+    "description": "Người cần sự linh hoạt khi đứng lên, ngồi xuống thường xuyên mà không bị gò bó vùng hông bụng.",
+    "rationale": "Cạp quần nửa sau luồn chun co giãn mềm mại, tà áo cách mặt đất khoảng an toàn tránh nguy cơ dẫm gấu áo khi đứng dậy."
+  },
+  {
+    "code": "LIMITED_MOBILITY",
+    "name": "Giới Hạn Biên Độ Khớp Vai & Thân Trên",
+    "category": "MOBILITY",
+    "description": "Khó giơ cao tay hoặc vòng tay ra sau lưng để tự mặc hoặc thay trang phục nhiều lớp.",
+    "rationale": "Vòng nách may hạ sâu, nẹp mở sườn hoàn toàn có khóa kéo trơn giấu đường may giúp người mặc và người trợ giúp thao tác nhẹ nhàng."
+  }
+]

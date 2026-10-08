@@ -1,0 +1,8 @@
+{
+  "name": "Vstyle · Việt phục Remix",
+  "description": "AI Stylist phối Việt phục theo gu Gen Z: Gemini hiểu yêu cầu, đọc ảnh cảm hứng, xếp hạng bản phối và vẽ ảnh minh họa — bộ quy tắc văn hóa có nguồn giữ đúng bản sắc, may đo thích ứng cho mọi cơ thể.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

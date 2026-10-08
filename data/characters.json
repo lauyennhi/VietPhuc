@@ -1,0 +1,72 @@
+[
+  {
+    "id": "char-nu-duyen-dang",
+    "name": "An Nhiên (Nữ)",
+    "gender": "FEMALE",
+    "bodyRepresentation": "Dáng người thanh thoát, cân đối Á Đông",
+    "skinTone": "#FCE5D8",
+    "pose": "STANDING_ELEGANT",
+    "heightCategory": "REGULAR",
+    "imageAsset": "char_female_standing",
+    "description": "Dáng người thanh thoát, đứng duyên dáng nghiêng nhẹ 15 độ tôn vinh tà áo",
+    "posture": "STANDING_ELEGANT",
+    "defaultSkinTone": "#FCE5D8",
+    "avatarUrl": "avatar_female_standing"
+  },
+  {
+    "id": "char-nam-nho-nha",
+    "name": "Minh Triết (Nam)",
+    "gender": "MALE",
+    "bodyRepresentation": "Dáng người cao ráo, đĩnh đạc",
+    "skinTone": "#F5D6C6",
+    "pose": "STANDING_CONFIDENT",
+    "heightCategory": "REGULAR",
+    "imageAsset": "char_male_standing",
+    "description": "Dáng người đĩnh đạc, nho nhã, đứng thẳng uy nghi",
+    "posture": "STANDING_CONFIDENT",
+    "defaultSkinTone": "#F5D6C6",
+    "avatarUrl": "avatar_male_standing"
+  },
+  {
+    "id": "char-hoa-nhap-xe-lan",
+    "name": "Bảo Ngọc (Tư Thế Xe Lăn Hòa Nhập)",
+    "gender": "UNISEX",
+    "bodyRepresentation": "Tư thế ngồi xe lăn năng động, hòa nhập",
+    "skinTone": "#F8E0D2",
+    "pose": "WHEELCHAIR_SEATED",
+    "heightCategory": "SEATED",
+    "imageAsset": "char_wheelchair",
+    "description": "Tư thế ngồi xe lăn thể thao thanh lịch, ánh mắt tự tin, tôn vinh thiết kế thích ứng",
+    "posture": "WHEELCHAIR_SEATED",
+    "defaultSkinTone": "#F8E0D2",
+    "avatarUrl": "avatar_wheelchair"
+  },
+  {
+    "id": "char-tu-do-genz",
+    "name": "Việt Anh (Phi Nhị Nguyên / Unisex)",
+    "gender": "NON_BINARY",
+    "bodyRepresentation": "Dáng người trẻ trung, hiện đại",
+    "skinTone": "#F4D2BA",
+    "pose": "STANDING_CASUAL",
+    "heightCategory": "REGULAR",
+    "imageAsset": "char_unisex",
+    "description": "Phong thái cá tính, trẻ trung, linh hoạt thử nghiệm mọi phong cách Việt phục Remix",
+    "posture": "STANDING_CASUAL",
+    "defaultSkinTone": "#F4D2BA",
+    "avatarUrl": "avatar_unisex"
+  },
+  {
+    "id": "char-nu-day-dan",
+    "name": "Thùy Dương (Nữ - Dáng Đầy Đặn)",
+    "gender": "FEMALE",
+    "bodyRepresentation": "Dáng người đầy đặn, phúc hậu",
+    "skinTone": "#F2CBB7",
+    "pose": "STANDING_ELEGANT",
+    "heightCategory": "REGULAR",
+    "imageAsset": "char_female_curvy",
+    "description": "Dáng vẻ đôn hậu, phúc hậu, rất tôn phom dáng thụng rộng của áo Tấc và áo Ngũ Thân",
+    "posture": "STANDING_ELEGANT",
+    "defaultSkinTone": "#F2CBB7",
+    "avatarUrl": "avatar_female_standing"
+  }
+]
