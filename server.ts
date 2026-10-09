@@ -2,69 +2,16 @@
  * Vstyle full-stack server (Express + Vite middleware in dev, static dist in production).
  * Runs with `tsx server.ts` in both development (`npm run dev`) and production (`npm start`),
  * because the data layer imports JSON modules that plain Node cannot load without import attributes.
+ * On Vercel the same API runs as a serverless function instead (api/index.js).
  */
 import express from 'express';
-import type { NextFunction, Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import path from 'node:path';
-import dotenv from 'dotenv';
-import { getApprovedGarments, getCultureRules, getGarments } from './src/lib/dal/index.ts';
-import { createGeminiRouter } from './src/lib/gemini/routes.ts';
-import { createGeminiProviders, readGeminiSettings } from './src/lib/gemini/provider.ts';
-import type { GeminiServiceConfig } from './src/lib/gemini/service.ts';
+import { createApiApp } from './src/server/app.ts';
 
-dotenv.config({ quiet: true });
-
-const app = express();
+const { app, settings, hasGemini } = createApiApp();
 const PORT = Number.parseInt(process.env.PORT || '3000', 10);
 const isProduction = process.env.NODE_ENV === 'production';
-const settings = readGeminiSettings(process.env);
-const providers = createGeminiProviders(settings);
-
-const geminiConfig: GeminiServiceConfig = {
-  model: settings.textModel,
-  provider: providers.text,
-  imageModel: settings.imageModel,
-  imageProvider: providers.image,
-  thinkingLevel: settings.thinkingLevel === 'off' ? undefined : settings.thinkingLevel,
-};
-
-app.disable('x-powered-by');
-app.set('trust proxy', 1);
-app.use((_req: Request, res: Response, next: NextFunction) => {
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  next();
-});
-
-app.get('/api/health', (_req: Request, res: Response) => {
-  res.json({
-    status: 'ok',
-    product: 'Vstyle',
-    hasGeminiKey: Boolean(providers.text),
-    textModel: settings.textModel,
-    imageModel: settings.imageModel,
-    fallbackModels: { text: settings.textFallbackModel, image: settings.imageFallbackModel },
-    features: {
-      aiStylist: true,
-      design: true,
-      adaptive: true,
-      explanation: true,
-      caption: true,
-      vision: Boolean(providers.text),
-      imageRender: Boolean(providers.image),
-    },
-    garmentsCount: getGarments().length,
-    approvedGarmentsCount: getApprovedGarments().length,
-    rulesCount: getCultureRules().length,
-  });
-});
-
-// The Gemini router parses its own JSON bodies (64 KB for text, 7 MB for photo endpoints).
-app.use('/api/gemini', createGeminiRouter(geminiConfig, { renderHourlyCap: settings.renderHourlyCap }));
-app.use('/api', express.json({ limit: '64kb' }));
-app.use('/api', (_req: Request, res: Response) => {
-  res.status(404).json({ error: 'Không tìm thấy API.' });
-});
 
 async function startServer(): Promise<void> {
   if (isProduction) {
@@ -81,7 +28,7 @@ async function startServer(): Promise<void> {
 
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`Vstyle server running on port ${PORT} (${isProduction ? 'production' : 'development'})`);
-    console.log(providers.text
+    console.log(hasGemini
       ? `Gemini: text=${settings.textModel}, image=${settings.imageModel}`
       : 'Gemini: GEMINI_API_KEY not set — using deterministic fallbacks.');
   });

@@ -132,10 +132,23 @@ Dữ liệu tri thức (data/*.json, validate bằng zod + kiểm tra toàn vẹ
 
 > Lưu ý: khi chia sẻ app, lượt gọi Gemini tính vào hạn mức của chủ app. Tạo ảnh có thể cần tài khoản có quyền dùng model ảnh; nếu không, app vẫn hiển thị mockup vector và thông báo rõ ràng.
 
+### Deploy lên Vercel
+
+Vercel chỉ phục vụ giao diện tĩnh (`dist`), không chạy `server.ts`, nên API được đóng gói sẵn thành hàm serverless `api/index.js` (từ `src/server/vercel.ts`). `vercel.json` chuyển mọi `/api/*` vào hàm này.
+
+1. Vercel → **Add New → Project** → import repo, nhánh `main` (Framework: Vite — tự nhận từ `vercel.json`).
+2. **Settings → Environment Variables**: thêm `GEMINI_API_KEY` (Production + Preview). Tùy chọn: `GEMINI_MODEL`, `GEMINI_IMAGE_MODEL`.
+3. **Deployments → Redeploy** (biến môi trường chỉ có hiệu lực sau khi deploy lại).
+4. Kiểm tra `https://<app>.vercel.app/api/health` → `"design": true`, `"hasGeminiKey": true`.
+
+Khi sửa code phía server (`src/lib/gemini`, `src/lib/design`, `data/`…), chạy `npm run build:api` rồi commit lại `api/index.js` (`npm run check` đã tự chạy bước này).
+
 ## 6. Cấu trúc thư mục
 
 ```
-server.ts                  Express + Vite middleware, health check, bảo mật cơ bản
+server.ts                  Express + Vite middleware (chạy local / AI Studio)
+src/server/app.ts          API Express dùng chung (health + Gemini)
+api/index.js               Hàm serverless cho Vercel (build từ src/server/vercel.ts)
 src/App.tsx                Khung app + định tuyến (#/studio, #/adaptive, #/3d, #/kien-thuc, #/lookbook)
 src/components/studio/     AI tạo (AiDesigner) + Tự tạo (StudioEditor)
 src/components/knowledge/  Các loại Việt phục + Quiz
