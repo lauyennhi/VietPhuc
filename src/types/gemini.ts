@@ -84,3 +84,30 @@ export interface GeminiAdaptiveResponse {
   tailorQuestions: string[];
   usedFallback?: boolean;
 }
+
+/** A complete outfit designed from the user's own words, with the reasoning behind each choice. */
+export interface OutfitDesign {
+  garmentId: string;
+  primaryColor: string;
+  colorName: string;
+  pantColor: string;
+  accessoryIds: string[];
+  eventId: string;
+  weatherId: string;
+  styleId: string;
+  remixLevel: number;
+  characterId?: string;
+  needCodes: FunctionalNeedCode[];
+  location?: string;
+  title: string;
+  concept: string;
+  whyThis: string[];
+  colorStory: string;
+  accessoryNotes: Array<{ id: string; reason: string }>;
+  packingTips: string[];
+  stylingTips: string[];
+  avoid: string[];
+  matched: Array<{ asked: string; howMet: string }>;
+  alternatives: Array<{ garmentId: string; primaryColor: string; reason: string }>;
+  usedFallback?: boolean;
+}

@@ -11,6 +11,7 @@ import {
   analyzeOutfitPhoto,
   renderOutfitImage,
   adaptiveAdvice,
+  designOutfit,
   approvedSourceReferences,
   type GeminiServiceConfig,
 } from './service';
@@ -157,6 +158,24 @@ export function createGeminiRouter(config: GeminiServiceConfig, limits: { render
         config
       );
       res.json(result);
+    } catch (error) {
+      res.status(500).json({ error: (error as Error).message });
+    }
+  });
+
+  // POST /api/gemini/design — full outfit from the user's own words
+  router.post('/design', textLimit, jsonLimit64k, async (req: Request, res: Response) => {
+    try {
+      const { text, photoColors, needCodes } = req.body ?? {};
+      if (typeof text !== 'string' || !text.trim()) {
+        res.status(400).json({ error: 'Hãy mô tả dịp và gu của bạn.' });
+        return;
+      }
+      res.json(await designOutfit({
+        text,
+        photoColors: Array.isArray(photoColors) ? photoColors.filter((c: unknown): c is string => typeof c === 'string') : [],
+        needCodes: Array.isArray(needCodes) ? needCodes.filter((c: unknown): c is string => typeof c === 'string') : [],
+      }, config));
     } catch (error) {
       res.status(500).json({ error: (error as Error).message });
     }

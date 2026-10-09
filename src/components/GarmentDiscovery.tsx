@@ -53,16 +53,7 @@ export const GarmentDiscovery: React.FC<GarmentDiscoveryProps> = ({
   return (
     <div className="space-y-6">
       {/* Header & Search */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="font-serif text-2xl font-bold text-[#1F1B18]">
-            Bách Khoa Y Phục
-          </h2>
-          <p className="text-xs text-[#736960] mt-0.5">
-            Khám phá quy thức cổ phục Việt Nam qua các thời kỳ lịch sử
-          </p>
-        </div>
-
+      <div className="flex flex-col sm:flex-row sm:items-center justify-end gap-4">
         {/* Search input */}
         <div className="relative w-full sm:w-72">
           <input
@@ -191,7 +182,7 @@ export const GarmentDiscovery: React.FC<GarmentDiscoveryProps> = ({
                       : 'bg-[#FAF6F0] border border-[#E6DCCD] text-[#1F1B18] hover:bg-[#1F1B18] hover:text-[#FFFFFF]'
                   }`}
                 >
-                  {isSelected ? '✓ Đang chọn' : 'Chọn y phục'}
+                  {isSelected ? '✓ Đang chọn' : 'Phối áo này'}
                 </button>
               </div>
             </div>

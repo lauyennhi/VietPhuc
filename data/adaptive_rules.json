@@ -16,6 +16,21 @@
     "sourceId": "src-adaptive-design-lab"
   },
   {
+    "id": "AR-ONE-HANDED-01",
+    "needCode": "ONE_HANDED",
+    "needName": "Mặc Bằng Một Tay",
+    "garmentId": "ALL",
+    "adjustment": "Nẹp nam châm tự hút dọc vạt phải, khóa kéo có tay kéo vòng lớn, ống tay bên yếu tùy chọn may gọn hoặc nới rộng cho tay giả",
+    "reason": "Gom mọi thao tác đóng mở về một tay giúp người mặc tự chủ hoàn toàn mà vẫn giữ hàng cúc trang trí và vạt hữu nhậm bên ngoài.",
+    "tailoringSpecs": {
+      "closureType": "Nam châm bọc lụa giấu dưới nẹp vạt phải, lực hút vừa đủ để tách bằng một tay",
+      "decorativeButtons": "Giữ nguyên hàng cúc tết trang trí, không cần cài",
+      "collarOpening": "Khuy vai ẩn bên tay thuận để tròng áo không cần hai tay"
+    },
+    "validated": false,
+    "sourceId": "src-adaptive-design-lab"
+  },
+  {
     "id": "AR-HAND-MOBILITY-01",
     "needCode": "LIMITED_HAND_MOBILITY",
     "needName": "Khó Thao Tác Bàn Tay / Khó Cài Cúc",

@@ -3,6 +3,7 @@
  */
 
 import type {
+  OutfitDesign,
   GeminiAdaptiveResponse,
   GeminiCaptionResponse,
   GeminiExplainResponse,
@@ -217,4 +218,8 @@ export async function requestAdaptiveAdvice(payload: {
   eventId?: string;
 }): Promise<GeminiAdaptiveResponse> {
   return await postJson<GeminiAdaptiveResponse>('/api/gemini/adaptive', payload);
+}
+
+export async function designOutfitFromText(payload: { text: string; photoColors?: string[]; needCodes?: string[] }): Promise<OutfitDesign> {
+  return await postJson<OutfitDesign>('/api/gemini/design', payload);
 }

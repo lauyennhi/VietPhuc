@@ -56,7 +56,8 @@ export type FunctionalNeedCode =
   | 'LIMITED_HAND_MOBILITY'
   | 'MATERIAL_SENSITIVITY'
   | 'LIMITED_STANDING'
-  | 'LIMITED_MOBILITY';
+  | 'LIMITED_MOBILITY'
+  | 'ONE_HANDED';
 
 // 2. User & Authentication Domain Model
 export interface User {
@@ -309,6 +310,16 @@ export interface Outfit {
   caption?: string;
   createdAt: string;
   isFavorite?: boolean;
+  /** Lookbook state: finished look or work-in-progress draft. */
+  status?: 'SAVED' | 'DRAFT';
+  /** Which flow produced the look. */
+  origin?: 'AI' | 'STUDIO' | 'ADAPTIVE';
+  remixLevel?: number;
+  skinTone?: string;
+  /** The user's own rating (1–5) and note. */
+  rating?: number;
+  userNote?: string;
+  reviewTags?: string[];
 }
 
 // 14. Lookbook Item

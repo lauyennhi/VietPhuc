@@ -101,3 +101,73 @@ export function renameOutfitInLookbook(id: string, newTitle: string): void {
     // Ignore error
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Drafts                                                              */
+/* ------------------------------------------------------------------ */
+
+export function getLookbookByStatus(status: 'SAVED' | 'DRAFT'): Outfit[] {
+  return getSavedOutfits().filter((o) => (o.status ?? 'SAVED') === status);
+}
+
+/* ------------------------------------------------------------------ */
+/* Feed posts ("Bảng tin") — stored on this device                     */
+/* ------------------------------------------------------------------ */
+
+export interface FeedPost {
+  id: string;
+  outfit?: Outfit;
+  /** Uploaded photo (resized JPEG data URL) — optional. */
+  imageDataUrl?: string;
+  caption: string;
+  hashtags: string[];
+  createdAt: string;
+  likes: number;
+  liked?: boolean;
+}
+
+const FEED_KEY = 'vstyle_feed_v1';
+const MAX_POSTS = 30;
+
+export function getFeedPosts(): FeedPost[] {
+  try {
+    const raw = window.localStorage.getItem(FEED_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeFeed(posts: FeedPost[]): boolean {
+  try {
+    window.localStorage.setItem(FEED_KEY, JSON.stringify(posts.slice(0, MAX_POSTS)));
+    return true;
+  } catch {
+    // Quota exceeded (large photos): retry without the oldest photos.
+    try {
+      const trimmed = posts.slice(0, MAX_POSTS).map((p, i) => (i > 5 ? { ...p, imageDataUrl: undefined } : p));
+      window.localStorage.setItem(FEED_KEY, JSON.stringify(trimmed));
+      return true;
+    } catch {
+      return false;
+    }
+  }
+}
+
+export function addFeedPost(post: Omit<FeedPost, 'id' | 'createdAt' | 'likes'>): FeedPost | null {
+  const full: FeedPost = { ...post, id: `post-${Date.now()}`, createdAt: new Date().toISOString(), likes: 0 };
+  return writeFeed([full, ...getFeedPosts()]) ? full : null;
+}
+
+export function toggleFeedLike(id: string): FeedPost[] {
+  const posts = getFeedPosts().map((p) => (p.id === id ? { ...p, liked: !p.liked, likes: Math.max(0, p.likes + (p.liked ? -1 : 1)) } : p));
+  writeFeed(posts);
+  return posts;
+}
+
+export function deleteFeedPost(id: string): FeedPost[] {
+  const posts = getFeedPosts().filter((p) => p.id !== id);
+  writeFeed(posts);
+  return posts;
+}

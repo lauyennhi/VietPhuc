@@ -19,6 +19,7 @@ import {
 } from '../dal';
 import { STYLE_CHOICES } from '../styles';
 import type {
+  OutfitDesign,
   GeminiAdaptiveResponse,
   GeminiCaptionResponse,
   GeminiExplainResponse,
@@ -31,6 +32,7 @@ import type { FunctionalNeedCode } from '../../types/domain';
 import type { DeterministicRecommendation } from '../recommendation/engine';
 import { CLOSURE_LABELS, presetFor, type AdaptiveAdjustments, type ClosureType } from '../adaptive/presets';
 import { checkAdaptiveCulture } from '../adaptive/cultureGuard';
+import { designFromBrief, isAccessoryAllowedFor, parseBrief, validateDesign } from '../design/designEngine';
 import type { GeminiProviderClient, ThinkingSetting } from './provider';
 
 export interface GeminiServiceConfig {
@@ -903,6 +905,155 @@ Trả về: headline (dưới 14 từ); explanation 3–4 câu nói rõ mỗi đ
     };
   } catch (error) {
     console.warn('Gemini adaptive advice failed, using fallback.', (error as Error).message);
+    return fallback;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Outfit design from free text                                        */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Designs a complete outfit from the user's own words. Gemini chooses only from approved
+ * garments/accessories (enum schema) and writes the reasoning; the server validates and
+ * repairs the result. Without Gemini, the deterministic designer answers the same request.
+ */
+export async function designOutfit(
+  request: { text: string; photoColors?: string[]; needCodes?: string[] },
+  config: GeminiServiceConfig
+): Promise<OutfitDesign> {
+  const brief = request.text.slice(0, 600);
+  const photoColors = (request.photoColors ?? []).map(normalizeHex).filter((c): c is string => Boolean(c)).slice(0, 3);
+  const needCodes = (request.needCodes ?? []).filter((c): c is FunctionalNeedCode => NEED_CODES().includes(c as FunctionalNeedCode));
+  const fallback = designFromBrief({ text: brief, photoColors, needCodes });
+  if (!config.provider || !brief.trim()) return fallback;
+
+  const garments = getApprovedGarments();
+  const accessories = getApprovedAccessories();
+  const cues = parseBrief({ text: brief }).cues.map((c) => `${c.kind}: "${c.word}"`).join('; ');
+
+  try {
+    const catalog = [
+      'Y PHỤC (id | tên | phong cách | dịp | màu sẵn có):',
+      ...garments.map((g) => `${g.id} | ${g.name} | ${g.styleTags.join(',')} | ${g.occasions.join(',')} | ${g.baseColors.map((c) => `${c.name} ${c.hex}`).join(', ')}`),
+      'PHỤ KIỆN (id | tên | loại | hợp với y phục):',
+      ...accessories.map((a) => `${a.id} | ${a.name} | ${a.type} | ${a.compatibleGarmentIds.join(',')}`),
+      `DỊP: ${getEvents().map((e) => `${e.id}=${e.name}`).join('; ')}`,
+      `THỜI TIẾT: ${getWeatherContexts().map((w: any) => `${w.id}=${w.name ?? w.id}`).join('; ')}`,
+      `PHONG CÁCH: ${STYLE_CHOICES.map((st) => `${st.id}=${st.label}`).join('; ')}`,
+      'QUY TẮC KHÔNG ĐƯỢC SAI:',
+      ...garments.map((g) => `${g.name}: ${g.nonNegotiables.join('; ')}`),
+    ].join('\n');
+
+    const parsed = await generateJson(
+      config,
+      [{
+        text: `${catalog}
+
+YÊU CẦU CỦA NGƯỜI DÙNG: """${brief}"""
+${photoColors.length ? `Màu từ ảnh cảm hứng: ${photoColors.join(', ')}` : ''}
+Tín hiệu hệ thống nhận ra: ${cues || 'không có'}
+
+Hãy thiết kế MỘT bản phối Việt phục đáp ứng SÁT từng ý người dùng nói (dịp, phong cách, màu, cảm giác như "hiện đại", "không mất chất"...).
+- Chỉ chọn y phục và phụ kiện trong danh mục; phụ kiện phải hợp với y phục đã chọn (tối đa 4, không trùng loại).
+- primaryColor: mã #RRGGBB đúng màu người dùng muốn (được phép là màu đặt may ngoài bảng màu sẵn có); colorName tiếng Việt.
+- remixLevel 0–100: mức hiện đại hóa (giữ thấp hơn 60 nếu người dùng muốn "không mất chất").
+- whyThis: 2–3 lý do chọn y phục; colorStory: 1–2 câu về màu; accessoryNotes: lý do cho TỪNG phụ kiện; packingTips: 2–3 thứ nên mang theo thực tế (theo thời tiết, dịp); stylingTips: 2 mẹo tạo dáng/mặc; avoid: 1–2 điều cần tránh để không sai văn hóa;
+- matched: với mỗi ý người dùng nêu, ghi "asked" (đúng từ người dùng) và "howMet" (bản phối đáp ứng thế nào, 1 câu);
+- alternatives: 2 phương án y phục khác.
+Viết ngắn gọn, tự nhiên, trẻ trung.`,
+      }],
+      {
+        type: 'object',
+        properties: {
+          garmentId: { type: 'string', enum: garments.map((g) => g.id) },
+          primaryColor: { type: 'string' },
+          colorName: { type: 'string' },
+          pantColor: { type: 'string' },
+          accessoryIds: { type: 'array', items: { type: 'string', enum: accessories.map((a) => a.id) } },
+          eventId: { type: 'string', enum: getEvents().map((e) => e.id) },
+          weatherId: { type: 'string', enum: getWeatherContexts().map((w) => w.id) },
+          styleId: { type: 'string', enum: STYLE_CHOICES.map((st) => st.id) },
+          remixLevel: { type: 'number' },
+          title: { type: 'string' },
+          concept: { type: 'string' },
+          whyThis: { type: 'array', items: { type: 'string' } },
+          colorStory: { type: 'string' },
+          accessoryNotes: {
+            type: 'array',
+            items: { type: 'object', properties: { id: { type: 'string', enum: accessories.map((a) => a.id) }, reason: { type: 'string' } }, required: ['id', 'reason'] },
+          },
+          packingTips: { type: 'array', items: { type: 'string' } },
+          stylingTips: { type: 'array', items: { type: 'string' } },
+          avoid: { type: 'array', items: { type: 'string' } },
+          matched: {
+            type: 'array',
+            items: { type: 'object', properties: { asked: { type: 'string' }, howMet: { type: 'string' } }, required: ['asked', 'howMet'] },
+          },
+          alternatives: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: { garmentId: { type: 'string', enum: garments.map((g) => g.id) }, primaryColor: { type: 'string' }, reason: { type: 'string' } },
+              required: ['garmentId', 'primaryColor', 'reason'],
+            },
+          },
+        },
+        required: ['garmentId', 'primaryColor', 'colorName', 'pantColor', 'accessoryIds', 'eventId', 'weatherId', 'styleId', 'remixLevel', 'title', 'concept', 'whyThis', 'colorStory', 'accessoryNotes', 'packingTips', 'stylingTips', 'avoid', 'matched', 'alternatives'],
+      },
+      0.8
+    );
+
+    const clean: Partial<OutfitDesign> = {
+      garmentId: parsed.garmentId,
+      primaryColor: normalizeHex(parsed.primaryColor),
+      colorName: text(parsed.colorName, 40),
+      pantColor: normalizeHex(parsed.pantColor),
+      accessoryIds: strings(parsed.accessoryIds, 6, 60),
+      eventId: parsed.eventId,
+      weatherId: pick(parsed.weatherId, getWeatherContexts().map((w) => w.id)),
+      styleId: parsed.styleId,
+      remixLevel: typeof parsed.remixLevel === 'number' ? parsed.remixLevel : undefined,
+      title: text(parsed.title, 90),
+      concept: text(parsed.concept, 400),
+      whyThis: strings(parsed.whyThis, 3, 260),
+      colorStory: text(parsed.colorStory, 300),
+      accessoryNotes: (Array.isArray(parsed.accessoryNotes) ? parsed.accessoryNotes : [])
+        .filter((n: any) => typeof n?.id === 'string' && typeof n?.reason === 'string')
+        .map((n: any) => ({ id: n.id, reason: text(n.reason, 200) ?? '' })),
+      packingTips: strings(parsed.packingTips, 3, 200),
+      stylingTips: strings(parsed.stylingTips, 3, 200),
+      avoid: strings(parsed.avoid, 3, 200),
+      matched: (Array.isArray(parsed.matched) ? parsed.matched : [])
+        .filter((m: any) => typeof m?.asked === 'string' && typeof m?.howMet === 'string')
+        .slice(0, 8)
+        .map((m: any) => ({ asked: text(m.asked, 60) ?? '', howMet: text(m.howMet, 220) ?? '' })),
+      alternatives: (Array.isArray(parsed.alternatives) ? parsed.alternatives : [])
+        .filter((a: any) => typeof a?.garmentId === 'string')
+        .map((a: any) => ({ garmentId: a.garmentId, primaryColor: normalizeHex(a.primaryColor) ?? '#1E2A38', reason: text(a.reason, 160) ?? '' })),
+    };
+    // Drop empty strings/arrays so the deterministic fallback fills them.
+    for (const [key, value] of Object.entries(clean)) {
+      if (value === undefined || value === '' || (Array.isArray(value) && value.length === 0)) delete (clean as any)[key];
+    }
+    const design = validateDesign(clean, fallback);
+    if (!design) return fallback;
+    const garment = getGarmentById(design.garmentId)!;
+    // Every chosen accessory gets a reason, even if the model skipped it.
+    const notes = design.accessoryIds.map((id) => design.accessoryNotes.find((n) => n.id === id) ?? fallback.accessoryNotes.find((n) => n.id === id) ?? {
+      id,
+      reason: `${getAccessoryById(id)?.name.split('(')[0].trim() ?? id} — hoàn thiện bản phối.`,
+    });
+    return {
+      ...design,
+      accessoryIds: design.accessoryIds.filter((id) => isAccessoryAllowedFor(getAccessoryById(id)!, garment, design.eventId)),
+      accessoryNotes: notes,
+      needCodes,
+      characterId: fallback.characterId,
+      location: fallback.location,
+    };
+  } catch (error) {
+    console.warn('Gemini design failed, using fallback.', (error as Error).message);
     return fallback;
   }
 }

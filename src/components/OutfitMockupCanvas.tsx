@@ -50,6 +50,10 @@ export interface OutfitMockupCanvasProps {
     sleeveWidthRatio?: number;
     slitHeightRatio?: number;
   };
+  /** Uniform scale of the figure around the feet (height preview), 1 = default. */
+  figureScale?: number;
+  /** Absolutely positioned content drawn over the 400×500 canvas (e.g. drag handles). */
+  overlay?: React.ReactNode;
   activeTooltip?: {
     title: string;
     subtitle: string;
@@ -82,6 +86,8 @@ export const OutfitMockupCanvas: React.FC<OutfitMockupCanvasProps> = ({
   remixLevel = 0,
   quickAdjustments,
   activeTooltip,
+  figureScale = 1,
+  overlay,
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const [internalHotspotsVisible, setInternalHotspotsVisible] = useState(showHotspots);
@@ -212,6 +218,7 @@ export const OutfitMockupCanvas: React.FC<OutfitMockupCanvasProps> = ({
           {/* LAYER 2: SOFT GROUND SHADOW (Anchoring character) */}
           <GroundShadow isSeated={isWheelchair} />
 
+          <g transform={figureScale !== 1 ? `translate(200 470) scale(${figureScale}) translate(-200 -470)` : undefined}>
           {/* LAYER 3: ACCESSORIES BACK (Hanging scarves, ribbons behind shoulders) */}
           <Accessories
             accessories={effectiveAccessories}
@@ -269,6 +276,8 @@ export const OutfitMockupCanvas: React.FC<OutfitMockupCanvasProps> = ({
             <Hotspots garmentId={garment.id} isWheelchair={isWheelchair} />
           )}
 
+          </g>
+
           {/* LAYER 10: WATERMARK BADGE */}
           <g id="vstyle-editorial-seal" opacity="0.45" transform="translate(18, 478)">
             <text
@@ -282,6 +291,8 @@ export const OutfitMockupCanvas: React.FC<OutfitMockupCanvasProps> = ({
             </text>
           </g>
         </svg>
+
+        {overlay}
 
         {/* Interactive Floating Tooltip (As shown in Screen 4 of Vstyle design) */}
         {activeTooltip && (

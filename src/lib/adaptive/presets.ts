@@ -52,6 +52,19 @@ export const NEED_PRESETS: NeedPreset[] = [
     ],
   },
   {
+    code: 'ONE_HANDED',
+    shortName: 'Mặc bằng một tay',
+    icon: '✋',
+    tagline: 'Mọi thao tác đóng mở dồn về một tay, nam châm tự hút.',
+    adjustments: { frontHemReduction: 0, slitPosition: 6, sleeveLength: 0, sleeveWidth: 6, openingWidth: 5, closureType: 'MAGNETIC' },
+    dressingSteps: [
+      'Xỏ tay yếu (hoặc tay giả) vào trước, dùng tay thuận kéo áo lên vai.',
+      'Vòng thân áo ra sau, xỏ tay thuận.',
+      'Đưa mép vạt trái đè sang phải — nam châm tự hút, không cần cài cúc.',
+      'Khuy vai ẩn bên tay thuận giúp tròng và cởi áo không cần hai tay.',
+    ],
+  },
+  {
     code: 'LIMITED_HAND_MOBILITY',
     shortName: 'Khó cài cúc',
     icon: '🧲',

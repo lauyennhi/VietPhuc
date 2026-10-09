@@ -7,6 +7,22 @@ Bài dự thi vòng Audition **AI Arena: Viet Nam 2026** — đề *"Việt ph�
 
 ---
 
+## Luồng sử dụng (ít bước, mỗi trang một việc)
+
+```
+Trang chủ ── kể 1 câu ("kỷ yếu, hiện đại nhưng không mất chất") ──► Studio › AI tạo ──► Kết quả + Nhận xét
+   │                                                                   │ Chỉnh tiếp
+   ├── Khám phá ▾ ── Studio (AI tạo | Tự tạo) ◄────────────────────────┘
+   │             ├── Adaptive Fashion: Tình trạng → Chọn áo → Kết quả (+ phiếu may đo)
+   │             └── Phòng 3D · VR/AR
+   ├── Kiến thức: Các loại Việt phục | Quiz
+   └── Lookbook: Đã lưu | Bản nháp | Bảng tin (đăng bài, chia sẻ ảnh, so sánh)
+```
+
+- **AI tạo**: Gemini thiết kế **đúng theo câu mô tả** (y phục, màu — kể cả màu đặt may ngoài bảng màu, phụ kiện), rồi giải thích: *bạn yêu cầu → AI đáp ứng thế nào*, vì sao chọn, phụ kiện nên đi kèm, nên mang theo gì, mẹo mặc, điều cần tránh, 2 phương án khác. Không có khóa Gemini thì bộ phối tất định (`src/lib/design/designEngine.ts`) xử lý cùng câu đó.
+- **Tự tạo**: trả lời 3 câu trắc nghiệm để có bản phối khởi đầu → chỉnh nhân vật (màu da, chiều cao, dáng, tóc, xe lăn), áo & màu (cả màu tự chọn), dáng áo bằng thanh trượt **hoặc kéo trực tiếp trên áo** (↕ dài tà, ✂ xẻ tà, ↔ rộng tay), phụ kiện tương thích.
+- **Mọi luồng kết thúc bằng "Nhận xét & đánh giá"**: điểm Chuẩn văn hóa / Hợp dịp & gu / Hài hòa màu, nhận xét của AI, người dùng tự chấm sao + ghi chú, rồi Lưu Lookbook · Lưu nháp · Đăng bài · Chia sẻ.
+
 ## 1. Đáp ứng đề bài
 
 | Yêu cầu của đề | Vstyle làm gì |
@@ -31,13 +47,9 @@ Người trẻ khuyết tật hoặc có nhu cầu đặc thù cũng muốn mặ
 
 | Bước | Trải nghiệm |
 |---|---|
-| 1. Nhu cầu | 5 nhóm nhu cầu do **người dùng tự chọn** (ngồi xe lăn, khó cài cúc, hạn chế cử động vai, khó đứng lâu, da nhạy cảm), **chọn nhiều cùng lúc** — hệ thống gộp thông số theo mức hỗ trợ cao nhất |
-| 2. Y phục | Cả 8 loại Việt phục đã duyệt; hiện ngay "đặc trưng không được sai" của áo đang chọn |
-| 3. Tinh chỉnh | Kéo chỉnh vạt trước, xẻ sườn, dài/rộng tay, độ mở cổ, cơ chế đóng mở; xem **Trước / Sau** cạnh nhau trên mockup |
-| Thích ứng × Bản sắc | **Rule engine tất định** đối chiếu từng điều chỉnh với kết cấu áo: cảnh báo khi cắt ống tay thụng, khoét cổ đứng, tà lễ phục quá ngắn, khóa kéo phá hai vạt song song… và đưa **phương án thay thế giữ bản sắc** (khuy vén tay ẩn, khuy vai ẩn, nam châm dưới 5 cúc áo tấc, chỉ rút vạt trước) — áp dụng bằng 1 chạm, có điểm "Bản sắc" /100 |
-| Giải thích | Lời giải thích tất định cho từng thay đổi + nút **"Nhờ Gemini viết lời khuyên riêng"** (Gemini nhận thông số và kết quả văn hóa như sự thật bất biến; giao diện ghi rõ khi đang dùng lời khuyên mẫu) |
-| Hướng dẫn tự mặc | Các bước mặc độc lập cho từng nhu cầu (mặc khi ngồi, cài một tay…) |
-| 4. Mang đi may | Số đo cá nhân (lưu trên trình duyệt) + **Phiếu may đo** in/lưu PDF: thông số rập, số đo, quy tắc bản sắc, thông số đã kiểm định có nguồn, hướng dẫn tự mặc |
+| 1. Tình trạng | 6 thẻ lớn do **người dùng tự chọn** (ngồi xe lăn, mặc bằng một tay, khó cài cúc, hạn chế cử động vai, khó đứng lâu, da nhạy cảm), chọn nhiều cùng lúc |
+| 2. Chọn áo | 8 loại Việt phục kèm hình minh họa + màu |
+| 3. Kết quả | **Trước / Sau** cạnh nhau; danh sách "Đã điều chỉnh cho bạn" (mỗi thay đổi kèm lý do); thẻ **Bản sắc được giữ** — rule engine cảnh báo khi điều chỉnh làm sai đặc trưng (cắt ống tay thụng, khoét cổ đứng, tà lễ phục quá ngắn, khóa kéo phá hai vạt song song…) và nút **Giữ bản sắc tự động**; hướng dẫn tự mặc; tinh chỉnh thêm & số đo (thu gọn); **Phiếu may đo** in/lưu PDF; lời khuyên AI; Xem 3D; Nhận xét & đánh giá |
 | Xem 3D | Mở mô hình 3D dáng ngồi xe lăn trong Phòng 3D, xem bằng VR/AR |
 
 Ứng dụng cũng **dễ tiếp cận cho chính người dùng đó**: menu *Hỗ trợ tiếp cận* (cỡ chữ A / A+ / A++, tương phản cao, giảm chuyển động — áp dụng toàn app), **nhập bằng giọng nói** tiếng Việt cho AI Stylist (hữu ích khi khó gõ phím), nút bấm ≥ 44 px, nhãn cho trình đọc màn hình.
@@ -71,6 +83,7 @@ Express server (server.ts) — giữ GEMINI_API_KEY, giới hạn tần suất, 
   ├─ /api/gemini/recommend  Bộ gợi ý tất định ▸ ứng viên đã qua rule engine → Gemini xếp hạng
   ├─ /api/gemini/explain    Gemini ▸ lời bình dựa trên kết quả văn hóa bất biến
   ├─ /api/gemini/caption    Gemini ▸ caption mạng xã hội
+  ├─ /api/gemini/design     Gemini ▸ thiết kế trọn bộ phối từ câu mô tả + giải thích (enum allow-list, server kiểm tra lại)
   ├─ /api/gemini/adaptive   Gemini ▸ lời khuyên may đo thích ứng dựa trên thông số + kết quả văn hóa do server tính lại
   ├─ /api/gemini/vision     Gemini ▸ đọc ảnh → bảng màu → khớp màu Việt phục đã duyệt (ΔE Lab)
   └─ /api/gemini/render     Gemini (Nano Banana) ▸ ảnh minh họa từ prompt dựng bằng dữ liệu đã xác thực
@@ -115,7 +128,11 @@ Dữ liệu tri thức (data/*.json, validate bằng zod + kiểm tra toàn vẹ
 
 ```
 server.ts                  Express + Vite middleware, health check, bảo mật cơ bản
-src/App.tsx                Luồng AI Stylist 1 câu + hành trình 9 bước + màn Kết quả
+src/App.tsx                Khung app + định tuyến (#/studio, #/adaptive, #/3d, #/kien-thuc, #/lookbook)
+src/components/studio/     AI tạo (AiDesigner) + Tự tạo (StudioEditor)
+src/components/knowledge/  Các loại Việt phục + Quiz
+src/components/lookbook/   Lookbook: đã lưu, bản nháp, bảng tin
+src/lib/design/            Bộ thiết kế bản phối từ câu mô tả (fallback + kiểm tra kết quả Gemini)
 src/components/            UI (HomeHero, StylingWorkspace, Studio, VirtualShowroom, AiRenderPanel, ColorHarmonyCard, CompareView…)
 src/lib/three/             Mô hình 3D y phục (figure.ts) + khung cảnh tham quan ảo (tours.ts)
 src/lib/gemini/            provider (model + dự phòng), service (prompt + JSON schema + allow-list), routes (giới hạn tần suất), client

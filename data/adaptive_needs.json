@@ -7,6 +7,13 @@
     "rationale": "Trọng tâm và nếp gấp y phục khi ngồi đòi hỏi tà áo trước ngắn hơn để không vướng bánh xe hoặc đùn gập ở đùi, đồng thời đường xẻ sườn cần nâng cao tránh căng rách chỉ."
   },
   {
+    "code": "ONE_HANDED",
+    "name": "Mất Hoặc Yếu Một Bên Tay",
+    "category": "DEXTERITY",
+    "description": "Người cần tự mặc và thao tác hoàn toàn bằng một tay (mất chi, liệt nửa người, chấn thương).",
+    "rationale": "Toàn bộ cơ chế đóng mở dồn về phía tay thuận, dùng nam châm tự hút hoặc khóa kéo một tay có tay kéo lớn; ống tay bên yếu có thể may gọn hoặc rộng để xỏ tay giả dễ dàng."
+  },
+  {
     "code": "LIMITED_HAND_MOBILITY",
     "name": "Giới Hạn Vận Động Bàn Tay & Ngón Tay",
     "category": "DEXTERITY",
