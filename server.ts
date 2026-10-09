@@ -46,6 +46,8 @@ app.get('/api/health', (_req: Request, res: Response) => {
     fallbackModels: { text: settings.textFallbackModel, image: settings.imageFallbackModel },
     features: {
       aiStylist: true,
+      design: true,
+      adaptive: true,
       explanation: true,
       caption: true,
       vision: Boolean(providers.text),
