@@ -49,7 +49,7 @@ Người trẻ khuyết tật hoặc có nhu cầu đặc thù cũng muốn mặ
 |---|---|
 | 1. Tình trạng | 6 thẻ lớn do **người dùng tự chọn** (ngồi xe lăn, mặc bằng một tay, khó cài cúc, hạn chế cử động vai, khó đứng lâu, da nhạy cảm), chọn nhiều cùng lúc |
 | 2. Chọn áo | 8 loại Việt phục kèm hình minh họa + màu |
-| 3. Kết quả | **Trước / Sau** cạnh nhau; danh sách "Đã điều chỉnh cho bạn" (mỗi thay đổi kèm lý do); thẻ **Bản sắc được giữ** — rule engine cảnh báo khi điều chỉnh làm sai đặc trưng (cắt ống tay thụng, khoét cổ đứng, tà lễ phục quá ngắn, khóa kéo phá hai vạt song song…) và nút **Giữ bản sắc tự động**; hướng dẫn tự mặc; tinh chỉnh thêm & số đo (thu gọn); **Phiếu may đo** in/lưu PDF; lời khuyên AI; Xem 3D; Nhận xét & đánh giá |
+| 3. Kết quả | **Trước / Sau** cạnh nhau, bản sau có chú thích ngay trên hình (−14 cm, nam châm ẩn, tay +3…); **Phối đồ dành riêng** cho từng tình trạng — phụ kiện nên mang (kèm lý do, bật/tắt trực tiếp trên hình) và *nên để ở nhà* (vd. xe lăn: túi đeo chéo, trâm thay nón rộng, bỏ dải thắt lưng dài; một tay: khăn đóng định hình sẵn, kiềng không khóa; da nhạy cảm: lụa, không kim loại); danh sách "Đã điều chỉnh cho bạn" (mỗi thay đổi kèm lý do); thẻ **Bản sắc được giữ** — rule engine cảnh báo khi điều chỉnh làm sai đặc trưng (cắt ống tay thụng, khoét cổ đứng, tà lễ phục quá ngắn, khóa kéo phá hai vạt song song…) và nút **Giữ bản sắc tự động**; hướng dẫn tự mặc; tinh chỉnh thêm & số đo (thu gọn); **Phiếu may đo** in/lưu PDF; lời khuyên AI; Xem 3D; Nhận xét & đánh giá |
 | Xem 3D | Mở mô hình 3D dáng ngồi xe lăn trong Phòng 3D, xem bằng VR/AR |
 
 Ứng dụng cũng **dễ tiếp cận cho chính người dùng đó**: menu *Hỗ trợ tiếp cận* (cỡ chữ A / A+ / A++, tương phản cao, giảm chuyển động — áp dụng toàn app), **nhập bằng giọng nói** tiếng Việt cho AI Stylist (hữu ích khi khó gõ phím), nút bấm ≥ 44 px, nhãn cho trình đọc màn hình.
@@ -93,9 +93,17 @@ Dữ liệu tri thức (data/*.json, validate bằng zod + kiểm tra toàn vẹ
 ```
 
 - **Gemini API** qua `@google/genai` (`models.generateContent`, output JSON theo `responseJsonSchema`). Model mặc định: `gemini-3.8-flash` (văn bản, đọc ảnh; dự phòng `gemini-3.5-flash`), `gemini-3.1-flash-image` (tạo ảnh; dự phòng `gemini-3.1-flash-image-preview`); tự thử model dự phòng nếu model chính không khả dụng. Đổi bằng biến môi trường (xem `.env.example`).
-- **Không có khóa hoặc Gemini lỗi** → mọi tính năng vẫn chạy: nhận diện câu theo từ khóa, xếp hạng tất định, lời bình lấy từ dữ liệu. Giao diện ghi rõ đang ở chế độ dự phòng.
+- **Không có khóa, Gemini lỗi hoặc máy chủ chạy bản cũ (404)** → trình duyệt tự dùng bộ thiết kế tất định, mọi tính năng vẫn chạy: nhận diện câu theo từ khóa, xếp hạng tất định, lời bình lấy từ dữ liệu. Giao diện ghi rõ đang ở chế độ dự phòng.
 - `store: false` cho mọi lời gọi Gemini; ảnh người dùng không lưu trên server.
 - Giới hạn tần suất theo IP (văn bản 40/phút, đọc ảnh 8/phút, tạo ảnh 12/giờ + trần toàn cục `VSTYLE_RENDER_HOURLY_CAP`) để bảo vệ hạn mức khi chia sẻ app.
+
+### Hình minh họa editorial (SVG)
+
+`src/lib/visualization/editorial/` vẽ người mẫu và trang phục bằng SVG nhiều lớp thay cho vector phẳng:
+- **Vải 3 tông**: nền + bóng nếp gấp (blur) + highlight sợi lụa; gấm hoa văn cho áo tấc/lễ phục.
+- **Đúng kết cấu**: số cúc, kiểu vạt, cổ, tay, độ dài tà đọc từ `structure` trong `data/garments.json`; áo ngũ thân/áo dài cài **hữu nhậm** (vạt trái đè sang phải).
+- **Phụ kiện trên điểm neo** (đầu, tóc, cổ, eo, tay, chân) có lớp bóng riêng; **phông nền theo dịp** + ánh sáng theo thời tiết.
+- **Hòa nhập**: tư thế ngồi xe lăn thanh lịch, tà/xẻ/tay thay đổi theo thông số may đo; cùng một `geometry.ts` dùng cho hình vẽ, chú thích và tay kéo trong Studio nên luôn khớp.
 
 ### Phòng 3D & Tham quan ảo
 
@@ -137,7 +145,8 @@ src/components/            UI (HomeHero, StylingWorkspace, Studio, VirtualShowro
 src/lib/three/             Mô hình 3D y phục (figure.ts) + khung cảnh tham quan ảo (tours.ts)
 src/lib/gemini/            provider (model + dự phòng), service (prompt + JSON schema + allow-list), routes (giới hạn tần suất), client
 src/lib/culture/           Rule engine văn hóa tất định
-src/lib/adaptive/          Preset nhu cầu thích ứng + rule engine Thích ứng × Bản sắc (cultureGuard.ts)
+src/lib/adaptive/          Preset nhu cầu thích ứng, bộ phối phụ kiện theo nhu cầu (stylingKits.ts), rule engine Thích ứng × Bản sắc (cultureGuard.ts)
+src/lib/visualization/editorial/  Hình minh họa SVG editorial (geometry, vải, phụ kiện, phông nền, xe lăn, chú thích)
 src/lib/recommendation/    Bộ gợi ý tất định + bản đồ từ khóa dự phòng
 src/lib/color/             Toán màu (Lab ΔE, WCAG contrast) + kiểm tra hài hòa
 data/                      Cơ sở tri thức (JSON) — chỉ bản ghi APPROVED + có nguồn mới được dùng

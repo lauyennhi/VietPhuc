@@ -14,6 +14,7 @@ import { getApprovedAccessories, getApprovedGarments, getCharacters, getEvents }
 import { STYLE_CHOICES } from '../../lib/styles';
 import { designFromBrief, isAccessoryAllowedFor } from '../../lib/design/designEngine';
 import { evaluateLook, type Look } from '../../lib/look';
+import { DEFAULT_STRUCTURE, figureGeometry, garmentLayout, hemRatioFor, remixHemFactor, remixSleeveFactor } from '../../lib/visualization/editorial/geometry';
 
 interface StudioEditorProps {
   initialLook?: Look;
@@ -105,6 +106,13 @@ export const StudioEditor: React.FC<StudioEditorProps> = ({ initialLook, showToa
     });
   };
 
+  const selectCharacter = (c: (typeof characters)[number]) => {
+    update({ characterId: c.id, needCodes: c.heightCategory === 'SEATED' ? ['WHEELCHAIR_SEATED'] : look.needCodes.filter((n) => n !== 'WHEELCHAIR_SEATED') });
+    setBodyShape(c.imageAsset === 'char_female_curvy' ? 'CURVED' : 'BALANCED');
+    setHair(c.gender === 'MALE' ? 'NAM' : c.gender === 'NON_BINARY' ? 'TOC_NGAN' : 'TOC_VAN');
+    if (c.defaultSkinTone) setSkinTone(c.defaultSkinTone);
+  };
+
   const runQuiz = () => {
     const tone = TONES.find((t) => t.id === quiz.tone);
     const design = designFromBrief({
@@ -128,24 +136,35 @@ export const StudioEditor: React.FC<StudioEditorProps> = ({ initialLook, showToa
     showToast(`Đã phối sẵn ${design.title}. Chỉnh tiếp theo ý bạn nhé!`);
   };
 
-  /* ---------- drag handles on the garment ---------- */
+  /* ---------- drag handles on the garment (same geometry as the drawing) ---------- */
+  const geo = figureGeometry({ seated, masculine: character.gender === 'MALE', shape: bodyShape });
+  const layout = garmentLayout(geo, garment.structure ?? DEFAULT_STRUCTURE, { hemRatio: hem, sleeveRatio: sleeve, slitRatio: slit, remixLevel: remix });
+  const pivotY = seated ? geo.hipY + 20 : geo.soleY;
   const toCanvas = (clientX: number, clientY: number) => {
     const rect = overlayRef.current?.getBoundingClientRect();
     if (!rect) return null;
     const x = ((clientX - rect.left) / rect.width) * 400;
     const y = ((clientY - rect.top) / rect.height) * 500;
-    // Undo the height scale applied around the feet (200, 470).
-    return { x: 200 + (x - 200) / scale, y: 470 + (y - 470) / scale };
+    // Undo the height scale applied around the pivot.
+    return { x: 200 + (x - 200) / scale, y: pivotY + (y - pivotY) / scale };
   };
   const startDrag = (kind: 'hem' | 'slit' | 'sleeve') => (event: React.PointerEvent) => {
     event.preventDefault();
-    (event.target as HTMLElement).setPointerCapture(event.pointerId);
+    (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
+    const wide = layout.wideSleeve;
     const move = (e: PointerEvent) => {
       const p = toCanvas(e.clientX, e.clientY);
       if (!p) return;
-      if (kind === 'hem') setHem(clamp((p.y - 235) / 191, 0.35, 1));
-      if (kind === 'slit') setSlit(clamp((265 - p.y) / 65, 0.1, 0.8));
-      if (kind === 'sleeve') setSleeve(clamp(0.7 + (p.x - 292) / 28, 0.3, 1));
+      if (kind === 'hem') {
+        setHem(seated
+          ? clamp((p.y - geo.lapY) / Math.max(1, (layout.hemY - geo.lapY) / Math.max(0.2, hem)), 0.2, 1)
+          : clamp(hemRatioFor(geo, p.y) / remixHemFactor(remix), 0.3, 1));
+      }
+      if (kind === 'slit') setSlit(clamp((geo.waistY + 44 + remix * 0.12 - p.y) / 46, 0.1, 0.8));
+      if (kind === 'sleeve') {
+        const half = (p.x - geo.wristR.x) / remixSleeveFactor(remix);
+        setSleeve(clamp(wide ? (half - 22) / 22 : (half - 6) / 7, 0.3, 1));
+      }
     };
     const up = () => {
       window.removeEventListener('pointermove', move);
@@ -156,15 +175,14 @@ export const StudioEditor: React.FC<StudioEditorProps> = ({ initialLook, showToa
   };
   const place = (x: number, y: number) => ({
     left: `${((200 + (x - 200) * scale) / 400) * 100}%`,
-    top: `${((470 + (y - 470) * scale) / 500) * 100}%`,
+    top: `${((pivotY + (y - pivotY) * scale) / 500) * 100}%`,
   });
   const handleClass = 'absolute z-10 grid size-7 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none place-items-center rounded-full border-2 border-[#FFFFFF] bg-[#C4553F] text-[10px] font-bold text-[#FFFFFF] shadow-md active:cursor-grabbing';
-  const sleeveFlare = (sleeve - 0.7) * 28;
-  const overlay = seated ? null : (
+  const overlay = (
     <div ref={overlayRef} className="absolute inset-0">
-      <button type="button" aria-label="Kéo để đổi độ dài tà áo" title="Kéo lên/xuống: độ dài tà" onPointerDown={startDrag('hem')} className={handleClass} style={place(200, 235 + 191 * hem)}>↕</button>
-      <button type="button" aria-label="Kéo để đổi điểm xẻ tà" title="Kéo lên/xuống: độ xẻ tà" onPointerDown={startDrag('slit')} className={`${handleClass} bg-[#1E3443]`} style={place(164, 265 - 65 * slit)}>✂</button>
-      <button type="button" aria-label="Kéo để đổi độ rộng tay áo" title="Kéo trái/phải: độ rộng tay" onPointerDown={startDrag('sleeve')} className={`${handleClass} bg-[#4F7350]`} style={place(292 + sleeveFlare, 290)}>↔</button>
+      <button type="button" aria-label="Kéo để đổi độ dài tà áo" title="Kéo lên/xuống: độ dài tà" onPointerDown={startDrag('hem')} className={handleClass} style={place(200, layout.hemY)}>↕</button>
+      {!seated && <button type="button" aria-label="Kéo để đổi điểm xẻ tà" title="Kéo lên/xuống: độ xẻ tà" onPointerDown={startDrag('slit')} className={`${handleClass} bg-[#1E3443]`} style={place(geo.cx - geo.hipHalf - 4, layout.slitY)}>✂</button>}
+      <button type="button" aria-label="Kéo để đổi độ rộng tay áo" title="Kéo trái/phải: độ rộng tay" onPointerDown={startDrag('sleeve')} className={`${handleClass} bg-[#4F7350]`} style={place(geo.wristR.x + layout.cuffHalf, layout.cuffY - 8)}>↔</button>
     </div>
   );
 
@@ -244,7 +262,7 @@ export const StudioEditor: React.FC<StudioEditorProps> = ({ initialLook, showToa
                 compact
               />
             </div>
-            <p className="text-center text-xs text-[#7A6F66]">{seated ? 'Dáng ngồi: chỉnh bằng thanh trượt bên phải.' : 'Kéo các nút trên áo: ↕ dài tà · ✂ xẻ tà · ↔ rộng tay'}</p>
+            <p className="text-center text-xs text-[#7A6F66]">{seated ? 'Kéo các nút trên áo: ↕ dài tà · ↔ rộng tay' : 'Kéo các nút trên áo: ↕ dài tà · ✂ xẻ tà · ↔ rộng tay'}</p>
             <div className="flex flex-wrap justify-center gap-2">
               {BACKGROUNDS.map((b) => <button key={b.id} type="button" aria-pressed={background === b.id} onClick={() => setBackground(b.id)} className={chip(background === b.id)}>{b.label}</button>)}
               <button type="button" onClick={() => onOpen3D({ ...look, skinTone })} className={`${chip(false)} inline-flex items-center gap-1.5`}><Box className="size-4" aria-hidden="true" /> 3D</button>
@@ -274,7 +292,7 @@ export const StudioEditor: React.FC<StudioEditorProps> = ({ initialLook, showToa
                   <p className={label}>Nhân vật</p>
                   <div className="flex flex-wrap gap-2">
                     {characters.map((c) => (
-                      <button key={c.id} type="button" aria-pressed={look.characterId === c.id} onClick={() => update({ characterId: c.id, needCodes: c.heightCategory === 'SEATED' ? ['WHEELCHAIR_SEATED'] : look.needCodes.filter((n) => n !== 'WHEELCHAIR_SEATED') })} className={chip(look.characterId === c.id)}>
+                      <button key={c.id} type="button" aria-pressed={look.characterId === c.id} onClick={() => selectCharacter(c)} className={chip(look.characterId === c.id)}>
                         {c.name.split('(')[0].trim()}{c.heightCategory === 'SEATED' ? ' ♿' : ''}
                       </button>
                     ))}
@@ -341,7 +359,7 @@ export const StudioEditor: React.FC<StudioEditorProps> = ({ initialLook, showToa
               <>
                 {slider('Truyền thống ⟷ Hiện đại', remix, 0, 100, 1, (v) => update({ remixLevel: v }), `${remix}%`)}
                 {remix >= 65 && <p className="rounded-xl bg-[#FBF1EC] p-3 text-xs text-[#8B3A2B]">Mức hiện đại cao: vẫn giữ vạt hữu nhậm và cổ áo để không mất đặc trưng.</p>}
-                {!seated && slider('Độ dài tà', Math.round(hem * 100), 35, 100, 1, (v) => setHem(v / 100), `${Math.round(hem * 100)}%`)}
+                {slider('Độ dài tà', Math.round(hem * 100), seated ? 20 : 30, 100, 1, (v) => setHem(v / 100), `${Math.round(hem * 100)}%`)}
                 {slider('Độ rộng tay', Math.round(sleeve * 100), 30, 100, 1, (v) => setSleeve(v / 100), `${Math.round(sleeve * 100)}%`)}
                 {!seated && slider('Độ xẻ tà', Math.round(slit * 100), 10, 80, 1, (v) => setSlit(v / 100), `${Math.round(slit * 100)}%`)}
                 <div className="space-y-2">

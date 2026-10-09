@@ -15,12 +15,14 @@ import { PageHeader } from './PageHeader';
 import { SealStamp } from './ui/SealStamp';
 import { Dialog } from './ui/Dialog';
 import { TechPackSheet, MEASUREMENT_FIELDS, type Measurements } from './TechPackSheet';
-import { getAdaptiveNeeds, getApprovedGarments, getCharacters } from '../lib/dal';
+import { getAdaptiveNeeds, getApprovedAccessories, getApprovedGarments, getCharacters } from '../lib/dal';
 import { checkAdaptive } from '../lib/adaptive/ruleEngine';
 import { CLOSURE_LABELS, NEED_PRESETS, STANDARD_ADJUSTMENTS, combineAdjustments, presetFor, type AdaptiveAdjustments, type ClosureType } from '../lib/adaptive/presets';
 import { applyAllFixes, checkAdaptiveCulture } from '../lib/adaptive/cultureGuard';
 import { requestAdaptiveAdvice } from '../lib/gemini/client';
 import { evaluateLook, type Look } from '../lib/look';
+import { STYLING_KITS, combineKits } from '../lib/adaptive/stylingKits';
+import type { Annotation } from '../lib/visualization/editorial/Annotations';
 
 interface AdaptiveStudioProps {
   initialNeedCodes?: FunctionalNeedCode[];
@@ -37,6 +39,8 @@ type Step = 1 | 2 | 3;
 
 const MEASUREMENTS_KEY = 'vstyle.adaptive.measurements';
 const EMPTY_MEASUREMENTS: Measurements = { height: '', chest: '', waist: '', hip: '', sleeve: '', seatedHeight: '', thigh: '', note: '' };
+
+const CLOSURE_SHORT: Record<ClosureType, string> = { MAGNETIC: 'Nam châm ẩn', VELCRO: 'Nẹp dán ẩn', ZIPPER: 'Khóa sườn', BUTTON: 'Cúc' };
 
 const LEVEL = {
   KEEP: { box: 'border-[#CDE0C9] bg-[#F1F6EF]', text: 'text-[#3D6B35]' },
@@ -56,6 +60,7 @@ export const AdaptiveStudio: React.FC<AdaptiveStudioProps> = ({
 }) => {
   const garments = useMemo(() => getApprovedGarments(), []);
   const characters = useMemo(() => getCharacters(), []);
+  const allAccessories = useMemo(() => getApprovedAccessories(), []);
   const needByCode = useMemo(() => new Map(getAdaptiveNeeds().map((n) => [n.code, n])), []);
 
   const [step, setStep] = useState<Step>(initialNeedCodes?.length ? 2 : 1);
@@ -69,6 +74,7 @@ export const AdaptiveStudio: React.FC<AdaptiveStudioProps> = ({
   const [sheetOpen, setSheetOpen] = useState(false);
   const [advice, setAdvice] = useState<GeminiAdaptiveResponse | null>(null);
   const [adviceLoading, setAdviceLoading] = useState(false);
+  const [kitOff, setKitOff] = useState<string[]>([]);
 
   useEffect(() => {
     try {
@@ -86,6 +92,7 @@ export const AdaptiveStudio: React.FC<AdaptiveStudioProps> = ({
     }
   }, [measurements]);
   useEffect(() => setAdvice(null), [adj, garment, needCodes]);
+  useEffect(() => setKitOff([]), [garment, needCodes]);
 
   const isSeated = needCodes.includes('WHEELCHAIR_SEATED');
   const selectedNeeds = needCodes.map((c) => needByCode.get(c)).filter((n): n is AdaptiveNeed => Boolean(n));
@@ -97,6 +104,17 @@ export const AdaptiveStudio: React.FC<AdaptiveStudioProps> = ({
   const flags = guard.items.filter((i) => i.level !== 'KEEP');
   const keeps = guard.items.filter((i) => i.level === 'KEEP');
 
+  const kit = useMemo(() => combineKits(needCodes, garment, allAccessories), [needCodes, garment, allAccessories]);
+  const kitAccessories = kit.picks.filter((p) => !kitOff.includes(p.accessoryId)).map((p) => p.accessory);
+  const needIcon = (code: FunctionalNeedCode) => presetFor(code)?.icon ?? '';
+  const annotations: Annotation[] = [
+    adj.frontHemReduction ? { kind: 'hem' as const, label: `−${adj.frontHemReduction} cm` } : null,
+    adj.slitPosition && !isSeated ? { kind: 'slit' as const, label: `Xẻ +${adj.slitPosition}` } : null,
+    adj.sleeveWidth || adj.sleeveLength ? { kind: 'sleeve' as const, label: adj.sleeveWidth ? `Tay +${adj.sleeveWidth}` : `Tay ${adj.sleeveLength}` } : null,
+    adj.closureType !== 'BUTTON' ? { kind: 'closure' as const, label: CLOSURE_SHORT[adj.closureType] } : null,
+    adj.openingWidth ? { kind: 'opening' as const, label: `Cổ +${adj.openingWidth}` } : null,
+  ].filter((a): a is Annotation => Boolean(a));
+
   const character = useMemo<CharacterItem>(() => {
     const seatedChar = characters.find((c) => c.heightCategory === 'SEATED') ?? characters[0];
     return isSeated ? { ...seatedChar, posture: 'WHEELCHAIR_SEATED' } : { ...characters[0], posture: 'STANDING' };
@@ -106,7 +124,7 @@ export const AdaptiveStudio: React.FC<AdaptiveStudioProps> = ({
     garmentId: garment.id,
     primaryColor: colorHex,
     pantColor: '#F4F0E8',
-    accessoryIds: [],
+    accessoryIds: kitAccessories.map((a) => a.id),
     eventId,
     weatherId: 'WEATHER_PLEASANT',
     styleId: 'TOI_GIAN',
@@ -115,7 +133,7 @@ export const AdaptiveStudio: React.FC<AdaptiveStudioProps> = ({
     title: `${garment.name.replace(/\s*\(.*\)$/, '')} · May đo thích ứng`,
     concept: `Bản may đo cho: ${guides.map((g) => g.shortName.toLowerCase()).join(', ') || 'phom chuẩn'}.`,
     origin: 'ADAPTIVE',
-  }), [garment, colorHex, eventId, character, needCodes, guides]);
+  }), [garment, colorHex, eventId, character, needCodes, guides, kitAccessories]);
   const evaluation = useMemo(() => evaluateLook(look), [look]);
 
   const toggleNeed = (code: FunctionalNeedCode) => {
@@ -204,6 +222,7 @@ export const AdaptiveStudio: React.FC<AdaptiveStudioProps> = ({
                   <span>
                     <span className="block text-base font-bold text-[#1E3443]">{p.shortName}</span>
                     <span className="mt-1 block text-sm leading-snug text-[#5C5248]">{p.tagline}</span>
+                    <span className="mt-2 inline-block rounded-full bg-[#FBF4E8] px-2.5 py-0.5 text-xs font-semibold text-[#8A5E17]">Phối kèm: {STYLING_KITS[p.code].title.toLowerCase()}</span>
                   </span>
                   {on && <Check className="absolute right-4 top-4 size-5 text-[#3D6B35]" aria-hidden="true" />}
                 </button>
@@ -264,19 +283,20 @@ export const AdaptiveStudio: React.FC<AdaptiveStudioProps> = ({
       {step === 3 && (
         <div className="space-y-6 animate-rise">
           <div className="grid gap-6 lg:grid-cols-12">
-            <section className="space-y-3 lg:col-span-6" aria-label="So sánh trước và sau">
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  { label: 'Phom chuẩn', adjustments: STANDARD_ADJUSTMENTS },
-                  { label: 'May cho bạn', adjustments: adj },
-                ].map((panel, i) => (
-                  <figure key={panel.label} className="space-y-2">
-                    <div className={`overflow-hidden rounded-[22px] border bg-[#FAF6F0] ${i ? 'border-[#3D6B35]' : 'border-[#E8DFD3]'}`}>
-                      <OutfitMockupCanvas garment={garment} primaryColor={colorHex} pantColor="#F4F0E8" accessories={[]} character={character} adaptiveAdjustments={panel.adjustments} compact />
-                    </div>
-                    <figcaption className={`text-center text-sm font-semibold ${i ? 'text-[#3D6B35]' : 'text-[#7A6F66]'}`}>{panel.label}</figcaption>
-                  </figure>
-                ))}
+            <section className="space-y-3 lg:sticky lg:top-24 lg:col-span-6 lg:self-start" aria-label="So sánh trước và sau">
+              <div className="grid grid-cols-5 items-end gap-3">
+                <figure className="col-span-2 space-y-2">
+                  <div className="overflow-hidden rounded-[22px] border border-[#E8DFD3] bg-[#FAF6F0] opacity-90">
+                    <OutfitMockupCanvas garment={garment} primaryColor={colorHex} pantColor="#F4F0E8" accessories={[]} character={character} adaptiveAdjustments={STANDARD_ADJUSTMENTS} compact />
+                  </div>
+                  <figcaption className="text-center text-sm font-semibold text-[#7A6F66]">Phom chuẩn</figcaption>
+                </figure>
+                <figure className="col-span-3 space-y-2">
+                  <div className="overflow-hidden rounded-[22px] border-2 border-[#3D6B35] bg-[#FAF6F0]">
+                    <OutfitMockupCanvas garment={garment} primaryColor={colorHex} pantColor="#F4F0E8" accessories={kitAccessories} character={character} adaptiveAdjustments={adj} eventId={eventId} annotations={annotations} compact />
+                  </div>
+                  <figcaption className="text-center text-sm font-semibold text-[#3D6B35]">May & phối cho bạn</figcaption>
+                </figure>
               </div>
               <div className="grid grid-cols-3 gap-2">
                 <button type="button" onClick={() => setSheetOpen(true)} className="press inline-flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-2xl bg-[#3D6B35] text-xs font-semibold text-[#FFFFFF]">
@@ -302,6 +322,48 @@ export const AdaptiveStudio: React.FC<AdaptiveStudioProps> = ({
             </section>
 
             <section className="space-y-4 lg:col-span-6">
+              <div className="rounded-[24px] border border-[#E4D1B5] bg-[#FFFDF9] p-5">
+                <h2 className="font-serif text-xl font-bold text-[#1E3443]">Phối đồ dành riêng cho bạn</h2>
+                <p className="mt-1 text-sm text-[#5C5248]">{kit.tips.map((t) => `${needIcon(t.code)} ${t.title}`).join(' · ')}</p>
+                {kit.picks.length > 0 ? (
+                  <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+                    {kit.picks.map((p) => {
+                      const on = !kitOff.includes(p.accessoryId);
+                      return (
+                        <li key={p.accessoryId}>
+                          <button
+                            type="button"
+                            aria-pressed={on}
+                            onClick={() => setKitOff((off) => (on ? [...off, p.accessoryId] : off.filter((id) => id !== p.accessoryId)))}
+                            className={`press flex h-full w-full items-start gap-3 rounded-2xl border p-3 text-left transition ${on ? 'border-[#3D6B35] bg-[#F1F6EF]' : 'border-[#E8DFD3] bg-[#FFFFFF] opacity-70'}`}
+                          >
+                            <span className="mt-0.5 size-4 shrink-0 rounded-full border-2 border-[#FFFFFF] shadow-[0_0_0_1px_#D8CCBA]" style={{ backgroundColor: p.accessory.colors[0] }} aria-hidden="true" />
+                            <span className="min-w-0 text-sm">
+                              <strong className="block text-[#1E3443]">{p.accessory.name.replace(/\s*\(.*\)$/, '')} <span className="font-normal">{p.needs.map(needIcon).join('')}</span></strong>
+                              <span className="text-xs leading-snug text-[#5C5248]">{p.why}</span>
+                            </span>
+                            {on && <Check className="ml-auto size-4 shrink-0 text-[#3D6B35]" aria-hidden="true" />}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                ) : (
+                  <p className="mt-3 text-sm text-[#5C5248]">Áo này đẹp nhất khi để tối giản — không cần thêm phụ kiện.</p>
+                )}
+                {kit.avoid.length > 0 && (
+                  <details className="mt-3 rounded-2xl bg-[#FBEFEE] p-3 text-sm">
+                    <summary className="cursor-pointer font-semibold text-[#8B1E2B]">Nên để ở nhà ({kit.avoid.length})</summary>
+                    <ul className="mt-2 space-y-1.5">
+                      {kit.avoid.map((a) => (
+                        <li key={a.accessoryId} className="text-xs leading-snug text-[#4A423B]"><strong>{a.accessory.name.replace(/\s*\(.*\)$/, '')}</strong> — {a.why}</li>
+                      ))}
+                    </ul>
+                  </details>
+                )}
+                {kit.tips.length > 0 && <p className="mt-3 text-xs italic text-[#7A6F66]">💡 {kit.tips.map((t) => t.tip).join(' ')}</p>}
+              </div>
+
               <div className="rounded-[24px] border border-[#E8DFD3] bg-[#FFFFFF] p-5">
                 <h2 className="font-serif text-xl font-bold text-[#1E3443]">Đã điều chỉnh cho bạn</h2>
                 <ul className="mt-3 space-y-2">

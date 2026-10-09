@@ -6,12 +6,8 @@
 
 import React, { useRef, useState, useMemo } from 'react';
 import type { Garment, Accessory, CharacterItem, FunctionalNeedCode } from '../types/fashion';
-import { CharacterFigure } from '../lib/visualization/illustration/CharacterFigure';
-import { Garments } from '../lib/visualization/illustration/Garments';
-import { Accessories } from '../lib/visualization/illustration/Accessories';
-import { SceneBackdrop } from '../lib/visualization/illustration/SceneBackdrop';
-import { GroundShadow } from '../lib/visualization/illustration/GroundShadow';
-import { Hotspots } from '../lib/visualization/illustration/Hotspots';
+import { EditorialScene } from '../lib/visualization/editorial/EditorialScene';
+import type { Annotation } from '../lib/visualization/editorial/Annotations';
 
 export interface AdaptiveAdjustmentsState {
   frontHemReduction?: number; // 0 to 30 cm
@@ -54,6 +50,8 @@ export interface OutfitMockupCanvasProps {
   figureScale?: number;
   /** Absolutely positioned content drawn over the 400×500 canvas (e.g. drag handles). */
   overlay?: React.ReactNode;
+  /** Tailoring callouts drawn on the figure (adaptive "after" view). */
+  annotations?: Annotation[];
   activeTooltip?: {
     title: string;
     subtitle: string;
@@ -71,8 +69,8 @@ export const OutfitMockupCanvas: React.FC<OutfitMockupCanvasProps> = ({
   adaptiveNeedCode,
   adaptiveNeedCodes,
   styleId = 'TRUYEN_THONG_HOANG_GIA',
-  eventId = 'EVENT_TET',
-  weatherId = 'WEATHER_PLEASANT',
+  eventId,
+  weatherId,
   onColorChange,
   backgroundTheme = 'MINIMAL_STUDIO',
   compact = false,
@@ -88,6 +86,7 @@ export const OutfitMockupCanvas: React.FC<OutfitMockupCanvasProps> = ({
   activeTooltip,
   figureScale = 1,
   overlay,
+  annotations,
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const [internalHotspotsVisible, setInternalHotspotsVisible] = useState(showHotspots);
@@ -102,20 +101,17 @@ export const OutfitMockupCanvas: React.FC<OutfitMockupCanvasProps> = ({
 
   const hasAdaptive = isWheelchair || Boolean(adaptiveNeedCode && adaptiveNeedCode !== 'NONE') || Boolean(adaptiveNeedCodes && adaptiveNeedCodes.length > 0);
 
-  // Effective hair
-  const activeHair = hairStyle || (character as any).hairStyle || 'TOC_VAN';
   const activeSkinTone = skinTone || character.skinTone || '#FCE5D8';
   const activeBodyShape = bodyShape || (character.bodyRepresentation?.includes('Đầy Đặn') ? 'CURVED' : 'BALANCED');
 
-  // Filter remix accessories based on remix level
-  const effectiveAccessories = useMemo(() => {
-    if (!accessories) return [];
-    if (remixLevel <= 30) {
-      // Classic traditional filter: prioritize traditional accessories
-      return accessories.filter((a) => !a.id.includes('sneaker'));
-    }
-    return accessories;
-  }, [accessories, remixLevel]);
+  const masculine = character.gender === 'MALE';
+  const cut = {
+    hemRatio: quickAdjustments?.hemLengthRatio,
+    sleeveRatio: quickAdjustments?.sleeveWidthRatio,
+    slitRatio: quickAdjustments?.slitHeightRatio,
+    remixLevel,
+    ...adaptiveAdjustments,
+  };
 
   // High-Resolution PNG Export (800x1000)
   const handleDownload = () => {
@@ -208,75 +204,24 @@ export const OutfitMockupCanvas: React.FC<OutfitMockupCanvasProps> = ({
           aria-label={`Minh họa thời trang ${garment.name} - ${character.name}`}
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* LAYER 1: EDITORIAL SCENE BACKDROP */}
-          <SceneBackdrop
+          <EditorialScene
+            garment={garment}
+            primaryColor={primaryColor}
+            pantColor={pantColor}
+            accessories={accessories}
+            skinTone={activeSkinTone}
+            hairStyle={hairStyle}
+            masculine={masculine}
+            seated={isWheelchair}
+            bodyShape={activeBodyShape}
             eventId={eventId}
             weatherId={weatherId}
             backgroundTheme={backgroundTheme}
+            cut={cut}
+            figureScale={figureScale}
+            annotations={annotations}
+            showHotspots={internalHotspotsVisible || showHotspots}
           />
-
-          {/* LAYER 2: SOFT GROUND SHADOW (Anchoring character) */}
-          <GroundShadow isSeated={isWheelchair} />
-
-          <g transform={figureScale !== 1 ? `translate(200 470) scale(${figureScale}) translate(-200 -470)` : undefined}>
-          {/* LAYER 3: ACCESSORIES BACK (Hanging scarves, ribbons behind shoulders) */}
-          <Accessories
-            accessories={effectiveAccessories}
-            layer="BACK"
-            isWheelchair={isWheelchair}
-          />
-
-          {/* LAYER 4: REFINED EDITORIAL CHARACTER FIGURE (Anatomy, Skin, Hair) */}
-          <CharacterFigure
-            skinToneHex={activeSkinTone}
-            hairId={activeHair}
-            bodyShape={activeBodyShape}
-            pose={pose}
-            gender={character.gender}
-            isWheelchair={isWheelchair}
-          />
-
-          {/* LAYER 5: DATA-DRIVEN AUTHENTIC GARMENT (3-Tone, Folds, 5 Buttons, Fabric Depth, Dynamic Remix) */}
-          <g id="smooth-garment-layer" style={{ transition: 'all 200ms ease-out' }}>
-            <Garments
-              garment={garment}
-              primaryColor={primaryColor}
-              pantColor={pantColor}
-              fabricType={fabricType}
-              isWheelchair={isWheelchair}
-              adaptiveAdjustments={adaptiveAdjustments}
-              remixLevel={remixLevel}
-              quickAdjustments={quickAdjustments}
-            />
-          </g>
-
-          {/* LAYER 6: ACCESSORIES FRONT (Headwear, Kiềng Bạc, Thẻ Bài, Trâm Cài, Kính Râm) */}
-          <Accessories
-            accessories={effectiveAccessories}
-            layer="FRONT"
-            isWheelchair={isWheelchair}
-          />
-
-          {/* LAYER 7: ACCESSORIES HANDHELD (Quạt trầm hương, Túi cói, Túi da) */}
-          <Accessories
-            accessories={effectiveAccessories}
-            layer="HANDHELD"
-            isWheelchair={isWheelchair}
-          />
-
-          {/* LAYER 8: ACCESSORIES FOOTWEAR (Hài sen, Guốc mộc, Sneaker) */}
-          <Accessories
-            accessories={effectiveAccessories}
-            layer="FOOTWEAR"
-            isWheelchair={isWheelchair}
-          />
-
-          {/* LAYER 9: CULTURAL HOTSPOTS (Interactive educational pins) */}
-          {(internalHotspotsVisible || showHotspots) && (
-            <Hotspots garmentId={garment.id} isWheelchair={isWheelchair} />
-          )}
-
-          </g>
 
           {/* LAYER 10: WATERMARK BADGE */}
           <g id="vstyle-editorial-seal" opacity="0.45" transform="translate(18, 478)">

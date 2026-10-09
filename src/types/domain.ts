@@ -91,7 +91,18 @@ export interface GarmentColor {
 }
 
 // 5. Garment Domain Model
+/** Structural facts used to draw the garment correctly. */
+export interface GarmentStructure {
+  /** HUU_NHAM: left panel overlaps to the wearer's right (closure on the viewer's left). */
+  closure: 'HUU_NHAM' | 'CROSS' | 'PARALLEL' | 'TIED_FRONT' | 'CENTER';
+  buttonCount: number;
+  collar: 'LAP_LINH' | 'GIAO_LINH' | 'NHAT_BINH' | 'DOI_KHAM' | 'OPEN_V' | 'ROUND';
+  sleeve: 'CHEN' | 'THUNG' | 'LUNG';
+  hem: 'HIP' | 'KNEE' | 'CALF' | 'ANKLE';
+}
+
 export interface Garment {
+  structure?: GarmentStructure;
   id: string;
   name: string;
   vietnameseTitle: string;

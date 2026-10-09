@@ -13,6 +13,10 @@ import type {
   GeminiVisionResponse,
 } from '../../types/gemini';
 import type { DeterministicRecommendation, RecommendationContext } from '../recommendation/engine';
+import { adaptiveAdvice, designOutfit, type GeminiServiceConfig } from './service';
+
+/** No provider → the service functions return their deterministic, data-grounded results. */
+const OFFLINE_CONFIG: GeminiServiceConfig = { model: 'offline', imageModel: 'offline' };
 
 export class GeminiRequestError extends Error {
   status: number;
@@ -49,7 +53,9 @@ async function postJson<T>(url: string, body: any): Promise<T> {
   });
 
   if (!res.ok) {
-    let msg = `Yêu cầu thất bại (${res.status})`;
+    let msg = res.status === 404
+      ? 'Máy chủ đang chạy bản cũ chưa có tính năng này — hãy deploy lại từ nhánh main.'
+      : `Yêu cầu thất bại (${res.status})`;
     try {
       const err = await res.json();
       if (err?.error) msg = err.error;
@@ -217,9 +223,19 @@ export async function requestAdaptiveAdvice(payload: {
   adjustments: Record<string, unknown>;
   eventId?: string;
 }): Promise<GeminiAdaptiveResponse> {
-  return await postJson<GeminiAdaptiveResponse>('/api/gemini/adaptive', payload);
+  try {
+    return await postJson<GeminiAdaptiveResponse>('/api/gemini/adaptive', payload);
+  } catch {
+    // Server unavailable or outdated deployment: same deterministic advice, computed in the browser.
+    return await adaptiveAdvice(payload, OFFLINE_CONFIG);
+  }
 }
 
 export async function designOutfitFromText(payload: { text: string; photoColors?: string[]; needCodes?: string[] }): Promise<OutfitDesign> {
-  return await postJson<OutfitDesign>('/api/gemini/design', payload);
+  try {
+    return await postJson<OutfitDesign>('/api/gemini/design', payload);
+  } catch {
+    // Server unavailable or outdated deployment: design locally from the same sentence.
+    return await designOutfit(payload, OFFLINE_CONFIG);
+  }
 }
