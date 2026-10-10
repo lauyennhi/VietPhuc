@@ -60,10 +60,11 @@ export function readGeminiSettings(env: Record<string, string | undefined>): Gem
   const imageModel = model(env.GEMINI_IMAGE_MODEL) ?? DEFAULT_IMAGE_MODEL;
   const imageFallbackModel = model(env.GEMINI_IMAGE_FALLBACK_MODEL) ?? DEFAULT_IMAGE_FALLBACK_MODEL;
   const rawThinking = clean(env.GEMINI_THINKING_LEVEL)?.toLowerCase();
+  // Default 'low': Gemini 3 models otherwise think at length and a design takes 30–60 s.
   const thinkingLevel: ThinkingSetting =
-    rawThinking === 'minimal' || rawThinking === 'low' || rawThinking === 'medium' || rawThinking === 'high'
+    rawThinking === 'minimal' || rawThinking === 'low' || rawThinking === 'medium' || rawThinking === 'high' || rawThinking === 'off'
       ? rawThinking
-      : 'off';
+      : 'low';
   const cap = Number.parseInt(clean(env.VSTYLE_RENDER_HOURLY_CAP) ?? '', 10);
 
   return {
@@ -85,15 +86,24 @@ function shouldTryFallback(error: unknown): boolean {
   return /not found|not supported|unavailable|overloaded|deprecated|RESOURCE_EXHAUSTED|UNAVAILABLE/i.test(message);
 }
 
-function createClient(ai: GoogleGenAI, primaryModel: string, fallbackModel: string): GeminiProviderClient {
+function createClient(ai: GoogleGenAI, primaryModel: string, fallbackModel: string, budgetMs: number): GeminiProviderClient {
   return {
     async generateContent(req) {
       const first = req.model || primaryModel;
       const models = [first, fallbackModel].filter((model, index, all) => model && all.indexOf(model) === index);
+      // One time budget across both attempts, so a slow model never keeps the user waiting
+      // longer than budgetMs before the deterministic fallback takes over.
+      const deadline = Date.now() + budgetMs;
       let lastError: unknown;
       for (const model of models) {
+        const remaining = deadline - Date.now();
+        if (remaining < 1500) break;
         try {
-          return await ai.models.generateContent({ model, contents: req.contents, config: req.config });
+          return await ai.models.generateContent({
+            model,
+            contents: req.contents,
+            config: { ...req.config, abortSignal: AbortSignal.timeout(remaining) },
+          });
         } catch (error) {
           lastError = error;
           if (!shouldTryFallback(error)) break;
@@ -113,7 +123,7 @@ export function createGeminiProviders(settings: GeminiSettings): GeminiProviders
   const ai = new GoogleGenAI({ apiKey: settings.apiKey });
 
   return {
-    text: createClient(ai, settings.textModel, settings.textFallbackModel),
-    image: createClient(ai, settings.imageModel, settings.imageFallbackModel),
+    text: createClient(ai, settings.textModel, settings.textFallbackModel, 22_000),
+    image: createClient(ai, settings.imageModel, settings.imageFallbackModel, 50_000),
   };
 }

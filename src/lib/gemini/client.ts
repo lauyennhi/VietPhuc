@@ -45,12 +45,21 @@ export interface ServerHealth {
   rulesCount: number;
 }
 
-async function postJson<T>(url: string, body: any): Promise<T> {
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
+async function postJson<T>(url: string, body: any, timeoutMs = url.endsWith('/render') ? 60_000 : 28_000): Promise<T> {
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(timeoutMs),
+    });
+  } catch (error) {
+    if (error instanceof DOMException && (error.name === 'TimeoutError' || error.name === 'AbortError')) {
+      throw new GeminiRequestError('AI phản hồi quá lâu — đã dùng gợi ý có sẵn.', 504);
+    }
+    throw error;
+  }
 
   if (!res.ok) {
     let msg = res.status === 404
