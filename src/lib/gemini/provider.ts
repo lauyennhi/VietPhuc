@@ -42,12 +42,23 @@ const clean = (value: string | undefined): string | undefined => {
   return trimmed ? trimmed : undefined;
 };
 
+/**
+ * Model ids look like `gemini-3.5-flash` (lowercase, digits, dots, dashes). Anything else — e.g. an
+ * API key pasted into the wrong variable — is ignored, so it is never used as a model nor echoed
+ * by /api/health.
+ */
+const MODEL_ID = /^(models\/)?[a-z][a-z0-9.-]{2,63}$/;
+const model = (value: string | undefined): string | undefined => {
+  const v = clean(value);
+  return v && MODEL_ID.test(v) ? v : undefined;
+};
+
 export function readGeminiSettings(env: Record<string, string | undefined>): GeminiSettings {
   const apiKey = clean(env.GEMINI_API_KEY) ?? clean(env.GOOGLE_API_KEY) ?? clean(env.API_KEY);
-  const textModel = clean(env.GEMINI_MODEL) ?? clean(env.GEMINI_TEXT_MODEL) ?? DEFAULT_TEXT_MODEL;
-  const textFallbackModel = clean(env.GEMINI_FALLBACK_MODEL) ?? DEFAULT_TEXT_FALLBACK_MODEL;
-  const imageModel = clean(env.GEMINI_IMAGE_MODEL) ?? DEFAULT_IMAGE_MODEL;
-  const imageFallbackModel = clean(env.GEMINI_IMAGE_FALLBACK_MODEL) ?? DEFAULT_IMAGE_FALLBACK_MODEL;
+  const textModel = model(env.GEMINI_MODEL) ?? model(env.GEMINI_TEXT_MODEL) ?? DEFAULT_TEXT_MODEL;
+  const textFallbackModel = model(env.GEMINI_FALLBACK_MODEL) ?? DEFAULT_TEXT_FALLBACK_MODEL;
+  const imageModel = model(env.GEMINI_IMAGE_MODEL) ?? DEFAULT_IMAGE_MODEL;
+  const imageFallbackModel = model(env.GEMINI_IMAGE_FALLBACK_MODEL) ?? DEFAULT_IMAGE_FALLBACK_MODEL;
   const rawThinking = clean(env.GEMINI_THINKING_LEVEL)?.toLowerCase();
   const thinkingLevel: ThinkingSetting =
     rawThinking === 'minimal' || rawThinking === 'low' || rawThinking === 'medium' || rawThinking === 'high'
