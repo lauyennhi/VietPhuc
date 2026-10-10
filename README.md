@@ -76,7 +76,7 @@ npm run dev                # http://localhost:3000
 
 ```
 Trình duyệt (React 19 + Tailwind 4)
-  │  câu mô tả · ảnh cảm hứng (đã thu nhỏ, xóa EXIF) · lựa chọn thủ công
+  │  câu mô tả · ảnh cảm hứng (thu nhỏ & mã hóa lại trên trình duyệt) · lựa chọn thủ công
   ▼
 Express server (server.ts) — giữ GEMINI_API_KEY, giới hạn tần suất, kiểm tra mọi ID
   ├─ /api/gemini/parse      Gemini ▸ câu tự nhiên → ID (JSON schema enum = allow-list)
@@ -88,13 +88,13 @@ Express server (server.ts) — giữ GEMINI_API_KEY, giới hạn tần suất, 
   ├─ /api/gemini/vision     Gemini ▸ đọc ảnh → bảng màu → khớp màu Việt phục đã duyệt (ΔE Lab)
   └─ /api/gemini/render     Gemini (Nano Banana) ▸ ảnh minh họa từ prompt dựng bằng dữ liệu đã xác thực
   ▼
-Dữ liệu tri thức (data/*.json, validate bằng zod + kiểm tra toàn vẹn quan hệ)
+Dữ liệu tri thức (data/*.json có kiểu TypeScript, mỗi bản ghi có nguồn + trạng thái duyệt)
   y phục · phụ kiện · dịp · thời tiết · luật văn hóa · nguồn thẩm định · điều chỉnh thích ứng
 ```
 
 - **Gemini API** qua `@google/genai` (`models.generateContent`, output JSON theo `responseJsonSchema`). Model mặc định: `gemini-3.8-flash` (văn bản, đọc ảnh; dự phòng `gemini-3.5-flash`), `gemini-3.1-flash-image` (tạo ảnh; dự phòng `gemini-3.1-flash-image-preview`); tự thử model dự phòng nếu model chính không khả dụng. Đổi bằng biến môi trường (xem `.env.example`).
 - **Không có khóa, Gemini lỗi hoặc máy chủ chạy bản cũ (404)** → trình duyệt tự dùng bộ thiết kế tất định, mọi tính năng vẫn chạy: nhận diện câu theo từ khóa, xếp hạng tất định, lời bình lấy từ dữ liệu. Giao diện ghi rõ đang ở chế độ dự phòng.
-- `store: false` cho mọi lời gọi Gemini; ảnh người dùng không lưu trên server.
+- Ảnh người dùng chỉ đi qua server để gửi Gemini, không được lưu lại; dùng ảnh của mình làm người mẫu khi tạo ảnh AI cần người dùng đồng ý.
 - Giới hạn tần suất theo IP (văn bản 40/phút, đọc ảnh 8/phút, tạo ảnh 12/giờ + trần toàn cục `VSTYLE_RENDER_HOURLY_CAP`) để bảo vệ hạn mức khi chia sẻ app.
 
 ### Hình minh họa editorial (SVG)
